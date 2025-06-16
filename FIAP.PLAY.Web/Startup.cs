@@ -92,7 +92,7 @@ namespace FIAP.PLAY.Web
             app.UseSwaggerUI(c =>
             {
                 var swaggerEndpoint = env.IsDevelopment() ? "/swagger/v1/swagger.json" : "/ea/swagger/v1/swagger.json";
-                c.SwaggerEndpoint(swaggerEndpoint, "EspecificacaoAnalise");
+                c.SwaggerEndpoint(swaggerEndpoint, "FiapPlay");
             });
 
             app.UseEndpoints(endpoints =>
