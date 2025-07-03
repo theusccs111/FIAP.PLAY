@@ -5,7 +5,7 @@ using FluentValidation;
 
 namespace FIAP.PLAY.Domain.Validations
 {
-    public class UserValidator : AbstractValidator<User>
+    public class UserValidator : AbstractValidator<Usuario>
     {
         public UserValidator()
         {

@@ -14,20 +14,20 @@ using System.Text;
 
 namespace FIAP.PLAY.Service.Service
 {
-    public class UserService : Service<User,UserRequest>
+    public class UserService : Service<Usuario,UsuarioRequest>
     {
-        public UserService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<User> validator) : base(httpContextAccessor, mapper, uow, config, validator)
+        public UserService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Usuario> validator) : base(httpContextAccessor, mapper, uow, config, validator)
         {
         }
 
         public Resultado<LoginResponse> Autenticar(AutenticarRequest autenticarRequest)
         {
-            if (string.IsNullOrEmpty(autenticarRequest.Login) || string.IsNullOrEmpty(autenticarRequest.Senha))
+            if (string.IsNullOrEmpty(autenticarRequest.Email) || string.IsNullOrEmpty(autenticarRequest.Senha))
             {
                 throw new Domain.Exceptions.ValidationException("Erro ao autenticar", "O usuário e/ou a senha não podem ser vazios.");
             }
 
-            var usuario = Uow.Users.GetFirst(u => u.Login.Trim().ToLower().Equals(autenticarRequest.Login.Trim().ToLower()) &&
+            var usuario = Uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
                                                 u.Senha.Trim().ToLower().Equals(autenticarRequest.Senha.Trim().ToLower()));
 
             if (usuario.Id > 0)
@@ -40,7 +40,6 @@ namespace FIAP.PLAY.Service.Service
                     Email = usuario.Email,
                     Token = token,
                     UserId = usuario.Id,
-                    Login = usuario.Login
                 };
 
                 return new Resultado<LoginResponse>(loginResponse);
@@ -51,7 +50,7 @@ namespace FIAP.PLAY.Service.Service
             }
         }
 
-        private string SalvarUserNoClaims(User usuario)
+        private string SalvarUserNoClaims(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Config["JwtSecurityToken:key"]);
@@ -61,7 +60,6 @@ namespace FIAP.PLAY.Service.Service
                 {
                     new Claim(JwtRegisteredClaimNames.UniqueName, string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
                     new Claim("UserId", usuario.Id.ToString()),
-                    new Claim("Login", usuario.Login),
                     new Claim("Nome", usuario.Nome),
                     new Claim("Email", string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
                 }),
@@ -81,7 +79,7 @@ namespace FIAP.PLAY.Service.Service
             return new Resultado<LoginResponse>(Usuario);
         }
 
-        public override Resultado<UserRequest> Add(UserRequest request)
+        public override Resultado<UsuarioRequest> Add(UsuarioRequest request)
         {
             var result = base.Add(request);
             base.Complete();
@@ -89,7 +87,7 @@ namespace FIAP.PLAY.Service.Service
             return result;
         }
 
-        public override Resultado<UserRequest[]> AddMany(UserRequest[] request)
+        public override Resultado<UsuarioRequest[]> AddMany(UsuarioRequest[] request)
         {
             var result = base.AddMany(request);
             base.Complete();
@@ -97,7 +95,7 @@ namespace FIAP.PLAY.Service.Service
             return result;
         }
 
-        public override Resultado<UserRequest> Update(UserRequest request)
+        public override Resultado<UsuarioRequest> Update(UsuarioRequest request)
         {
             var result = base.Update(request);
             base.Complete();
@@ -105,7 +103,7 @@ namespace FIAP.PLAY.Service.Service
             return result;
         }
 
-        public override Resultado<UserRequest[]> UpdateMany(UserRequest[] request)
+        public override Resultado<UsuarioRequest[]> UpdateMany(UsuarioRequest[] request)
         {
             var result = base.UpdateMany(request);
             base.Complete();
@@ -113,14 +111,14 @@ namespace FIAP.PLAY.Service.Service
             return result;
         }
 
-        public override Resultado<UserRequest> Delete(UserRequest request)
+        public override Resultado<UsuarioRequest> Delete(UsuarioRequest request)
         {
             var result = base.Delete(request);
             base.Complete();
 
             return result;
         }
-        public override Resultado<UserRequest[]> DeleteMany(UserRequest[] request)
+        public override Resultado<UsuarioRequest[]> DeleteMany(UsuarioRequest[] request)
         {
             var result = base.DeleteMany(request);
             base.Complete();

@@ -12,7 +12,7 @@ namespace FIAP.PLAY.Persistance
         private readonly FiapPlayContext _context;
         private Dictionary<string, object> repositories;
 
-        public IRepository<User> Users { get { return new Repository<User>(_context); } }
+        public IRepository<Usuario> Users { get { return new Repository<Usuario>(_context); } }
         public UnityOfWork(FiapPlayContext context)
         {
             _context = context;

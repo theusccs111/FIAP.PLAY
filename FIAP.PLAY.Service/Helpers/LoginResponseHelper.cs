@@ -18,7 +18,6 @@ namespace FIAP.PLAY.Service.Helpers
                 loginResponse.UserId = Convert.ToInt64(ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "UserId"));
                 loginResponse.Nome = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Nome");
                 loginResponse.Email = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Email");
-                loginResponse.Login = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Login");
 
                 loginResponse.EstaAutenticado = loginResponse.UserId != 0;
             }
@@ -37,9 +36,6 @@ namespace FIAP.PLAY.Service.Helpers
 
             identity.TryRemoveClaim(identity.FindFirst("Email"));
             identity.AddClaim(new Claim("Email", loginResponse.Email));
-
-            identity.TryRemoveClaim(identity.FindFirst("Login"));
-            identity.AddClaim(new Claim("Login", loginResponse.Login));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Config["JwtSecurityToken:key"]);

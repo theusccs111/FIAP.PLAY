@@ -6,7 +6,7 @@ namespace FIAP.PLAY.Service.Interfaces
 {
     public interface IUnityOfWork : IDisposable
     {
-        IRepository<User> Users { get;}
+        IRepository<Usuario> Users { get;}
         
         Task CompleteAsync();
         void Complete();

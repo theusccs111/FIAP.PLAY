@@ -50,7 +50,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Post(UserRequest request)
+        public IActionResult Post(UsuarioRequest request)
         {
             var dados = _usuarioService.Add(request);
             return Ok(dados);
@@ -58,7 +58,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpPost("Many")]
         [Authorize]
-        public IActionResult PostMany(UserRequest[] request)
+        public IActionResult PostMany(UsuarioRequest[] request)
         {
             var dados = _usuarioService.AddMany(request);
             return Ok(dados);
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpPut]
         [Authorize]
-        public IActionResult Put(UserRequest request)
+        public IActionResult Put(UsuarioRequest request)
         {
             var dados = _usuarioService.Update(request);
             return Ok(dados);
@@ -74,7 +74,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpPut("Many")]
         [Authorize]
-        public IActionResult PutMany(UserRequest[] request)
+        public IActionResult PutMany(UsuarioRequest[] request)
         {
             var dados = _usuarioService.UpdateMany(request);
             return Ok(dados);
@@ -82,7 +82,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpDelete]
         [Authorize]
-        public IActionResult Delete(UserRequest request)
+        public IActionResult Delete(UsuarioRequest request)
         {
             var dados = _usuarioService.Delete(request);
             return Ok(dados);
@@ -90,7 +90,7 @@ namespace FIAP.PLAY.Web.Controllers
 
         [HttpDelete("Many")]
         [Authorize]
-        public IActionResult DeleteMany(UserRequest[] request)
+        public IActionResult DeleteMany(UsuarioRequest[] request)
         {
             var dados = _usuarioService.DeleteMany(request);
             return Ok(dados);

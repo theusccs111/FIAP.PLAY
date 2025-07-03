@@ -9,9 +9,9 @@ namespace FIAP.PLAY.Domain
     {
         public AutoMapperConfiguration()
         {
-            var entityAssemplyEntity = typeof(User).Assembly;
-            var entityAssemplyRequest = typeof(UserRequest).Assembly.ExportedTypes.ToList();
-            var entityAssemplyResponse = typeof(UserResponse).Assembly.ExportedTypes.ToList();
+            var entityAssemplyEntity = typeof(Usuario).Assembly;
+            var entityAssemplyRequest = typeof(UsuarioRequest).Assembly.ExportedTypes.ToList();
+            var entityAssemplyResponse = typeof(UsuarioResponse).Assembly.ExportedTypes.ToList();
 
             entityAssemplyEntity.ExportedTypes.ToList().ForEach(s =>
             {
