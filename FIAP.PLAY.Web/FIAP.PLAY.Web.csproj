@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FIAP.PLAY.Domain\FIAP.PLAY.Domain.csproj" />
-    <ProjectReference Include="..\FIAP.PLAY.Persistance\FIAP.PLAY.Persistance.csproj" />
+    <ProjectReference Include="..\FIAP.PLAY.Persistance\FIAP.PLAY.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

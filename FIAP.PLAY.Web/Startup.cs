@@ -1,5 +1,3 @@
-using FIAP.PLAY.Domain;
-using FIAP.PLAY.Domain.Validations;
 using FIAP.PLAY.Persistance;
 using FIAP.PLAY.Persistance.Data;
 using FIAP.PLAY.Service.Interfaces;

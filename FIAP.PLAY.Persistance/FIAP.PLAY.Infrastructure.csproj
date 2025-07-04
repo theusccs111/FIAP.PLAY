@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FIAP.PLAY.Domain\FIAP.PLAY.Domain.csproj" />
-    <ProjectReference Include="..\FIAP.PLAY.Service\FIAP.PLAY.Service.csproj" />
+    <ProjectReference Include="..\FIAP.PLAY.Service\FIAP.PLAY.Application.csproj" />
   </ItemGroup>
 
 </Project>
