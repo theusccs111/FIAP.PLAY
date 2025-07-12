@@ -1,5 +1,9 @@
+using FIAP.PLAY.Application.Interfaces.Infrastructure;
 using FIAP.PLAY.Domain;
 using FIAP.PLAY.Domain.Validations;
+using FIAP.PLAY.Infrastructure.Logging;
+using FIAP.PLAY.Infrastructure.Logging.Correlation;
+using FIAP.PLAY.Infrastructure.Logs;
 using FIAP.PLAY.Persistance;
 using FIAP.PLAY.Persistance.Data;
 using FIAP.PLAY.Service.Interfaces;
@@ -84,6 +88,7 @@ namespace FIAP.PLAY.Web
             app.UseStaticFiles();
             //app.UseSpaStaticFiles();
             app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+            app.UseMiddleware<CorrelationMiddleware>();
 
             app.UseRouting();
             app.UseAuthorization();
@@ -112,7 +117,14 @@ namespace FIAP.PLAY.Web
 
         private static void InjectServices(IServiceCollection services)
         {
+            services.AddTransient<ICorrelationIdGenerator, CorrelationIdGenerator>();
+            services.AddTransient(typeof(ILoggerManager<>), typeof(LoggerManager<>));
+            services.AddTransient(typeof(BaseLogger<>)); 
+
+
             services.AddScoped<UserService>();
+
+
         }
 
         private static void InjectRepositories(IServiceCollection services)

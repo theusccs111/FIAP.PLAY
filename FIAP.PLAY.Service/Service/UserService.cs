@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FIAP.PLAY.Application.Interfaces.Infrastructure;
 using FIAP.PLAY.Domain.Entities;
 using FIAP.PLAY.Domain.Resource.Base;
 using FIAP.PLAY.Domain.Resource.Request;
@@ -7,23 +8,31 @@ using FIAP.PLAY.Service.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace FIAP.PLAY.Service.Service
 {
     public class UserService : Service<Usuario,UsuarioRequest>
     {
-        public UserService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Usuario> validator) : base(httpContextAccessor, mapper, uow, config, validator)
+        private readonly ILoggerManager<UserService> _logger;
+        public UserService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Usuario> validator, ILoggerManager<UserService> logger) : base(httpContextAccessor, mapper, uow, config, validator)
         {
+            _logger = logger;
         }
 
         public Resultado<LoginResponse> Autenticar(AutenticarRequest autenticarRequest)
         {
+            _logger.LogInformation("UserService.Autenticar - Iniciado");
+
             if (string.IsNullOrEmpty(autenticarRequest.Email) || string.IsNullOrEmpty(autenticarRequest.Senha))
             {
+                _logger.LogError("UserService.Autenticar - O usuário e/ou a senha não podem ser vazios.");
+
                 throw new Domain.Exceptions.ValidationException("Erro ao autenticar", "O usuário e/ou a senha não podem ser vazios.");
             }
 
@@ -42,10 +51,12 @@ namespace FIAP.PLAY.Service.Service
                     UserId = usuario.Id,
                 };
 
+                _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
                 return new Resultado<LoginResponse>(loginResponse);
             }
             else
             {
+                _logger.LogError("UserService.Autenticar - Dados de acesso incorretos.");
                 throw new Domain.Exceptions.ValidationException("Erro ao autenticar", "Dados de acesso incorretos.");
             }
         }
