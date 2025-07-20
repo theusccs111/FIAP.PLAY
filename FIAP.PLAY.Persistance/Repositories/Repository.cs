@@ -1,6 +1,6 @@
-﻿using FIAP.PLAY.Domain.Entities.Base;
+﻿using FIAP.PLAY.Application.Shared.Interfaces.Repository;
+using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Persistance.Data;
-using FIAP.PLAY.Service.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

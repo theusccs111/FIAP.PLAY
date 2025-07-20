@@ -1,5 +1,5 @@
-﻿using FIAP.PLAY.Domain.Exceptions;
-using FIAP.PLAY.Domain.Resource.Base;
+﻿using FIAP.PLAY.Application.Shared.Resource;
+using FIAP.PLAY.Domain.Shared.Exceptions;
 using Newtonsoft.Json;
 using System.Net;
 

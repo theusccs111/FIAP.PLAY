@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Application.Interfaces.Infrastructure;
+﻿using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Infrastructure.Logs;
 using System;
 using System.Collections.Generic;

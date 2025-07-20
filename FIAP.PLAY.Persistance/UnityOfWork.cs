@@ -1,9 +1,9 @@
-﻿using FIAP.PLAY.Domain.Entities;
-using FIAP.PLAY.Domain.Entities.Base;
+﻿using FIAP.PLAY.Application.Shared.Interfaces;
+using FIAP.PLAY.Application.Shared.Interfaces.Repository;
+using FIAP.PLAY.Domain.Shared.Entities;
+using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Persistance.Data;
 using FIAP.PLAY.Persistance.Repositories;
-using FIAP.PLAY.Service.Interfaces;
-using FIAP.PLAY.Service.Interfaces.Repository;
 
 namespace FIAP.PLAY.Persistance
 {

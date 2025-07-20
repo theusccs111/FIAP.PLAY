@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Domain.Entities;
+﻿using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Persistance.EntityConfig;
 using Microsoft.EntityFrameworkCore;
 
