@@ -1,4 +1,5 @@
-﻿using FIAP.PLAY.Domain.Shared.Resource.Response;
+﻿using FIAP.PLAY.Application.Shared.Helpers;
+using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -6,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace FIAP.PLAY.Service.Helpers
+namespace FIAP.PLAY.Application.UserAccess.Helpers
 {
     public static class LoginResponseHelper
     {

@@ -1,4 +1,4 @@
-﻿namespace FIAP.PLAY.Domain.Shared.Enums
+﻿namespace FIAP.PLAY.Domain.UserAccess.Enums
 {
     public enum TipoPerfil
     {

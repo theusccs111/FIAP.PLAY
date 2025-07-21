@@ -2,20 +2,22 @@
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
+using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
-using FIAP.PLAY.Domain.Shared.Resource.Request;
-using FIAP.PLAY.Domain.Shared.Resource.Response;
+using FIAP.PLAY.Application.UserAccess.Resource.Request;
+using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
-namespace FIAP.PLAY.Service.Service
+namespace FIAP.PLAY.Application.UserAccess.Services
 {
     public class UserService : Service<Usuario,UsuarioRequest> , IUserService
     {

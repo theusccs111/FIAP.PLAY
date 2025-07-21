@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using FIAP.PLAY.Domain.Shared.Resource.Request;
-using FIAP.PLAY.Domain.Shared.Resource.Response;
+using FIAP.PLAY.Application.UserAccess.Resource.Request;
+using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 
-namespace FIAP.PLAY.Domain
+namespace FIAP.PLAY.Application.Mapping
 {
     public class AutoMapperConfiguration : Profile
     {
@@ -19,14 +19,14 @@ namespace FIAP.PLAY.Domain
                 var requestModelName = entityAssemplyRequest.FirstOrDefault(s => s.Name == formattedRequestModelName);
                 if (requestModelName != null)
                 {
-                    this.CreateMap(s, requestModelName).ReverseMap();
+                    CreateMap(s, requestModelName).ReverseMap();
                 }
 
                 var formattedResponseName = string.Format("{0}Response", s.Name);
                 var responseModelName = entityAssemplyResponse.FirstOrDefault(s => s.Name == formattedResponseName);
                 if (responseModelName != null)
                 {
-                    var map = this.CreateMap(s, responseModelName).ReverseMap();
+                    var map = CreateMap(s, responseModelName).ReverseMap();
                    
                 }
             });

@@ -1,5 +1,5 @@
 ﻿using FIAP.PLAY.Domain.Shared.Entities;
-using FIAP.PLAY.Domain.Shared.Enums;
+using FIAP.PLAY.Domain.UserAccess.Enums;
 
 namespace FIAP.PLAY.Domain.UserAccess.Entities
 {

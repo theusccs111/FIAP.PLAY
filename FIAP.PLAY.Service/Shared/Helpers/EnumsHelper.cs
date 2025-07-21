@@ -1,6 +1,6 @@
 ﻿using FIAP.PLAY.Domain.Shared.Extensions;
 
-namespace FIAP.PLAY.Service.Helpers
+namespace FIAP.PLAY.Application.Shared.Helpers
 {
     public static class EnumsHelper
     {

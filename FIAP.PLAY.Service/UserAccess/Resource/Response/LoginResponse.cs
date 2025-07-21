@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FIAP.PLAY.Domain.Shared.Resource.Response
+namespace FIAP.PLAY.Application.UserAccess.Resource.Response
 {
     public class LoginResponse
     {

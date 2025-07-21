@@ -1,6 +1,6 @@
 ﻿using FIAP.PLAY.Application.Shared.Resource;
 
-namespace FIAP.PLAY.Domain.Shared.Resource.Request
+namespace FIAP.PLAY.Application.UserAccess.Resource.Request
 {
     public class UsuarioRequest : ResourceBase
     {

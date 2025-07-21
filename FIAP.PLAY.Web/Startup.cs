@@ -1,14 +1,14 @@
+using FIAP.PLAY.Application.Mapping;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
-using FIAP.PLAY.Domain;
+using FIAP.PLAY.Application.UserAccess.Services;
 using FIAP.PLAY.Domain.UserAccess.Validations;
 using FIAP.PLAY.Infrastructure.Logging;
 using FIAP.PLAY.Infrastructure.Logging.Correlation;
 using FIAP.PLAY.Infrastructure.Logs;
 using FIAP.PLAY.Persistance;
 using FIAP.PLAY.Persistance.Data;
-using FIAP.PLAY.Service.Service;
 using FIAP.PLAY.Web.Filters.Shared;
 using FIAP.PLAY.Web.Middleware;
 using FluentValidation.AspNetCore;

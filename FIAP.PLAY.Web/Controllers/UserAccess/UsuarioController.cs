@@ -1,5 +1,5 @@
 ﻿using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
-using FIAP.PLAY.Domain.Shared.Resource.Request;
+using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

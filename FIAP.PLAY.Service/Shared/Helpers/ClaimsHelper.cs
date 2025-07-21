@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace FIAP.PLAY.Service.Helpers
+namespace FIAP.PLAY.Application.Shared.Helpers
 {
     public static class ClaimsHelper
     {

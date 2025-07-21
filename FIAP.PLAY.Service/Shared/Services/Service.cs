@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using FIAP.PLAY.Application.Shared.Interfaces;
+using FIAP.PLAY.Application.Shared.Interfaces.Services;
 using FIAP.PLAY.Application.Shared.Resource;
+using FIAP.PLAY.Application.UserAccess.Helpers;
+using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.Shared.Entities;
-using FIAP.PLAY.Domain.Shared.Resource.Response;
-using FIAP.PLAY.Service.Helpers;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-namespace FIAP.PLAY.Service.Service
+namespace FIAP.PLAY.Application.Shared.Services
 {
     public abstract class Service<T,R> where T : EntidadeBase where R : ResourceBase
     {
