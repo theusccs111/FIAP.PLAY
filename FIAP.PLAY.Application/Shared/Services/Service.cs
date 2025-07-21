@@ -69,7 +69,7 @@ namespace FIAP.PLAY.Application.Shared.Services
             foreach (var item in request)
             {
                 var result = Add(item).Data;
-                resultList.Add(result);
+                resultList.Add(result!);
             }
 
             return new Resultado<R[]>(resultList.ToArray());
@@ -100,7 +100,7 @@ namespace FIAP.PLAY.Application.Shared.Services
             foreach (var item in request)
             {
                 var result = Update(item).Data;
-                resultList.Add(result);
+                resultList.Add(result!);
             }
 
             return new Resultado<R[]>(resultList.ToArray());
@@ -127,7 +127,7 @@ namespace FIAP.PLAY.Application.Shared.Services
             foreach (var item in request)
             {
                 var result = Delete(item).Data;
-                resultList.Add(result);
+                resultList.Add(result!);
             }
 
             return new Resultado<R[]>(resultList.ToArray());
