@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Domain.Entities;
+﻿using FIAP.PLAY.Domain.UserAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
