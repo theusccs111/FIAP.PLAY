@@ -51,7 +51,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                     Nome = usuario.Nome,
                     Email = usuario.Email,
                     Token = token,
-                    UserId = usuario.Id,
+                    UsuarioId = usuario.Id,
                 };
 
                 _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
@@ -73,7 +73,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(JwtRegisteredClaimNames.UniqueName, string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
-                    new Claim("UserId", usuario.Id.ToString()),
+                    new Claim("UsuarioId", usuario.Id.ToString()),
                     new Claim("Nome", usuario.Nome),
                     new Claim("Email", string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
                 }),

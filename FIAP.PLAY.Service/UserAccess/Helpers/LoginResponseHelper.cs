@@ -16,11 +16,11 @@ namespace FIAP.PLAY.Application.UserAccess.Helpers
             LoginResponse loginResponse = new LoginResponse();
             if (_httpContextAccessor.HttpContext != null)
             {
-                loginResponse.UserId = Convert.ToInt64(ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "UserId"));
+                loginResponse.UsuarioId = Convert.ToInt64(ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "UsuarioId"));
                 loginResponse.Nome = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Nome");
                 loginResponse.Email = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Email");
 
-                loginResponse.EstaAutenticado = loginResponse.UserId != 0;
+                loginResponse.EstaAutenticado = loginResponse.UsuarioId != 0;
             }
             return loginResponse;
         }
@@ -29,8 +29,8 @@ namespace FIAP.PLAY.Application.UserAccess.Helpers
         {
             var identity = _httpContextAccessor.HttpContext.User.Identities.First();
 
-            identity.TryRemoveClaim(identity.FindFirst("UserId"));
-            identity.AddClaim(new Claim("UserId", loginResponse.UserId.ToString()));
+            identity.TryRemoveClaim(identity.FindFirst("UsuarioId"));
+            identity.AddClaim(new Claim("UsuarioId", loginResponse.UsuarioId.ToString()));
 
             identity.TryRemoveClaim(identity.FindFirst("Nome"));
             identity.AddClaim(new Claim("Nome", loginResponse.Nome));
