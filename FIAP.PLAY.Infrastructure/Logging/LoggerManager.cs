@@ -1,5 +1,4 @@
 ﻿using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
-using FIAP.PLAY.Infrastructure.Logs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,10 +2,10 @@
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
-using FIAP.PLAY.Persistance.Data;
-using FIAP.PLAY.Persistance.Repositories;
+using FIAP.PLAY.Infrastructure.Data;
+using FIAP.PLAY.Infrastructure.Repositories;
 
-namespace FIAP.PLAY.Persistance
+namespace FIAP.PLAY.Infrastructure
 {
     public class UnityOfWork : IUnityOfWork, IDisposable
     {

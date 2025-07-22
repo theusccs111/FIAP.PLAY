@@ -1,36 +1,31 @@
-﻿using FIAP.PLAY.Domain.Biblioteca.Jogo.Enums;
+﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
 using FIAP.PLAY.Domain.Shared.Entities;
 
-namespace FIAP.PLAY.Domain.Biblioteca.Jogo.Entities
+namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Entities
 {
     public class Jogo : EntidadeBase
-    {
-       
+    {     
+
         #region Propriedades
-        public string Titulo { get; private set; }
-        public decimal Preco { get; private set; }
-        public EGenero Genero { get; private set; }
-        public int AnoLancamento { get; private set; }
-        public string Desenvolvedora { get; private set; }
+        public string Titulo { get; set; }
+        public decimal Preco { get; set; }
+        public EGenero Genero { get; set; }
+        public int AnoLancamento { get; set; }
+        public string Desenvolvedora { get; set; }
         #endregion
 
         #region Construtor
-        private Jogo(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
-        {
-            Titulo = titulo;
-            Preco = preco;
-            Genero = genero;
-            AnoLancamento = anoLancamento;
-            Desenvolvedora = desenvolvedora;
-        }
-        #endregion
 
-        #region Fábrica
-        public static Jogo Criar(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
+        private Jogo()
+        {
+            
+        }
+
+        public Jogo(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
         {
             if (string.IsNullOrWhiteSpace(titulo))
                 throw new ArgumentException("Título não pode ser vazio.", nameof(titulo));
-            if(titulo.Length < 3 || titulo.Length > 100)
+            if (titulo.Length < 3 || titulo.Length > 100)
                 throw new ArgumentException("Título deve ter entre 3 e 100 caracteres.", nameof(titulo));
             if (preco <= 0)
                 throw new ArgumentException("Preço deve ser maior que zero.", nameof(preco));
@@ -42,9 +37,15 @@ namespace FIAP.PLAY.Domain.Biblioteca.Jogo.Entities
                 throw new ArgumentException("Desenvolvedora não pode ser vazia.", nameof(desenvolvedora));
             if (desenvolvedora.Length < 3 || desenvolvedora.Length > 100)
                 throw new ArgumentException("Desenvolvedora deve ter entre 3 e 100 caracteres.", nameof(desenvolvedora));
-            return new Jogo(titulo, preco, genero, anoLancamento, desenvolvedora);
+
+            Titulo = titulo;
+            Preco = preco;
+            Genero = genero;
+            AnoLancamento = anoLancamento;
+            Desenvolvedora = desenvolvedora;
         }
-        #endregion       
+        #endregion
+         
     }
 }
 

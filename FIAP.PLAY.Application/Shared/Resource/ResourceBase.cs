@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FIAP.PLAY.Application.Shared.Resource
+﻿namespace FIAP.PLAY.Application.Shared.Resource
 {
-    public class ResourceBase
+    public record ResourceBase
     {
-        public int Id { get; set; }
+       public int Id { get; set; }
     }
 }

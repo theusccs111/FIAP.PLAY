@@ -1,4 +1,4 @@
-﻿namespace FIAP.PLAY.Domain.Biblioteca.Jogo.Enums
+﻿namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Enums
 {
     public enum EGenero
     {
