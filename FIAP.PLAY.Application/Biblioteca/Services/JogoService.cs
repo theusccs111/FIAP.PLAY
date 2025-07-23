@@ -20,18 +20,17 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
         }
 
         private readonly ILoggerManager<JogoService> _logger;
-        private readonly IUnityOfWork _uow;
 
         public void Delete(long id)
         {
-            var jogo = _uow.Repository<Jogo>().GetFirst(x => x.Id == id);
+            var jogo = Uow.Jogos.GetFirst(x => x.Id == id);
 
             if(jogo is null) 
             {
                 _logger.LogError($"JogoService.Delete - Jogo com ID {id} não encontrado.");
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao deletar", "Jogo não encontrado.");
             }
-            _uow.Repository<Jogo>().Delete(jogo);
+            Uow.Repository<Jogo>().Delete(jogo);
         }        
     }
 }
