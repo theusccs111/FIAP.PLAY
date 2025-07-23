@@ -1,11 +1,12 @@
 ﻿using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
+using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
-using FIAP.PLAY.Persistance.Data;
-using FIAP.PLAY.Persistance.Repositories;
+using FIAP.PLAY.Infrastructure.Data;
+using FIAP.PLAY.Infrastructure.Repositories;
 
-namespace FIAP.PLAY.Persistance
+namespace FIAP.PLAY.Infrastructure
 {
     public class UnityOfWork : IUnityOfWork, IDisposable
     {
@@ -13,6 +14,8 @@ namespace FIAP.PLAY.Persistance
         private Dictionary<string, object> repositories;
 
         public IRepository<Usuario> Users { get { return new Repository<Usuario>(_context); } }
+        public IRepository<Jogo> Jogos { get { return new Repository<Jogo>(_context); } }
+
         public UnityOfWork(FiapPlayContext context)
         {
             _context = context;

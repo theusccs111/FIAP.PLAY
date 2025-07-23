@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FIAP.PLAY.Domain.Shared.Exceptions
+﻿namespace FIAP.PLAY.Domain.Shared.Exceptions
 {
     public class NotFoundException : Exception
     {

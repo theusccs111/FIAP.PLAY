@@ -1,14 +1,16 @@
+using FIAP.PLAY.Application.Biblioteca.Interfaces;
+using FIAP.PLAY.Application.Biblioteca.Services;
 using FIAP.PLAY.Application.Mapping;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
 using FIAP.PLAY.Application.UserAccess.Services;
+using FIAP.PLAY.Domain.Biblioteca.Jogos.Validations;
 using FIAP.PLAY.Domain.UserAccess.Validations;
+using FIAP.PLAY.Infrastructure;
+using FIAP.PLAY.Infrastructure.Data;
 using FIAP.PLAY.Infrastructure.Logging;
 using FIAP.PLAY.Infrastructure.Logging.Correlation;
-using FIAP.PLAY.Infrastructure.Logs;
-using FIAP.PLAY.Persistance;
-using FIAP.PLAY.Persistance.Data;
 using FIAP.PLAY.Web.Filters.Shared;
 using FIAP.PLAY.Web.Middleware;
 using FluentValidation.AspNetCore;
@@ -65,7 +67,8 @@ namespace FIAP.PLAY.Web
                     options.Filters.Add(new CustomExceptionFilterAttribute());
                     options.EnableEndpointRouting = false;
                 })
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserValidator>());
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserValidator>())
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<JogoValidator>());
 
             InjectServices(services);
             InjectRepositories(services);
@@ -123,9 +126,7 @@ namespace FIAP.PLAY.Web
             services.AddTransient(typeof(BaseLogger<>));
 
             services.AddScoped<IUserService, UserService>();
-
-
-
+            services.AddScoped<IJogoService, JogoService>();
         }
 
         private static void InjectRepositories(IServiceCollection services)

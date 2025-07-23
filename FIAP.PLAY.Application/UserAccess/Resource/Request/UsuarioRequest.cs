@@ -2,7 +2,7 @@
 
 namespace FIAP.PLAY.Application.UserAccess.Resource.Request
 {
-    public class UsuarioRequest : ResourceBase
+    public record UsuarioRequest : ResourceBase
     {
         public string Nome { get; set; }
         public string Login { get; set; }

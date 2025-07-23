@@ -1,10 +1,10 @@
 ﻿using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Shared.Entities;
-using FIAP.PLAY.Persistance.Data;
+using FIAP.PLAY.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace FIAP.PLAY.Persistance.Repositories
+namespace FIAP.PLAY.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T>, IDisposable where T : EntidadeBase
     {

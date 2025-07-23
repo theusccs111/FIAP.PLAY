@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FIAP.PLAY.Infrastructure.Logs
+namespace FIAP.PLAY.Infrastructure.Logging
 {
     public class BaseLogger<T>
     {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FIAP.PLAY.Persistance.EntityConfig
+namespace FIAP.PLAY.Infrastructure.EntityConfig
 {
     public class UserConfig : IEntityTypeConfiguration<Usuario>
     {

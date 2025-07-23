@@ -11,11 +11,7 @@ namespace FIAP.PLAY.Domain.UserAccess.Validations
         {
             RuleFor(product => product.Nome)
                 .NotEmpty().WithMessage(Mensagem.FieldRequired.GetDescription(Campo.Name))
-                .Length(1, 100)
-                ;
-
-
-
+                .Length(1, 100);
         }
     }
 }

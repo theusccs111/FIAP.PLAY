@@ -1,8 +1,9 @@
-﻿using FIAP.PLAY.Domain.UserAccess.Entities;
-using FIAP.PLAY.Persistance.EntityConfig;
+﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
+using FIAP.PLAY.Domain.UserAccess.Entities;
+using FIAP.PLAY.Infrastructure.EntityConfig;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.PLAY.Persistance.Data
+namespace FIAP.PLAY.Infrastructure.Data
 {
     public class FiapPlayContext : DbContext
     {
@@ -12,6 +13,7 @@ namespace FIAP.PLAY.Persistance.Data
         }
 
         public DbSet<Usuario> User { get; set; }
+        public DbSet<Jogo> Jogo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
