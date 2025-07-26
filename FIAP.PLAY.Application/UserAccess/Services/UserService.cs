@@ -6,6 +6,7 @@ using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
 using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
+using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             _logger = logger;
         }
 
-        public Resultado<LoginResponse> Autenticar(AutenticarRequest autenticarRequest)
+        public Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest)
         {
             _logger.LogInformation("UserService.Autenticar - Iniciado");
 
@@ -46,11 +47,12 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 var token = SalvarUserNoClaims(usuario);
                 var loginResponse = new LoginResponse()
                 {
-                    EstaAutenticado = true,
-                    Nome = usuario.Nome,
-                    Email = usuario.Email,
+                    //    UsuarioId = usuario.Id,
+                    //    Nome = usuario.Nome,
+                    //    Email = usuario.Email,
+                    //    Perfil = usuario.Perfil,
                     Token = token,
-                    UsuarioId = usuario.Id,
+                    //EstaAutenticado = true,
                 };
 
                 _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
@@ -71,12 +73,14 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.UniqueName, string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
                     new Claim("UsuarioId", usuario.Id.ToString()),
                     new Claim("Nome", usuario.Nome),
                     new Claim("Email", string.IsNullOrEmpty(usuario.Email) ? "" : usuario.Email),
+                    new Claim("Perfil", usuario.Perfil.ToString()),
+                    new Claim("PerfilDescricao", usuario.Perfil.GetDescription()),
+                    new Claim("EstaAutenticado", true.ToString()),
                 }),
-
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -124,16 +128,17 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             return result;
         }
 
-        public override Resultado<UsuarioRequest> Delete(UsuarioRequest request)
+        public override Resultado<UsuarioRequest> Delete(long id)
         {
-            var result = base.Delete(request);
+            var result = base.Delete(id);
             base.Complete();
 
             return result;
         }
-        public override Resultado<UsuarioRequest[]> DeleteMany(UsuarioRequest[] request)
+
+        public override Resultado<UsuarioRequest[]> DeleteMany(long[] ids)
         {
-            var result = base.DeleteMany(request);
+            var result = base.DeleteMany(ids);
             base.Complete();
 
             return result;

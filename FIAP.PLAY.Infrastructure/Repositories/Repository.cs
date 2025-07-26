@@ -73,11 +73,11 @@ namespace FIAP.PLAY.Infrastructure.Repositories
             _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del));
         }
 
-        public void Delete(T obj)
+        public void Delete(T entity)
         {
-            var entity = _context.Set<T>().Find(obj.Id);
             _context.Set<T>().Remove(entity);
         }
+
 
         public bool Exists(long id)
         {

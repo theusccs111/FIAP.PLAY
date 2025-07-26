@@ -15,22 +15,6 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
             _usuarioService = usuarioService;
         }
 
-        [HttpPost("Autenticar")]
-        [AllowAnonymous]
-        public IActionResult Autenticar(AutenticarRequest autenticarRequest)
-        {
-            var response = _usuarioService.Autenticar(autenticarRequest);
-            return Ok(response);
-        }
-
-        [HttpGet("obter-usuario-logado")]
-        [Authorize]
-        public IActionResult ObterUserLogado()
-        {
-            var user = _usuarioService.ObterUserLogado();
-            return Ok(user);
-        }
-
         [HttpGet]
         [Authorize]
         public IActionResult Get()
@@ -49,18 +33,10 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
 
         [HttpPost]
         [Authorize]
-        public IActionResult Post(UsuarioRequest request)
+        public IActionResult Post([FromBody] UsuarioRequest request)
         {
             var dados = _usuarioService.Add(request);
-            return Ok(dados);
-        }
-
-        [HttpPost("Many")]
-        [Authorize]
-        public IActionResult PostMany(UsuarioRequest[] request)
-        {
-            var dados = _usuarioService.AddMany(request);
-            return Ok(dados);
+            return Created("api/User", dados);
         }
 
         [HttpPut]
@@ -71,28 +47,12 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
             return Ok(dados);
         }
 
-        [HttpPut("Many")]
+        [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult PutMany(UsuarioRequest[] request)
+        public IActionResult Delete(long id)
         {
-            var dados = _usuarioService.UpdateMany(request);
-            return Ok(dados);
-        }
-
-        [HttpDelete]
-        [Authorize]
-        public IActionResult Delete(UsuarioRequest request)
-        {
-            var dados = _usuarioService.Delete(request);
-            return Ok(dados);
-        }
-
-        [HttpDelete("Many")]
-        [Authorize]
-        public IActionResult DeleteMany(UsuarioRequest[] request)
-        {
-            var dados = _usuarioService.DeleteMany(request);
-            return Ok(dados);
+            var dados = _usuarioService.Delete(id);
+            return NoContent();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FIAP.PLAY.Application.UserAccess.Interfaces.Services
 {
     public interface IUserService : IService<Usuario, UsuarioRequest>
     {
-        Resultado<LoginResponse> Autenticar(AutenticarRequest autenticarRequest);
+        Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest);
         Resultado<LoginResponse> ObterUserLogado();
     }
 }

@@ -11,8 +11,8 @@ namespace FIAP.PLAY.Application.Shared.Interfaces.Services
         Resultado<R[]> AddMany(R[] request);
         Resultado<R> Update(R request);
         Resultado<R[]> UpdateMany(R[] request);
-        Resultado<R> Delete(R request);
-        Resultado<R[]> DeleteMany(R[] request);
+        Resultado<R> Delete(long id);
+        Resultado<R[]> DeleteMany(long[] ids);
         void Complete();
     }
 }
