@@ -1,5 +1,6 @@
 ﻿using FIAP.PLAY.Application.Shared.Helpers;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
+using FIAP.PLAY.Domain.UserAccess.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +20,8 @@ namespace FIAP.PLAY.Application.UserAccess.Helpers
                 loginResponse.UsuarioId = Convert.ToInt64(ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "UsuarioId"));
                 loginResponse.Nome = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Nome");
                 loginResponse.Email = ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Email");
+                loginResponse.Perfil = Enum.TryParse<TipoPerfil>(ClaimsHelper.ObterInformacaoDoClaims(_httpContextAccessor.HttpContext, "Perfil"), out var perfil) ? perfil : TipoPerfil.Comum;
+
 
                 loginResponse.EstaAutenticado = loginResponse.UsuarioId != 0;
             }
@@ -37,6 +40,9 @@ namespace FIAP.PLAY.Application.UserAccess.Helpers
 
             identity.TryRemoveClaim(identity.FindFirst("Email"));
             identity.AddClaim(new Claim("Email", loginResponse.Email));
+
+            identity.TryRemoveClaim(identity.FindFirst("Perfil"));
+            identity.AddClaim(new Claim("Perfil", loginResponse.Perfil.ToString()));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Config["JwtSecurityToken:key"]);

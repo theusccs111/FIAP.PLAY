@@ -1,6 +1,5 @@
 using FIAP.PLAY.Application.Biblioteca.Interfaces;
 using FIAP.PLAY.Application.Biblioteca.Services;
-using FIAP.PLAY.Application.Mapping;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.UserAccess.Interfaces.Services;

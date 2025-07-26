@@ -57,7 +57,7 @@ namespace FIAP.PLAY.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jogo");
+                    b.ToTable("Jogo", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.UserAccess.Entities.Usuario", b =>
@@ -97,7 +97,7 @@ namespace FIAP.PLAY.Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -5,6 +5,7 @@ using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.UserAccess.Helpers;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.Shared.Entities;
+using FIAP.PLAY.Domain.Shared.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -106,25 +107,24 @@ namespace FIAP.PLAY.Application.Shared.Services
             return new Resultado<R[]>(resultList.ToArray());
         }
 
-        public virtual Resultado<R> Delete(R request)
+        public virtual Resultado<R> Delete(long id)
         {
-            var entity = Mapper.Map<T>(request);
+            var entity = _uow.Repository<T>().GetFirst(x => x.Id == id);
 
-            var entityValidator = Validator.Validate(entity);
-
-            if (!entityValidator.IsValid)
-                throw new Domain.Shared.Exceptions.ValidationException(entityValidator.Errors.ToList());
+            if (entity == null)
+                throw new NotFoundException($"Entidade com ID {id} não encontrada.");
 
             _uow.Repository<T>().Delete(entity);
 
             return new Resultado<R>(Mapper.Map<R>(entity));
         }
 
-        public virtual Resultado<R[]> DeleteMany(R[] request)
+
+        public virtual Resultado<R[]> DeleteMany(long[] ids)
         {
             var resultList = new List<R>();
 
-            foreach (var item in request)
+            foreach (var item in ids)
             {
                 var result = Delete(item).Data;
                 resultList.Add(result!);

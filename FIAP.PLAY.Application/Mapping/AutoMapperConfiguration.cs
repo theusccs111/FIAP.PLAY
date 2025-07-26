@@ -1,36 +1,35 @@
 ﻿using AutoMapper;
-using FIAP.PLAY.Application.UserAccess.Resource.Request;
-using FIAP.PLAY.Application.UserAccess.Resource.Response;
-using FIAP.PLAY.Domain.UserAccess.Entities;
+using FIAP.PLAY.Domain.Shared.Entities;
 
-namespace FIAP.PLAY.Application.Mapping
+public class AutoMapperConfiguration : Profile
 {
-    public class AutoMapperConfiguration : Profile
+    public AutoMapperConfiguration()
     {
-        public AutoMapperConfiguration()
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+        // Pega todos os tipos exportados (public) de todos os assemblies carregados
+        var allExportedTypes = assemblies.SelectMany(a => a.GetExportedTypes()).ToList();
+
+        // Obtém todas as entidades do domínio (por convenção, que herdam de EntidadeBase)
+        var entidades = allExportedTypes
+            .Where(t => t.IsClass && !t.IsAbstract && typeof(EntidadeBase).IsAssignableFrom(t))
+            .ToList();
+
+        foreach (var entidade in entidades)
         {
-            var entityAssemplyEntity = typeof(Usuario).Assembly;
-            var entityAssemplyRequest = typeof(UsuarioRequest).Assembly.ExportedTypes.ToList();
-            var entityAssemplyResponse = typeof(UsuarioResponse).Assembly.ExportedTypes.ToList();
+            var nomeEntidade = entidade.Name;
 
-            entityAssemplyEntity.ExportedTypes.ToList().ForEach(s =>
+            var tipoRequest = allExportedTypes.FirstOrDefault(x => x.Name == $"{nomeEntidade}Request");
+            if (tipoRequest != null)
             {
-                var formattedRequestModelName = string.Format("{0}Request", s.Name);
-                var requestModelName = entityAssemplyRequest.FirstOrDefault(s => s.Name == formattedRequestModelName);
-                if (requestModelName != null)
-                {
-                    CreateMap(s, requestModelName).ReverseMap();
-                }
+                CreateMap(entidade, tipoRequest).ReverseMap();
+            }
 
-                var formattedResponseName = string.Format("{0}Response", s.Name);
-                var responseModelName = entityAssemplyResponse.FirstOrDefault(s => s.Name == formattedResponseName);
-                if (responseModelName != null)
-                {
-                    var map = CreateMap(s, responseModelName).ReverseMap();
-                   
-                }
-            });
-
+            var tipoResponse = allExportedTypes.FirstOrDefault(x => x.Name == $"{nomeEntidade}Response");
+            if (tipoResponse != null)
+            {
+                CreateMap(entidade, tipoResponse).ReverseMap();
+            }
         }
     }
 }

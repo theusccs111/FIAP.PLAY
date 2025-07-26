@@ -1,4 +1,5 @@
-﻿using FIAP.PLAY.Domain.UserAccess.Enums;
+﻿using FIAP.PLAY.Domain.Shared.Extensions;
+using FIAP.PLAY.Domain.UserAccess.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace FIAP.PLAY.Application.UserAccess.Resource.Response
         public string Nome { get; set; }
         public string Email { get; set; }
         public TipoPerfil Perfil { get; set; }
+        public string PerfilDescricao { get { return Perfil.GetDescription(); } }
         public string Token { get; set; }
         public bool EstaAutenticado { get; set; }
     }
