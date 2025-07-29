@@ -19,7 +19,7 @@ using System.Text.Json;
 
 namespace FIAP.PLAY.Application.UserAccess.Services
 {
-    public class UserService : Service<Usuario,UsuarioRequest> , IUserService
+    public class UserService : Service<Usuario, UsuarioRequest, UsuarioResponse> , IUserService
     {
         private readonly ILoggerManager<UserService> _logger;
 
@@ -42,27 +42,26 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             var usuario = Uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
                                                 u.Senha.Trim().ToLower().Equals(autenticarRequest.Senha.Trim().ToLower()));
 
-            if (usuario.Id > 0)
-            {
-                var token = SalvarUserNoClaims(usuario);
-                var loginResponse = new LoginResponse()
-                {
-                    //    UsuarioId = usuario.Id,
-                    //    Nome = usuario.Nome,
-                    //    Email = usuario.Email,
-                    //    Perfil = usuario.Perfil,
-                    Token = token,
-                    //EstaAutenticado = true,
-                };
-
-                _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
-                return new Resultado<LoginResponse>(loginResponse);
-            }
-            else
+            if (usuario is null || usuario.Id <= 0)
             {
                 _logger.LogError("UserService.Autenticar - Dados de acesso incorretos.");
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao autenticar", "Dados de acesso incorretos.");
             }
+
+            
+            var token = SalvarUserNoClaims(usuario);
+            var loginResponse = new LoginResponse()
+            {
+                //    UsuarioId = usuario.Id,
+                //    Nome = usuario.Nome,
+                //    Email = usuario.Email,
+                //    Perfil = usuario.Perfil,
+                Token = token,
+                //EstaAutenticado = true,
+            };
+
+            _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
+            return new Resultado<LoginResponse>(loginResponse);
         }
 
         private string SalvarUserNoClaims(Usuario usuario)
@@ -94,54 +93,6 @@ namespace FIAP.PLAY.Application.UserAccess.Services
         {
             var a = HttpContextAccessor;
             return new Resultado<LoginResponse>(Usuario);
-        }
-
-        public override Resultado<UsuarioRequest> Add(UsuarioRequest request)
-        {
-            var result = base.Add(request);
-            base.Complete();
-
-            return result;
-        }
-
-        public override Resultado<UsuarioRequest[]> AddMany(UsuarioRequest[] request)
-        {
-            var result = base.AddMany(request);
-            base.Complete();
-
-            return result;
-        }
-
-        public override Resultado<UsuarioRequest> Update(UsuarioRequest request)
-        {
-            var result = base.Update(request);
-            base.Complete();
-
-            return result;
-        }
-
-        public override Resultado<UsuarioRequest[]> UpdateMany(UsuarioRequest[] request)
-        {
-            var result = base.UpdateMany(request);
-            base.Complete();
-
-            return result;
-        }
-
-        public override Resultado<UsuarioRequest> Delete(long id)
-        {
-            var result = base.Delete(id);
-            base.Complete();
-
-            return result;
-        }
-
-        public override Resultado<UsuarioRequest[]> DeleteMany(long[] ids)
-        {
-            var result = base.DeleteMany(ids);
-            base.Complete();
-
-            return result;
         }
     }
 }

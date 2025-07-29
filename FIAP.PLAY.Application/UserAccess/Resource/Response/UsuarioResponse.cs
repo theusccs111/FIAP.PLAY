@@ -4,7 +4,7 @@ using FIAP.PLAY.Domain.UserAccess.Enums;
 
 namespace FIAP.PLAY.Application.UserAccess.Resource.Response
 {
-    public record UsuarioResponse : ResourceBase
+    public record UsuarioResponse : ResponseBase
     {
         public string Nome { get; set; }
         public string Email { get; set; }
