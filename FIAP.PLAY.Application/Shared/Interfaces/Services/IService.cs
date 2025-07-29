@@ -3,16 +3,16 @@ using FIAP.PLAY.Domain.Shared.Entities;
 
 namespace FIAP.PLAY.Application.Shared.Interfaces.Services
 {
-    public interface IService<T, R> where T : EntidadeBase where R : ResourceBase
+    public interface IService<Entity, Request, Response> where Entity : EntidadeBase where Request : RequestBase where Response : ResponseBase
     {
-        Resultado<IEnumerable<R>> Get();
-        Resultado<R> GetById(int id);
-        Resultado<R> Add(R request);
-        Resultado<R[]> AddMany(R[] request);
-        Resultado<R> Update(R request);
-        Resultado<R[]> UpdateMany(R[] request);
-        Resultado<R> Delete(long id);
-        Resultado<R[]> DeleteMany(long[] ids);
+        Resultado<IEnumerable<Response>> Get();
+        Resultado<Response> GetById(int id);
+        Resultado<Response> Add(Request request);
+        Resultado<Response[]> AddMany(Request[] request);
+        Resultado<Response> Update(Request request);
+        Resultado<Response[]> UpdateMany(Request[] request);
+        Resultado<Response> Delete(long id);
+        Resultado<Response[]> DeleteMany(long[] ids);
         void Complete();
     }
 }

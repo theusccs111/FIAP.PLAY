@@ -6,7 +6,7 @@ using FIAP.PLAY.Domain.UserAccess.Entities;
 
 namespace FIAP.PLAY.Application.UserAccess.Interfaces.Services
 {
-    public interface IUserService : IService<Usuario, UsuarioRequest>
+    public interface IUserService : IService<Usuario, UsuarioRequest, UsuarioResponse>
     {
         Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest);
         Resultado<LoginResponse> ObterUserLogado();

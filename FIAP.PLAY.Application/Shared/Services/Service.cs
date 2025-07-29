@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FIAP.PLAY.Application.Shared.Interfaces;
-using FIAP.PLAY.Application.Shared.Interfaces.Services;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.UserAccess.Helpers;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
@@ -12,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FIAP.PLAY.Application.Shared.Services
 {
-    public abstract class Service<T,R> where T : EntidadeBase where R : ResourceBase
+    public abstract class Service<Entity, Request, Response> where Entity : EntidadeBase where Request : RequestBase where Response : ResponseBase
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         protected IHttpContextAccessor HttpContextAccessor { get { return _httpContextAccessor; } }
@@ -25,9 +24,9 @@ namespace FIAP.PLAY.Application.Shared.Services
         private readonly IConfiguration _config;
         protected IConfiguration Config { get { return _config; } }
 
-        private readonly IValidator<T> _validator;
-        protected IValidator<T> Validator { get { return _validator; } }
-        public Service(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<T> validator)
+        private readonly IValidator<Entity> _validator;
+        protected IValidator<Entity> Validator { get { return _validator; } }
+        public Service(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Entity> validator)
         {
             _httpContextAccessor = httpContextAccessor;
             _usuario = LoginResponseHelper.ObterLoginResponse(_httpContextAccessor);
@@ -37,48 +36,50 @@ namespace FIAP.PLAY.Application.Shared.Services
             _validator = validator; 
         }
 
-        public virtual Resultado<IEnumerable<R>> Get()
+        public virtual Resultado<IEnumerable<Response>> Get()
         {
-            var entities = _uow.Repository<T>().GetAll();
-            return new Resultado<IEnumerable<R>>(Mapper.Map<IEnumerable<R>>(entities));
+            var entities = _uow.Repository<Entity>().GetAll();
+            return new Resultado<IEnumerable<Response>>(Mapper.Map<IEnumerable<Response>>(entities));
         }
 
-        public virtual Resultado<R> GetById(int Id)
+        public virtual Resultado<Response> GetById(int Id)
         {
-            var entity = _uow.Repository<T>().GetFirst(e => e.Id == Id);
-            return new Resultado<R>(Mapper.Map<R>(entity));
+            var entity = _uow.Repository<Entity>().GetFirst(e => e.Id == Id);
+            return new Resultado<Response>(Mapper.Map<Response>(entity));
         }
 
-        public virtual Resultado<R> Add(R request)
+        public virtual Resultado<Response> Add(Request request)
         {
-            var entity = Mapper.Map<T>(request);
+            var entity = Mapper.Map<Entity>(request);
 
             var validReturn = Validator.Validate(entity);
 
             if (!validReturn.IsValid)
                 throw new Domain.Shared.Exceptions.ValidationException(validReturn.Errors.ToList());
 
-            _uow.Repository<T>().Create(entity);
+            _uow.Repository<Entity>().Create(entity);
+            this.Complete();
 
-            return new Resultado<R>(Mapper.Map<R>(entity));
+            return new Resultado<Response>(Mapper.Map<Response>(entity));
         }
 
-        public virtual Resultado<R[]> AddMany(R[] request)
+        public virtual Resultado<Response[]> AddMany(Request[] request)
         {
-            var resultList = new List<R>();
+            var resultList = new List<Response>();
 
             foreach (var item in request)
             {
                 var result = Add(item).Data;
                 resultList.Add(result!);
             }
+            this.Complete();
 
-            return new Resultado<R[]>(resultList.ToArray());
+            return new Resultado<Response[]>(resultList.ToArray());
         }
 
-        public virtual Resultado<R> Update(R request)
+        public virtual Resultado<Response> Update(Request request)
         {
-            var entity = Mapper.Map<T>(request);
+            var entity = Mapper.Map<Entity>(request);
 
             var validReturn = Validator.Validate(entity);
 
@@ -86,51 +87,55 @@ namespace FIAP.PLAY.Application.Shared.Services
                 throw new Domain.Shared.Exceptions.ValidationException(validReturn.Errors.ToList());
 
             if(entity.Id > 0)
-                _uow.Repository<T>().Update(entity);
+                _uow.Repository<Entity>().Update(entity);
             else
-                _uow.Repository<T>().Create(entity);
+                _uow.Repository<Entity>().Create(entity);
+            this.Complete();
 
-            return new Resultado<R>(Mapper.Map<R>(entity));
+            return new Resultado<Response>(Mapper.Map<Response>(entity));
 
         }
 
-        public virtual Resultado<R[]> UpdateMany(R[] request)
+        public virtual Resultado<Response[]> UpdateMany(Request[] request)
         {
-            var resultList = new List<R>();
+            var resultList = new List<Response>();
 
             foreach (var item in request)
             {
                 var result = Update(item).Data;
                 resultList.Add(result!);
             }
+            this.Complete();
 
-            return new Resultado<R[]>(resultList.ToArray());
+            return new Resultado<Response[]>(resultList.ToArray());
         }
 
-        public virtual Resultado<R> Delete(long id)
+        public virtual Resultado<Response> Delete(long id)
         {
-            var entity = _uow.Repository<T>().GetFirst(x => x.Id == id);
+            var entity = _uow.Repository<Entity>().GetFirst(x => x.Id == id);
 
             if (entity == null)
-                throw new NotFoundException($"Entidade com ID {id} não encontrada.");
+                throw new NotFoundException($"Entidade {nameof(Entity)} com ID {id} não encontrada.");
 
-            _uow.Repository<T>().Delete(entity);
+            _uow.Repository<Entity>().Delete(entity);
+            this.Complete();
 
-            return new Resultado<R>(Mapper.Map<R>(entity));
+            return new Resultado<Response>(Mapper.Map<Response>(entity));
         }
 
 
-        public virtual Resultado<R[]> DeleteMany(long[] ids)
+        public virtual Resultado<Response[]> DeleteMany(long[] ids)
         {
-            var resultList = new List<R>();
+            var resultList = new List<Response>();
 
             foreach (var item in ids)
             {
                 var result = Delete(item).Data;
                 resultList.Add(result!);
             }
+            this.Complete();
 
-            return new Resultado<R[]>(resultList.ToArray());
+            return new Resultado<Response[]>(resultList.ToArray());
         }
 
         public virtual void Complete()
