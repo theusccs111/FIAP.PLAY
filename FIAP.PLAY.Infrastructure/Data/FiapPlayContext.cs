@@ -1,16 +1,14 @@
 ﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Infrastructure.EntityConfig;
+using FIAP.PLAY.Infrastructure.Seed;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.PLAY.Infrastructure.Data
 {
     public class FiapPlayContext : DbContext
     {
-        public FiapPlayContext(DbContextOptions<FiapPlayContext> options) : base(options)
-        {
-
-        }
+        public FiapPlayContext(DbContextOptions<FiapPlayContext> options) : base(options) { }
 
         public DbSet<Usuario> User { get; set; }
         public DbSet<Jogo> Jogo { get; set; }
@@ -18,21 +16,20 @@ namespace FIAP.PLAY.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
-            {
                 if (entity.GetProperties().Where(p => p.PropertyInfo != null).Any())
-                {
                     entity.GetProperties().Where(p => p.PropertyInfo != null && p.PropertyInfo.PropertyType.Name.Equals("String")).ToList().ForEach(p => p.SetMaxLength(100));
-                }
-
-            }
 
             ApplyConfiguratons(modelBuilder);
+            ApplySeed(modelBuilder);
         }
 
         private static void ApplyConfiguratons(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfig());
         }
+
+        private static void ApplySeed(ModelBuilder modelBuilder)
+            => UserSeed.CreateAdminUser(modelBuilder);
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
