@@ -1,7 +1,7 @@
 ﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FluentValidation;
 
-namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Validations
+namespace FIAP.PLAY.Application.Biblioteca.Validations
 {
     public class JogoValidator : AbstractValidator<Jogo>
     {

@@ -8,19 +8,29 @@ using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace FIAP.PLAY.Application.Biblioteca.Services
 {
-    public class JogoService : Service<Jogo, JogoRequest, JogoResponse>, IJogoService
+    public class JogoService(IUnityOfWork uow, IValidator<JogoRequest> validator, ILoggerManager<JogoService> logger) : ServiceBase, IJogoService
     {
-        public JogoService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Jogo> validator, ILoggerManager<JogoService> logger)
-            : base(httpContextAccessor, mapper, uow, config, validator)
+        public Resultado<IEnumerable<JogoResponse>> ObterJogos()
         {
-            _logger = logger;
+            var jogos = uow.Jogos.GetAll();
+            var jogosResponse = jogos.Select(d => Parse(d)).ToList();
+            return new Resultado<IEnumerable<JogoResponse>>(jogosResponse);
         }
 
-        private readonly ILoggerManager<JogoService> _logger;
+        public Resultado<JogoResponse> ObterJogoPorId(long id)
+        {
+            var jogo = uow.Jogos.GetById(id);
+            var jogoResponse = Parse(jogo);
+            return new Resultado<JogoResponse>(jogoResponse);
+        }
+
+        private Jogo Parse(JogoRequest request)
+            => Jogo.Criar(request.Titulo, request.Preco, request.Genero, request.AnoLancamento, request.Desenvolvedora);
+
+        private JogoResponse Parse(Jogo entidade)
+            => new(entidade.Id, entidade.Titulo, entidade.Preco, entidade.Genero, entidade.AnoLancamento, entidade.Desenvolvedora);
     }
 }

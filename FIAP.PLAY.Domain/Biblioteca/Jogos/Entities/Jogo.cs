@@ -16,12 +16,18 @@ namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Entities
 
         #region Construtor
 
-        private Jogo()
+        private Jogo() { }
+
+        private Jogo(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
         {
-            
+            Titulo = titulo;
+            Preco = preco;
+            Genero = genero;
+            AnoLancamento = anoLancamento;
+            Desenvolvedora = desenvolvedora;
         }
 
-        public Jogo(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
+        public static Jogo Criar(string titulo, decimal preco, EGenero genero, int anoLancamento, string desenvolvedora)
         {
             if (string.IsNullOrWhiteSpace(titulo))
                 throw new ArgumentException("Título não pode ser vazio.", nameof(titulo));
@@ -38,11 +44,7 @@ namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Entities
             if (desenvolvedora.Length < 3 || desenvolvedora.Length > 100)
                 throw new ArgumentException("Desenvolvedora deve ter entre 3 e 100 caracteres.", nameof(desenvolvedora));
 
-            Titulo = titulo;
-            Preco = preco;
-            Genero = genero;
-            AnoLancamento = anoLancamento;
-            Desenvolvedora = desenvolvedora;
+            return new Jogo(titulo, preco, genero, anoLancamento, desenvolvedora);
         }
         #endregion
          

@@ -19,7 +19,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// Obter todos os dados
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return _context.Set<T>();
         }
@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate);
         }
@@ -56,6 +56,11 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         public T GetFirst(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().FirstOrDefault(predicate);
+        }
+
+        public T GetById(long id)
+        {
+            return _context.Set<T>().First(d => d.Id == id);
         }
 
         public void Create(T entity)
