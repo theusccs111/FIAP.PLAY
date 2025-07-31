@@ -33,7 +33,7 @@ namespace FIAP.PLAY.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigureSwaggerService(services, "EspecificacaoAnalise");
+            ConfigureSwaggerService(services, "Especificação Analise");
 
             ConfigureCorsService(services, Configuration);
 
