@@ -63,9 +63,9 @@ namespace FIAP.PLAY.Infrastructure.Repositories
             return _context.Set<T>().First(d => d.Id == id);
         }
 
-        public void Create(T entity)
+        public T Create(T entity)
         {
-            _context.Set<T>().Add(entity);
+            return _context.Set<T>().Add(entity).Entity;
         }
 
         public void Update(T entity)

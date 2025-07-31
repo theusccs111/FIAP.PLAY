@@ -7,6 +7,7 @@ using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
 using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 
 namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
@@ -65,6 +66,58 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             Assert.Equal(jogo.Genero, resultado.Data!.Genero);
             Assert.Equal(jogo.AnoLancamento, resultado.Data!.AnoLancamento);
             Assert.Equal(jogo.Desenvolvedora, resultado.Data!.Desenvolvedora);
+        }
+
+        [Fact]
+        public void CriarJogo_Valido_DevoConseguirCriarOJogo()
+        {
+            // Prepare
+            var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
+            var jogoEntidade = Jogo.Criar(
+                jogoRequest.Titulo, 
+                jogoRequest.Preco, 
+                jogoRequest.Genero, 
+                jogoRequest.AnoLancamento, 
+                jogoRequest.Desenvolvedora);
+
+            var resultadoValidacaoSucesso = new ValidationResult();
+            _mockForValidator
+                .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
+                .Returns(resultadoValidacaoSucesso);
+            
+            _mockForRepository
+                .Setup(d => d.Create(It.IsAny<Jogo>()))
+                .Returns(jogoEntidade);
+
+            // Act
+            var resultado = _jogoService.CriarJogo(jogoRequest);
+
+            // Assert
+            Assert.NotNull(resultado);
+            Assert.True(resultado.Success);
+            Assert.Equal(jogoEntidade.Preco, resultado.Data!.Preco);
+            Assert.Equal(jogoEntidade.Titulo, resultado.Data!.Titulo);
+            Assert.Equal(jogoEntidade.Genero, resultado.Data!.Genero);
+            Assert.Equal(jogoEntidade.AnoLancamento, resultado.Data!.AnoLancamento);
+            Assert.Equal(jogoEntidade.Desenvolvedora, resultado.Data!.Desenvolvedora);
+        }
+
+        [Fact]
+        public void CriarJogo_Invalido_NaoDevoConseguirCriarJogoInvalido()
+        {
+            // Prepare
+            var jogoRequest = new JogoRequest(string.Empty, 100, EGenero.Aventura, 1993, "Nintendo");
+
+            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("Titulo", "Título não pode ser vazio.")]);
+            _mockForValidator
+                .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
+                .Returns(resultadoValidacaoInvalido);
+
+            // Act
+            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.CriarJogo(jogoRequest));
+
+            // Assert
+            Assert.NotNull(resultado);
         }
     }
 }

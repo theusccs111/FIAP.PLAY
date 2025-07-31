@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FIAP.PLAY.Application.Biblioteca.Interfaces;
+﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
 using FIAP.PLAY.Application.Biblioteca.Resource.Request;
 using FIAP.PLAY.Application.Biblioteca.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
@@ -25,6 +24,21 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             var jogo = uow.Jogos.GetById(id);
             var jogoResponse = Parse(jogo);
             return new Resultado<JogoResponse>(jogoResponse);
+        }
+
+        public Resultado<JogoResponse> CriarJogo(JogoRequest request)
+        {
+            var resultadoValidacao = validator.Validate(request);
+            if(resultadoValidacao.IsValid == false)
+                throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
+
+            var jogo = Parse(request);
+            
+            var jogoCriado = uow.Jogos.Create(jogo);
+            uow.Complete();
+
+            logger.LogInformation($"Jogo {jogoCriado.Titulo} criado com sucesso");
+            return new Resultado<JogoResponse>(Parse(jogoCriado));
         }
 
         private Jogo Parse(JogoRequest request)

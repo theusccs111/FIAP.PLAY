@@ -12,7 +12,7 @@ namespace FIAP.PLAY.Application.Shared.Interfaces.Repository
         IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
         T Search(params object[] key);
         T GetFirst(Expression<Func<T, bool>> predicate);
-        void Create(T entity);
+        T Create(T entity);
         void Update(T entity);
         void Delete(Func<T, bool> predicate);
         void Delete(T entity);
