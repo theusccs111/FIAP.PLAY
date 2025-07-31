@@ -10,5 +10,6 @@ namespace FIAP.PLAY.Application.Biblioteca.Interfaces
         Resultado<IEnumerable<JogoResponse>> ObterJogos();
         Resultado<JogoResponse> ObterJogoPorId(long id);
         Resultado<JogoResponse> CriarJogo(JogoRequest request);
+        Resultado<JogoResponse> AtualizarJogo(long id, JogoRequest request);
     }
 }

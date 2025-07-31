@@ -15,10 +15,10 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
     public class JogoServiceTests
     {
         private readonly IJogoService _jogoService;
-        private readonly Mock<IUnityOfWork> _mockForUOF = new Mock<IUnityOfWork>();
-        private readonly Mock<IRepository<Jogo>> _mockForRepository = new Mock<IRepository<Jogo>>();
-        private readonly Mock<IValidator<JogoRequest>> _mockForValidator = new Mock<IValidator<JogoRequest>>();
-        private readonly Mock<ILoggerManager<JogoService>> _mockLogger = new Mock<ILoggerManager<JogoService>>();
+        private readonly Mock<IUnityOfWork> _mockForUOF = new();
+        private readonly Mock<IRepository<Jogo>> _mockForRepository = new();
+        private readonly Mock<IValidator<JogoRequest>> _mockForValidator = new();
+        private readonly Mock<ILoggerManager<JogoService>> _mockLogger = new();
 
         public JogoServiceTests()
         {
@@ -115,6 +115,79 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
 
             // Act
             var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.CriarJogo(jogoRequest));
+
+            // Assert
+            Assert.NotNull(resultado);
+        }
+
+        [Fact]
+        public void AtualizarJogo_Valido_DevoConseguirAtualizarUmJogo()
+        {
+            // Prepare
+            var id = 1L;
+            var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
+            var jogoEntidade = Jogo.Criar(
+                jogoRequest.Titulo,
+                jogoRequest.Preco,
+                jogoRequest.Genero,
+                jogoRequest.AnoLancamento,
+                jogoRequest.Desenvolvedora);
+            jogoEntidade.Id = id;
+
+            var resultadoValidacaoSucesso = new ValidationResult();
+            _mockForValidator
+                .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
+                .Returns(resultadoValidacaoSucesso);
+
+            _mockForRepository
+                .Setup(d => d.Update(It.IsAny<Jogo>()));
+
+            // Act
+            var resultado = _jogoService.AtualizarJogo(id, jogoRequest);
+
+            // Assert
+            Assert.NotNull(resultado);
+            Assert.True(resultado.Success);
+            Assert.Equal(jogoEntidade.Preco, resultado.Data!.Preco);
+            Assert.Equal(jogoEntidade.Titulo, resultado.Data!.Titulo);
+            Assert.Equal(jogoEntidade.Genero, resultado.Data!.Genero);
+            Assert.Equal(jogoEntidade.AnoLancamento, resultado.Data!.AnoLancamento);
+            Assert.Equal(jogoEntidade.Desenvolvedora, resultado.Data!.Desenvolvedora);
+        }
+
+        [Fact]
+        public void AtualizarJogo_Invalido_NaoDevoConseguirAtualizarSemId()
+        {
+            // Prepare
+            var id = 0L;
+            var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
+
+            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("id", "id do jogo não pode ser nulo.")]);
+            _mockForValidator
+                .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
+                .Returns(resultadoValidacaoInvalido);
+
+            // Act
+            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogo(id, jogoRequest));
+
+            // Assert
+            Assert.NotNull(resultado);
+        }
+
+        [Fact]
+        public void AtualizarJogo_Invalido_NaoDevoConseguirAtualizarUmJogoInvalido()
+        {
+            // Prepare
+            var id = 1L;
+            var jogoRequest = new JogoRequest(string.Empty, 100, EGenero.Aventura, 1993, "Nintendo");
+
+            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("Titulo", "Título não pode ser vazio.")]);
+            _mockForValidator
+                .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
+                .Returns(resultadoValidacaoInvalido);
+
+            // Act
+            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogo(id, jogoRequest));
 
             // Assert
             Assert.NotNull(resultado);

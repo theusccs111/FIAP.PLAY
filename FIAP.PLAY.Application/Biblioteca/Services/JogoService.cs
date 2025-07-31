@@ -41,10 +41,29 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return new Resultado<JogoResponse>(Parse(jogoCriado));
         }
 
-        private Jogo Parse(JogoRequest request)
+        public Resultado<JogoResponse> AtualizarJogo(long id, JogoRequest request)
+        {
+            if (id == 0)
+                throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
+
+            var resultadoValidacao = validator.Validate(request);
+            if (resultadoValidacao.IsValid == false)
+                throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
+
+            var jogo = Parse(request);
+            jogo.Id = id;
+
+            uow.Jogos.Update(jogo);
+            uow.Complete();
+
+            logger.LogInformation($"Jogo com id {jogo.Id} atualizado com sucesso");
+            return new Resultado<JogoResponse>(Parse(jogo));
+        }
+
+        private static Jogo Parse(JogoRequest request)
             => Jogo.Criar(request.Titulo, request.Preco, request.Genero, request.AnoLancamento, request.Desenvolvedora);
 
-        private JogoResponse Parse(Jogo entidade)
+        private static JogoResponse Parse(Jogo entidade)
             => new(entidade.Id, entidade.Titulo, entidade.Preco, entidade.Genero, entidade.AnoLancamento, entidade.Desenvolvedora);
     }
 }
