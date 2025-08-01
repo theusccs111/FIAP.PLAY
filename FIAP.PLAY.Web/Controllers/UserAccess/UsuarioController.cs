@@ -15,44 +15,44 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
             _usuarioService = usuarioService;
         }
 
-        [HttpGet]
-        [Authorize]
-        public IActionResult Get()
-        {
-            var resultado = _usuarioService.Get();
-            return Ok(resultado);
-        }
+        //[HttpGet]
+        //[Authorize]
+        //public IActionResult Get()
+        //{
+        //    var resultado = _usuarioService.Get();
+        //    return Ok(resultado);
+        //}
 
-        [HttpGet("{Id}")]
-        [Authorize]
-        public IActionResult GetById(int Id)
-        {
-            var resultado = _usuarioService.GetById(Id);
-            return Ok(resultado);
-        }
+        //[HttpGet("{Id}")]
+        //[Authorize]
+        //public IActionResult GetById(int Id)
+        //{
+        //    var resultado = _usuarioService.GetById(Id);
+        //    return Ok(resultado);
+        //}
 
-        [HttpPost]
-        [Authorize]
-        public IActionResult Post([FromBody] UsuarioRequest request)
-        {
-            var dados = _usuarioService.Add(request);
-            return Created("api/User", dados);
-        }
+        //[HttpPost]
+        //[Authorize]
+        //public IActionResult Post([FromBody] UsuarioRequest request)
+        //{
+        //    var dados = _usuarioService.Add(request);
+        //    return Created("api/User", dados);
+        //}
 
-        [HttpPut]
-        [Authorize]
-        public IActionResult Put(UsuarioRequest request)
-        {
-            var dados = _usuarioService.Update(request);
-            return Ok(dados);
-        }
+        //[HttpPut]
+        //[Authorize]
+        //public IActionResult Put(UsuarioRequest request)
+        //{
+        //    var dados = _usuarioService.Update(request);
+        //    return Ok(dados);
+        //}
 
-        [HttpDelete("{id}")]
-        [Authorize]
-        public IActionResult Delete(long id)
-        {
-            var dados = _usuarioService.Delete(id);
-            return NoContent();
-        }
+        //[HttpDelete("{id}")]
+        //[Authorize]
+        //public IActionResult Delete(long id)
+        //{
+        //    var dados = _usuarioService.Delete(id);
+        //    return NoContent();
+        //}
     }
 }

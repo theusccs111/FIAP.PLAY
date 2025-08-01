@@ -7,29 +7,29 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     [ApiController]
     [Route("api/[controller]")]
     public class JogoController(IJogoService _jogoService) : ControllerBase
-    {       
+    {
 
         [HttpGet]
-        public IActionResult Get() 
-            => Ok( _jogoService.Get());
-       
+        public IActionResult ObterJogos()
+            => Ok(_jogoService.ObterJogos());
+
         [HttpGet("{id}")]
-        public IActionResult GetById(int id) 
-            => Ok(_jogoService.GetById(id));
+        public IActionResult ObterJogoPorId(int id)
+            => Ok(_jogoService.ObterJogoPorId(id));
 
         [HttpPost]
-        public IActionResult Post([FromBody] JogoRequest request)
-            => Created("api/Jogo", _jogoService.Add(request));
+        public IActionResult CriarJogo([FromBody] JogoRequest request)
+            => Created("api/Jogo", _jogoService.CriarJogo(request));
 
-        [HttpPut]
-        public IActionResult Put(JogoRequest request)
-            => Ok(_jogoService.Update(request));
+        [HttpPut("{id}")]
+        public IActionResult AtualizarJogo([FromRoute] long id, [FromBody] JogoRequest request)
+            => Ok(_jogoService.AtualizarJogo(id,request));
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
-        {
-            _jogoService.Delete(id);           
-            return NoContent();
-        }
+        //[HttpDelete("{id}")]
+        //public IActionResult RemoverJogo(long id)
+        //{
+        //    _jogoService.Delete(id);
+        //    return NoContent();
+        //}
     }
 }

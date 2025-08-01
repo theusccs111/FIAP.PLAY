@@ -17,4 +17,8 @@
     <ProjectReference Include="..\FIAP.PLAY.Domain\FIAP.PLAY.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\Interfaces\Services\" />
+  </ItemGroup>
+
 </Project>

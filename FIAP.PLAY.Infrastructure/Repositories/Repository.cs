@@ -19,7 +19,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// Obter todos os dados
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
             return _context.Set<T>();
         }
@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public IQueryable<T> Get(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Where(predicate);
         }
@@ -58,9 +58,14 @@ namespace FIAP.PLAY.Infrastructure.Repositories
             return _context.Set<T>().FirstOrDefault(predicate);
         }
 
-        public void Create(T entity)
+        public T GetById(long id)
         {
-            _context.Set<T>().Add(entity);
+            return _context.Set<T>().First(d => d.Id == id);
+        }
+
+        public T Create(T entity)
+        {
+            return _context.Set<T>().Add(entity).Entity;
         }
 
         public void Update(T entity)
@@ -70,12 +75,14 @@ namespace FIAP.PLAY.Infrastructure.Repositories
 
         public void Delete(Func<T, bool> predicate)
         {
-            _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del));
+            _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del.Id));
         }
 
-        public void Delete(T entity)
+        public void Delete(long id)
         {
-            _context.Set<T>().Remove(entity);
+            var entidade = GetById(id);
+            entidade.DataExclusao = DateTime.Now;
+            _context.Entry(entidade).State = EntityState.Modified;
         }
 
 

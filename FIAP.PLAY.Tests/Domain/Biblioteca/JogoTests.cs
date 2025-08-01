@@ -4,7 +4,7 @@ using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
 namespace FIAP.PLAY.Tests.Domain.Biblioteca
 {
     public class JogoTests
-    {/*
+    {
         [Fact]
         public void CriarJogo_Valido_DeveCriarJogo()
         {
@@ -77,7 +77,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             string titulo = "The Legend of Zelda: Breath of the Wild";
             decimal preco = 59.99m;
             EGenero genero = EGenero.Aventura;
-            int anoLancamento = 1949; 
+            int anoLancamento = 1949;
             string desenvolvedora = "Nintendo";
 
             // Act & Assert
@@ -125,6 +125,6 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() => Jogo.Criar(titulo, preco, genero, anoLancamento, desenvolvedora));
             Assert.Equal("Título deve ter entre 3 e 100 caracteres. (Parameter 'titulo')", exception.Message);
-        }*/
+        }
     }
 }
