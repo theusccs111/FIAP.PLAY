@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
@@ -9,7 +8,6 @@ using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Entities;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -36,7 +34,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
 
         }
 
-        public Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest)
+        public async Task<Resultado<LoginResponse>> LoginAsync(AutenticarRequest autenticarRequest)
         {
             _loggerManager.LogInformation("UserService.Autenticar - Iniciado");
 
@@ -47,7 +45,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao autenticar", "O usuário e/ou a senha não podem ser vazios.");
             }
 
-            var usuario = _uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
+            var usuario = await _uow.Users.GetFirstAsync(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
                                                 u.Senha.Trim().ToLower().Equals(autenticarRequest.Senha.Trim().ToLower()));
 
             if (usuario is null || usuario.Id <= 0)

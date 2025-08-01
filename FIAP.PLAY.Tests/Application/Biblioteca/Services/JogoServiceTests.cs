@@ -50,16 +50,16 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         }
 
         [Fact]
-        public void ObterJogos_Valido_DeveRetornarTodosJogos()
+        public async Task ObterJogosAsync_Valido_DeveRetornarTodosJogos()
         {
             // Prepare
             var jogo = Jogo.Criar("Super mario", 100, EGenero.Ação, 1993, "Nintendo");
             var jogos = new List<Jogo>() { jogo };
 
-            _mockForRepository.Setup(d => d.GetAll()).Returns(jogos);
+            _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(jogos);
 
             // Act
-            var resultado = _jogoService.ObterJogos();
+            var resultado = await _jogoService.ObterJogosAsync();
 
             // Assert
             Assert.NotNull(resultado);
@@ -68,17 +68,17 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         }
 
         [Fact]
-        public void ObterJogoPorId_Valido_DeveRetornarOJogoPeloId()
+        public async Task ObterJogoPorIdAsync_Valido_DeveRetornarOJogoPeloId()
         {
             // Prepare
             long id = 1;
             var jogo = Jogo.Criar("Super mario", 100, EGenero.Ação, 1993, "Nintendo");
             jogo.Id = id;
 
-            _mockForRepository.Setup(d => d.GetById(It.IsAny<long>())).Returns(jogo);
+            _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(jogo);
 
             // Act
-            var resultado = _jogoService.ObterJogoPorId(id);
+            var resultado = await _jogoService.ObterJogoPorIdAsync(id);
 
             // Assert
             Assert.NotNull(resultado);
@@ -92,7 +92,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         }
 
         [Fact]
-        public void CriarJogo_Valido_DevoConseguirCriarOJogo()
+        public async Task CriarJogoAsync_Valido_DevoConseguirCriarOJogo()
         {
             // Prepare
             var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
@@ -109,11 +109,11 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoSucesso);
 
             _mockForRepository
-                .Setup(d => d.Create(It.IsAny<Jogo>()))
-                .Returns(jogoEntidade);
+                .Setup(d => d.CreateAsync(It.IsAny<Jogo>()))
+                .ReturnsAsync(jogoEntidade);
 
             // Act
-            var resultado = _jogoService.CriarJogo(jogoRequest);
+            var resultado = await _jogoService.CriarJogoAsync(jogoRequest);
 
             // Assert
             Assert.NotNull(resultado);
@@ -126,7 +126,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         }
 
         [Fact]
-        public void CriarJogo_Invalido_NaoDevoConseguirCriarJogoInvalido()
+        public async Task CriarJogoAsync_Invalido_NaoDevoConseguirCriarJogoInvalido()
         {
             // Prepare
             var jogoRequest = new JogoRequest(string.Empty, 100, EGenero.Aventura, 1993, "Nintendo");
@@ -137,28 +137,28 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.CriarJogo(jogoRequest));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.CriarJogoAsync(jogoRequest));
 
             // Assert
             Assert.NotNull(resultado);
         }
 
         [Fact]
-        public void AtualizarJogo_Invalido_NaoDevoConseguirAtualizarSemId()
+        public async Task AtualizarJogoAsync_Invalido_NaoDevoConseguirAtualizarSemId()
         {
             // Prepare
             var id = 0L;
             var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
 
             // Act
-            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogo(id, jogoRequest));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogoAsync(id, jogoRequest));
 
             // Assert
             Assert.NotNull(resultado);
         }
 
         [Fact]
-        public void AtualizarJogo_Invalido_NaoDevoConseguirAtualizarUmJogoInvalido()
+        public async Task AtualizarJogoAsync_Invalido_NaoDevoConseguirAtualizarUmJogoInvalido()
         {
             // Prepare
             var id = 1L;
@@ -170,14 +170,14 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogo(id, jogoRequest));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.AtualizarJogoAsync(id, jogoRequest));
 
             // Assert
             Assert.NotNull(resultado);
         }
 
         [Fact]
-        public void AtualizarJogo_Valido_DevoConseguirAtualizarUmJogo()
+        public async Task AtualizarJogoAsync_Valido_DevoConseguirAtualizarUmJogo()
         {
             // Prepare
             var id = 1L;
@@ -196,7 +196,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoSucesso);
 
             _mockForRepository
-                .Setup(d => d.Update(It.IsAny<Jogo>()))
+                .Setup(d => d.UpdateAsync(It.IsAny<Jogo>()))
                 .Verifiable();
 
             _mockForUOF
@@ -204,7 +204,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Verifiable();
 
             // Act
-            var resultado = _jogoService.AtualizarJogo(id, jogoRequest);
+            var resultado = await _jogoService.AtualizarJogoAsync(id, jogoRequest);
 
             // Assert
             Assert.NotNull(resultado);
@@ -219,37 +219,37 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         }
 
         [Fact]
-        public void DeletarJogo_Invalido_IdDeveSerInformado()
+        public void DeletarJogoAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.DeletarJogo(0));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _jogoService.DeletarJogoAsync(0));
             Assert.NotNull(resultado);
         }
 
         [Fact]
-        public void DeletarJogo_Invalido_JogoDeveExistir()
+        public void DeletarJogoAsync_Invalido_JogoDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.Throws<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _jogoService.DeletarJogo(id));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _jogoService.DeletarJogoAsync(id));
 
             Assert.NotNull(resultado);
         }
 
         [Fact]
-        public void DeletarJogo_Valido_DevoConseguirExcluirOJogo()
+        public async Task DeletarJogoAsync_Valido_DevoConseguirExcluirOJogo()
         {
             var id = 1L;
 
-            _mockForRepository.Setup(d => d.Exists(It.IsAny<long>()))
-                .Returns(true);
+            _mockForRepository.Setup(d => d.ExistsAsync(It.IsAny<long>()))
+                .ReturnsAsync(true);
 
-            _mockForRepository.Setup(d => d.Delete(It.IsAny<long>()))
+            _mockForRepository.Setup(d => d.DeleteAsync(It.IsAny<long>()))
                 .Verifiable();
 
             _mockForUOF
-                .Setup(d => d.Complete())
+                .Setup(d => d.CompleteAsync())
                 .Verifiable();
 
-            _jogoService.DeletarJogo(id);
+            await _jogoService.DeletarJogoAsync(id);
 
             _mockForRepository.VerifyAll();
         }

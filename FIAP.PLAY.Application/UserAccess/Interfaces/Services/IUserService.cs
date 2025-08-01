@@ -6,7 +6,7 @@ namespace FIAP.PLAY.Application.UserAccess.Interfaces.Services
 {
     public interface IUserService
     {
-        Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest);
+        Task<Resultado<LoginResponse>> LoginAsync(AutenticarRequest autenticarRequest);
         Resultado<LoginResponse> ObterUserLogado();
     }
 }

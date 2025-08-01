@@ -17,9 +17,9 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Login(AutenticarRequest autenticarRequest)
+        public async Task<IActionResult> LoginAsync(AutenticarRequest autenticarRequest)
         {
-            var response = _usuarioService.Login(autenticarRequest);
+            var response = await _usuarioService.LoginAsync(autenticarRequest);
             return Ok(response);
         }
 
