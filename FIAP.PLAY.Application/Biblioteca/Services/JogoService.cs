@@ -5,9 +5,7 @@ using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.Shared.Services;
-using FIAP.PLAY.Application.UserAccess.Services;
 using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
-using FIAP.PLAY.Domain.UserAccess.Enums;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
@@ -71,6 +69,18 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 
             _loggerManager.LogInformation($"Jogo com id {jogo.Id} atualizado com sucesso");
             return new Resultado<JogoResponse>(Parse(jogo));
+        }
+
+        public void DeletarJogo(long id)
+        {
+            if(id == 0)
+                throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
+
+            if(_uow.Jogos.Exists(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("id", "jogo não encontrado");
+
+            _uow.Jogos.Delete(id);
+            _uow.Complete();
         }
 
         private static Jogo Parse(JogoRequest request)

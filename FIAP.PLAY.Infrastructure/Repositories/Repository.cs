@@ -75,12 +75,14 @@ namespace FIAP.PLAY.Infrastructure.Repositories
 
         public void Delete(Func<T, bool> predicate)
         {
-            _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del));
+            _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del.Id));
         }
 
-        public void Delete(T entity)
+        public void Delete(long id)
         {
-            _context.Set<T>().Remove(entity);
+            var entidade = GetById(id);
+            entidade.DataExclusao = DateTime.Now;
+            _context.Entry(entidade).State = EntityState.Modified;
         }
 
 

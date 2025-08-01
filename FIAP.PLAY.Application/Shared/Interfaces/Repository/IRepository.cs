@@ -15,7 +15,7 @@ namespace FIAP.PLAY.Application.Shared.Interfaces.Repository
         T Create(T entity);
         void Update(T entity);
         void Delete(Func<T, bool> predicate);
-        void Delete(T entity);
+        void Delete(long id);
         bool Exists(long id);
         void Commit();
         void Dispose();
