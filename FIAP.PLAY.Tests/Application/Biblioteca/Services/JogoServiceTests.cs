@@ -8,6 +8,7 @@ using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
 using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 using Moq;
 
 namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
@@ -15,6 +16,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
     public class JogoServiceTests
     {
         private readonly IJogoService _jogoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<Jogo>> _mockForRepository = new();
         private readonly Mock<IValidator<JogoRequest>> _mockForValidator = new();
@@ -23,7 +25,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         public JogoServiceTests()
         {
             _mockForUOF.Setup(d => d.Jogos).Returns(_mockForRepository.Object);
-            _jogoService = new JogoService(_mockForUOF.Object, _mockForValidator.Object, _mockLogger.Object);
+            _jogoService = new JogoService(_httpContextAccessor!, _mockForUOF.Object, _mockForValidator.Object, _mockLogger.Object);
         }
 
         [Fact]
@@ -74,17 +76,17 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             // Prepare
             var jogoRequest = new JogoRequest("Super mario world", 100, EGenero.Aventura, 1993, "Nintendo");
             var jogoEntidade = Jogo.Criar(
-                jogoRequest.Titulo, 
-                jogoRequest.Preco, 
-                jogoRequest.Genero, 
-                jogoRequest.AnoLancamento, 
+                jogoRequest.Titulo,
+                jogoRequest.Preco,
+                jogoRequest.Genero,
+                jogoRequest.AnoLancamento,
                 jogoRequest.Desenvolvedora);
 
             var resultadoValidacaoSucesso = new ValidationResult();
             _mockForValidator
                 .Setup(d => d.Validate(It.IsAny<JogoRequest>()))
                 .Returns(resultadoValidacaoSucesso);
-            
+
             _mockForRepository
                 .Setup(d => d.Create(It.IsAny<Jogo>()))
                 .Returns(jogoEntidade);

@@ -42,7 +42,6 @@ namespace FIAP.PLAY.Web
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<FiapPlayContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddAutoMapper(c => c.AddProfile<AutoMapperConfiguration>(), typeof(Startup));
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()

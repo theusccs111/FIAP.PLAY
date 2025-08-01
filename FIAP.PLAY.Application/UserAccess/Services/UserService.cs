@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FIAP.PLAY.Application.Biblioteca.Resource.Request;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
@@ -19,32 +20,39 @@ using System.Text.Json;
 
 namespace FIAP.PLAY.Application.UserAccess.Services
 {
-    public class UserService : Service<Usuario, UsuarioRequest, UsuarioResponse> , IUserService
+    public class UserService : Service , IUserService
     {
-        private readonly ILoggerManager<UserService> _logger;
+        private readonly IUnityOfWork _uow;
+        //private readonly IValidator<UsuarioRequest> _validator;
+        private readonly ILoggerManager<UserService> _loggerManager;
+        private readonly IConfiguration _config;
 
-        public UserService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IUnityOfWork uow, IConfiguration config, IValidator<Usuario> validator, ILoggerManager<UserService> logger) : base(httpContextAccessor, mapper, uow, config, validator)
+        public UserService(IHttpContextAccessor httpContextAccessor, IUnityOfWork uow, /*IValidator<UsuarioRequest> validator,*/ ILoggerManager<UserService> loggerManager, IConfiguration config) : base(httpContextAccessor)
         {
-            _logger = logger;
+            _uow = uow;
+            //_validator = validator;
+            _loggerManager = loggerManager;
+            _config = config;
+
         }
 
         public Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest)
         {
-            _logger.LogInformation("UserService.Autenticar - Iniciado");
+            _loggerManager.LogInformation("UserService.Autenticar - Iniciado");
 
             if (string.IsNullOrEmpty(autenticarRequest.Email) || string.IsNullOrEmpty(autenticarRequest.Senha))
             {
-                _logger.LogError("UserService.Autenticar - O usuário e/ou a senha não podem ser vazios.");
+                _loggerManager.LogError("UserService.Autenticar - O usuário e/ou a senha não podem ser vazios.");
 
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao autenticar", "O usuário e/ou a senha não podem ser vazios.");
             }
 
-            var usuario = Uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
+            var usuario = _uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
                                                 u.Senha.Trim().ToLower().Equals(autenticarRequest.Senha.Trim().ToLower()));
 
             if (usuario is null || usuario.Id <= 0)
             {
-                _logger.LogError("UserService.Autenticar - Dados de acesso incorretos.");
+                _loggerManager.LogError("UserService.Autenticar - Dados de acesso incorretos.");
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao autenticar", "Dados de acesso incorretos.");
             }
 
@@ -60,14 +68,14 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 //EstaAutenticado = true,
             };
 
-            _logger.LogInformation(JsonSerializer.Serialize(loginResponse));
+            _loggerManager.LogInformation(JsonSerializer.Serialize(loginResponse));
             return new Resultado<LoginResponse>(loginResponse);
         }
 
         private string SalvarUserNoClaims(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Config["JwtSecurityToken:key"]);
+            var key = Encoding.ASCII.GetBytes(_config["JwtSecurityToken:key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
