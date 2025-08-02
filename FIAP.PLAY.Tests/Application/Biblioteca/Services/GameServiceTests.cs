@@ -53,7 +53,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         public async Task ObterJogosAsync_Valido_DeveRetornarTodosJogos()
         {
             // Prepare
-            var game = Game.Criar("Super mario", 100, EGenre.Acao, 1993, "Nintendo");
+            var game = Game.Create("Super mario", 100, EGenre.Acao, 1993, "Nintendo");
             var games = new List<Game>() { game };
 
             _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(games);
@@ -72,7 +72,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         {
             // Prepare
             long id = 1;
-            var game = Game.Criar("Super mario", 100, EGenre.Acao, 1993, "Nintendo");
+            var game = Game.Create("Super mario", 100, EGenre.Acao, 1993, "Nintendo");
             game.Id = id;
 
             _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(game);
@@ -96,7 +96,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         {
             // Prepare
             var gameRequest = new GameRequest("Super mario world", 100, EGenre.Aventura, 1993, "Nintendo");
-            var gameEntidade = Game.Criar(
+            var gameEntidade = Game.Create(
                 gameRequest.Title,
                 gameRequest.Price,
                 gameRequest.Genre,
@@ -182,7 +182,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             // Prepare
             var id = 1L;
             var gameRequest = new GameRequest("Super mario world", 100, EGenre.Aventura, 1993, "Nintendo");
-            var gameEntidade = Game.Criar(
+            var gameEntidade = Game.Create(
                 gameRequest.Title,
                 gameRequest.Price,
                 gameRequest.Genre,

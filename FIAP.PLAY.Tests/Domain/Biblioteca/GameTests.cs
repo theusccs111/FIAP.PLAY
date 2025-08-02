@@ -16,7 +16,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             string developer = "Nintendo";
 
             // Act
-            var jogo = Game.Criar(title, price, genre, yearLaunch, developer);
+            var jogo = Game.Create(title, price, genre, yearLaunch, developer);
 
             // Assert
             Assert.NotNull(jogo);
@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             string developer = "Nintendo";
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Título não pode ser vazio. (Parameter 'title')", exception.Message);
         }
 
@@ -52,7 +52,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             int yearLaunch = 2017;
             string developer = "Nintendo";
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Preço deve ser maior que zero. (Parameter 'price')", exception.Message);
         }
 
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             int yearLaunch = 2017;
             string developer = "Nintendo";
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Gênero inválido. (Parameter 'genre')", exception.Message);
         }
 
@@ -81,7 +81,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             string developer = "Nintendo";
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Ano de lançamento inválido. (Parameter 'yearLaunch')", exception.Message);
         }
 
@@ -95,7 +95,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             int yearLaunch = 2017;
             string developer = string.Empty;
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Desenvolvedora não pode ser vazia. (Parameter 'developer')", exception.Message);
         }
 
@@ -109,7 +109,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             int yearLaunch = 2017;
             string developer = "N"; // Tamanho inválido (1 caractere)
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Desenvolvedora deve ter entre 3 e 100 caracteres. (Parameter 'developer')", exception.Message);
         }
 
@@ -123,7 +123,7 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             int yearLaunch = 2017;
             string developer = "Nintendo";
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => Game.Criar(title, price, genre, yearLaunch, developer));
+            var exception = Assert.Throws<ArgumentException>(() => Game.Create(title, price, genre, yearLaunch, developer));
             Assert.Equal("Título deve ter entre 3 e 100 caracteres. (Parameter 'title')", exception.Message);
         }
     }

@@ -27,7 +27,7 @@ namespace FIAP.PLAY.Domain.Library.Entities
             Developer = developer;
         }
 
-        public static Game Criar(string title, decimal price, EGenre genre, int yearLaunch, string developer)
+        public static Game Create(string title, decimal price, EGenre genre, int yearLaunch, string developer)
         {
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException("Título não pode ser vazio.", nameof(title));

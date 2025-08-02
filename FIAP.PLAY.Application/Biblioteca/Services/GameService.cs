@@ -78,7 +78,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
         }
 
         private static Game Parse(GameRequest request)
-            => Game.Criar(request.Title, request.Price, request.Genre, request.YearLaunch, request.Developer);
+            => Game.Create(request.Title, request.Price, request.Genre, request.YearLaunch, request.Developer);
 
         private static GameResponse Parse(Game entidade)
             => new(entidade.Id, entidade.Title, entidade.Price, entidade.Genre, entidade.YearLaunch, entidade.Developer);
