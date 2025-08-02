@@ -5,7 +5,7 @@ namespace FIAP.PLAY.Domain.Shared.Exceptions
 {
     public class ValidationException : Exception
     {
-        public ValidationException() : base(Mensagem.ErrorSystem.GetDescription())
+        public ValidationException() : base(Enums.Message.ErrorSystem.GetDescription())
         {
             Failures = new Dictionary<string, string[]>();
         }

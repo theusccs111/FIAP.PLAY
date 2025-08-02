@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace FIAP.PLAY.Infrastructure.Repositories
 {
-    public class Repository<T> : IRepository<T>, IDisposable where T : EntidadeBase
+    public class Repository<T> : IRepository<T>, IDisposable where T : EntityBase
     {
         private readonly FiapPlayContext _context;
 
@@ -21,7 +21,6 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// <returns></returns>
         public async Task<IEnumerable<T>> GetAllAsync()
             => await _context.Set<T>()
-                .Where(d => d.DataExclusao.HasValue == false)
                 .ToListAsync();
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
             => await _context.Set<T>().FirstOrDefaultAsync(predicate);
 
         public async Task<T> GetByIdAsync(long id)
-            => await _context.Set<T>().FirstAsync(d => d.Id == id && !d.DataExclusao.HasValue);
+            => await _context.Set<T>().FirstAsync(d => d.Id == id);
 
         public async Task<T> CreateAsync(T entity)
         {
@@ -73,14 +72,14 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         public async Task DeleteAsync(long id)
         {
             var entidade = await GetByIdAsync(id);
-            entidade.DataExclusao = DateTime.Now;
+            entidade.DateDeleted = DateTime.Now;
             _context.Entry(entidade).State = EntityState.Modified;
         }
 
 
         public async Task<bool> ExistsAsync(long id)
         {
-            return await _context.Set<T>().AnyAsync(e => e.Id == id && !e.DataExclusao.HasValue);
+            return await _context.Set<T>().AnyAsync(e => e.Id == id);
         }
 
         public async Task CommitAsync()

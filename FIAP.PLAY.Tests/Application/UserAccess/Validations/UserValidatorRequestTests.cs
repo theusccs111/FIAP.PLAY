@@ -16,9 +16,9 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Have_Error_When_Nome_Is_Empty()
         {
-            var model = new UsuarioRequest { Nome = "" };
+            var model = new UserRequest { Name = "" };
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(user => user.Nome);
+            result.ShouldHaveValidationErrorFor(user => user.Name);
         }
 
         [Theory]
@@ -26,15 +26,15 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [InlineData("A")]
         public void Should_Have_Error_When_Nome_Is_Too_Short(string nome)
         {
-            var model = new UsuarioRequest { Nome = nome };
+            var model = new UserRequest { Name = nome };
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(user => user.Nome);
+            result.ShouldHaveValidationErrorFor(user => user.Name);
         }
 
         [Fact]
         public void Should_Have_Error_When_Email_Is_Invalid()
         {
-            var model = new UsuarioRequest { Email = "email-invalido" };
+            var model = new UserRequest { Email = "email-invalido" };
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.Email);
         }
@@ -42,9 +42,9 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Have_Error_When_Senha_Is_Empty()
         {
-            var model = new UsuarioRequest { Senha = "" };
+            var model = new UserRequest { PasswordHash = "" };
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(user => user.Senha);
+            result.ShouldHaveValidationErrorFor(user => user.PasswordHash);
         }
 
         [Theory]
@@ -57,19 +57,19 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [InlineData("ABCdefgh1")] // sem especial
         public void Should_Have_Error_When_Senha_Invalid(string senha)
         {
-            var model = new UsuarioRequest { Senha = senha };
+            var model = new UserRequest { PasswordHash = senha };
             var result = _validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(user => user.Senha);
+            result.ShouldHaveValidationErrorFor(user => user.PasswordHash);
         }
 
         [Fact]
         public void Should_Not_Have_Error_When_All_Fields_Are_Valid()
         {
-            var model = new UsuarioRequest
+            var model = new UserRequest
             {
-                Nome = "João da Silva",
+                Name = "João da Silva",
                 Email = "joao@email.com",
-                Senha = "Senha123!"
+                PasswordHash = "Senha123!"
             };
 
             var result = _validator.TestValidate(model);

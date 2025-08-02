@@ -37,7 +37,7 @@ namespace FIAP.PLAY.Web.Middleware
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
-            var resultado = new Resultado<object>
+            var resultado = new Result<object>
             {
                 Success = false,
                 Message = exception.Message,

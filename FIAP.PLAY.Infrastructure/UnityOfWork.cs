@@ -13,8 +13,8 @@ namespace FIAP.PLAY.Infrastructure
         private readonly FiapPlayContext _context;
         private Dictionary<string, object> repositories;
 
-        public IRepository<Usuario> Users { get { return new Repository<Usuario>(_context); } }
-        public IRepository<Jogo> Jogos { get { return new Repository<Jogo>(_context); } }
+        public IRepository<User> Users { get { return new Repository<User>(_context); } }
+        public IRepository<Game> Games { get { return new Repository<Game>(_context); } }
 
         public UnityOfWork(FiapPlayContext context)
         {
@@ -34,7 +34,7 @@ namespace FIAP.PLAY.Infrastructure
             _context.Dispose();
         }
 
-        public IRepository<T> Repository<T>() where T : EntidadeBase
+        public IRepository<T> Repository<T>() where T : EntityBase
         {
             if (repositories == null)
             {

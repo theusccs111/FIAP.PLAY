@@ -15,12 +15,12 @@ namespace FIAP.PLAY.Application.UserAccess.Resource.Response
         {
         }
 
-        public long UsuarioId { get; set; }
-        public string Nome { get; set; }
+        public long UserId { get; set; }
+        public string Name { get; set; }
         public string Email { get; set; }
-        public TipoPerfil Perfil { get; set; }
-        public string PerfilDescricao { get { return Perfil.GetDescription(); } }
+        public ERole Role { get; set; }
+        public string RoleDescription { get { return Role.GetDescription(); } }
         public string Token { get; set; }
-        public bool EstaAutenticado { get; set; }
+        public bool IsAuthenticated { get; set; }
     }
 }

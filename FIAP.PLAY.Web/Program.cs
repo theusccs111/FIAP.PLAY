@@ -1,3 +1,4 @@
+using FIAP.PLAY.Infrastructure.Data;
 using Serilog;
 using Serilog.Events;
 
@@ -20,7 +21,26 @@ namespace FIAP.PLAY.Web
             try
             {
                 Log.Information("Iniciando aplicação FIAP.PLAY.Web");
-                CreateHostBuilder(args).Build().Run();
+                var host = CreateHostBuilder(args).Build();
+
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    try
+                    {
+                        var context = services.GetRequiredService<FiapPlayContext>();
+                        DBInitializer.Initialize(context);
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = services.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "Ocorreu erro no metodo Seeding.");
+
+                    }
+                }
+
+                host.Run();
+
             }
             catch (Exception ex)
             {

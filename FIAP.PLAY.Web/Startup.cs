@@ -3,6 +3,8 @@ using FIAP.PLAY.Application.Biblioteca.Services;
 using FIAP.PLAY.Application.Biblioteca.Validations;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
+using FIAP.PLAY.Application.Shared.Interfaces.Services;
+using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Services;
 using FIAP.PLAY.Application.UserAccess.Validations;
@@ -66,7 +68,7 @@ namespace FIAP.PLAY.Web
                     options.EnableEndpointRouting = false;
                 })
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>())
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<JogoRequestValidator>());
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<GameRequestValidator>());
 
             InjectServices(services);
             InjectRepositories(services);
@@ -123,8 +125,11 @@ namespace FIAP.PLAY.Web
             services.AddTransient(typeof(ILoggerManager<>), typeof(LoggerManager<>));
             services.AddTransient(typeof(BaseLogger<>));
 
+            services.AddScoped<IJWTService, JWTService>();
+
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IJogoService, JogoService>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+            services.AddScoped<IGameService, GameService>();
         }
 
         private static void InjectRepositories(IServiceCollection services)

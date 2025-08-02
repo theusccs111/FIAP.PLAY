@@ -26,4 +26,8 @@
     <ProjectReference Include="..\FIAP.PLAY.Application\FIAP.PLAY.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace FIAP.PLAY.Application.Shared.Interfaces.Repository
 {
-    public interface IRepository<T> where T : EntidadeBase
+    public interface IRepository<T> where T : EntityBase
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(long id);
