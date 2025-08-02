@@ -20,7 +20,7 @@ using System.Text.Json;
 
 namespace FIAP.PLAY.Application.UserAccess.Services
 {
-    public class UserService : Service, IUserService
+    public class AuthenticateService : Service, IAuthenticateService
     {
         private readonly IUnityOfWork _uow;
         private readonly IValidator<UsuarioRequest> _validator;
@@ -28,7 +28,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
         private readonly IConfiguration _config;
        
 
-        public UserService(IHttpContextAccessor httpContextAccessor, IUnityOfWork uow, IValidator<UsuarioRequest> validator, ILoggerManager<UserService> loggerManager, IConfiguration config)
+        public AuthenticateService(IHttpContextAccessor httpContextAccessor, IUnityOfWork uow, IValidator<UsuarioRequest> validator, ILoggerManager<UserService> loggerManager, IConfiguration config)
             : base(httpContextAccessor)
         {
             _uow = uow;

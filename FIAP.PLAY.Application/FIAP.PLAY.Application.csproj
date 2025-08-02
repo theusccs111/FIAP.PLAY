@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UserAccess\Interfaces\Services\**" />
+    <EmbeddedResource Remove="UserAccess\Interfaces\Services\**" />
+    <None Remove="UserAccess\Interfaces\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.17" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
@@ -19,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Shared\Interfaces\Services\" />
-    <Folder Include="UserAccess\Interfaces\Services\" />
   </ItemGroup>
 
 </Project>

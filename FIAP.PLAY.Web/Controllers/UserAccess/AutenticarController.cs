@@ -9,25 +9,25 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
     [ApiController]
     public class AutenticarController : ControllerBase
     {
-        private readonly IUserService _usuarioService;
-        public AutenticarController(IUserService usuarioService)
+        private readonly IAuthenticateService _authenticateService;
+        public AutenticarController(IAuthenticateService authenticateService)
         {
-            _usuarioService = usuarioService;
+            _authenticateService = authenticateService;
         }
 
         [HttpPost]
         [AllowAnonymous]
         public IActionResult Login(AutenticarRequest autenticarRequest)
         {
-            var response = _usuarioService.Login(autenticarRequest);
+            var response = _authenticateService.Login(autenticarRequest);
             return Ok(response);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult ObterUserLogado()
+        public IActionResult GetLoggedUser()
         {
-            var user = _usuarioService.ObterUserLogado();
+            var user = _authenticateService.GetLoggedUser();
             return Ok(user);
         }
     }

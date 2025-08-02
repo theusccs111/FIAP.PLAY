@@ -1,11 +1,9 @@
-﻿using FIAP.PLAY.Domain.Shared.Enums;
-using FIAP.PLAY.Domain.Shared.Extensions;
-using FIAP.PLAY.Domain.UserAccess.Entities;
+﻿using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FluentValidation;
 
-namespace FIAP.PLAY.Domain.UserAccess.Validations
+namespace FIAP.PLAY.Application.UserAccess.Validations
 {
-    public class UserValidator : AbstractValidator<Usuario>
+    public class UserValidator : AbstractValidator<UsuarioRequest>
     {
         public UserValidator()
         {
