@@ -7,11 +7,11 @@ namespace FIAP.PLAY.Application.UserAccess.Interfaces
     public interface IUserService
     {
       
-        Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest);
+        Task<Resultado<LoginResponse>> LoginAsync(AutenticarRequest autenticarRequest);
         Resultado<LoginResponse> ObterUserLogado();
-       // Resultado<LoginResponse> CriarUsuario(AutenticarRequest autenticarRequest);
-        Resultado<LoginResponse> AtualizarUsuario(long id, UsuarioRequest request);
-        void DeletarUsuario(long id);
+        // Resultado<LoginResponse> CriarUsuario(AutenticarRequest autenticarRequest);
+        Task<Resultado<LoginResponse>> AtualizarUsuario(long id, UsuarioRequest request);
+        Task DeletarUsuario(long id);
 
    
     }

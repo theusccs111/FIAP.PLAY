@@ -6,18 +6,18 @@ namespace FIAP.PLAY.Application.Shared.Interfaces.Repository
 {
     public interface IRepository<T> where T : EntidadeBase
     {
-        IEnumerable<T> GetAll();
-        T GetById(long id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(long id);
         DbSet<T> GetDbSet();
-        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
-        T Search(params object[] key);
-        T GetFirst(Expression<Func<T, bool>> predicate);
-        T Create(T entity);
-        void Update(T entity);
-        void Delete(Func<T, bool> predicate);
-        void Delete(long id);
-        bool Exists(long id);
-        void Commit();
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate);
+        Task<T> SearchAsync(params object[] key);
+        Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate);
+        Task<T> CreateAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(Func<T, bool> predicate);
+        Task DeleteAsync(long id);
+        Task<bool> ExistsAsync(long id);
+        Task CommitAsync();
         void Dispose();
     }
 }

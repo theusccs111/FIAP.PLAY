@@ -65,7 +65,7 @@ namespace FIAP.PLAY.Web
                     options.Filters.Add(new CustomExceptionFilterAttribute());
                     options.EnableEndpointRouting = false;
                 })
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserValidator>())
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>())
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<JogoRequestValidator>());
 
             InjectServices(services);

@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
            
         }
 
-        public Resultado<LoginResponse> Login(AutenticarRequest autenticarRequest)
+        public async Task<Resultado<LoginResponse>> LoginAsync(AutenticarRequest autenticarRequest)
         {
             _loggerManager.LogInformation("UserService.Autenticar - Iniciado");
 
@@ -49,7 +49,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 throw new Domain.Shared.Exceptions.ValidationException("Erro ao autenticar", "O usuário e/ou a senha não podem ser vazios.");
             }
 
-            var usuario = _uow.Users.GetFirst(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
+            var usuario = await _uow.Users.GetFirstAsync(u => u.Email.Trim().ToLower().Equals(autenticarRequest.Email.Trim().ToLower()) &&
                                                 u.SenhaHash.Trim().ToLower().Equals(autenticarRequest.Senha.Trim().ToLower()));
 
             if (usuario is null || usuario.Id <= 0)
@@ -74,7 +74,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             return new Resultado<LoginResponse>(loginResponse);
         } 
 
-        Resultado<LoginResponse> IUserService.ObterUserLogado()
+        public Resultado<LoginResponse> ObterUserLogado()
         {
             if (Usuario == null)
             {
@@ -84,7 +84,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             return new Resultado<LoginResponse>(Usuario);
         }
 
-        public Resultado<LoginResponse> AtualizarUsuario(long id, UsuarioRequest request)
+        public async Task<Resultado<LoginResponse>> AtualizarUsuario(long id, UsuarioRequest request)
         {
             if (id == 0)
             {
@@ -97,7 +97,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 throw new Domain.Shared.Exceptions.ValidationException(validationResult.Errors);
             }
 
-            var usuario = _uow.Users.GetById(id);
+            var usuario = await _uow.Users.GetByIdAsync(id);
             if (usuario == null)
             {
                 throw new Domain.Shared.Exceptions.NotFoundException("Usuário não encontrado");
@@ -109,8 +109,8 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             usuario.SenhaHash = request.SenhaHash;
 
 
-            _uow.Users.Update(usuario);
-            _uow.Complete();
+            await _uow.Users.UpdateAsync(usuario);
+            await _uow.CompleteAsync();
 
             var token = GerarTokenJwt(usuario);
             return new Resultado<LoginResponse>(new LoginResponse
@@ -149,16 +149,16 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             return tokenReturn;
         }
 
-        public void DeletarUsuario(long id)
+        public async Task DeletarUsuario(long id)
         {
-            var usuario = _uow.Users.GetById(id);
+            var usuario = await _uow.Users.GetByIdAsync(id);
             if (usuario == null)
             {
                 throw new Domain.Shared.Exceptions.NotFoundException("Usuário não encontrado");
             }
 
-            _uow.Users.Update(usuario);
-            _uow.Complete();
+            await _uow.Users.UpdateAsync(usuario);
+            await _uow.CompleteAsync();
         }
 
         private string GerarTokenJwt(Usuario usuario)

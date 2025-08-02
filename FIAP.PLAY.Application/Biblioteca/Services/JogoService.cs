@@ -11,76 +11,70 @@ using Microsoft.AspNetCore.Http;
 
 namespace FIAP.PLAY.Application.Biblioteca.Services
 {
-    public class JogoService : Service, IJogoService
+    public class JogoService(
+        IHttpContextAccessor httpContextAccessor,
+        IUnityOfWork uow,
+        IValidator<JogoRequest> validator,
+        ILoggerManager<JogoService> loggerManager) : Service(httpContextAccessor), IJogoService
     {
-        private readonly IUnityOfWork _uow;
-        private readonly IValidator<JogoRequest> _validator;
-        private readonly ILoggerManager<JogoService> _loggerManager;
-        public JogoService(IHttpContextAccessor httpContextAccessor, IUnityOfWork uow, IValidator<JogoRequest> validator, ILoggerManager<JogoService> loggerManager) : base(httpContextAccessor)
+        public async Task<Resultado<IEnumerable<JogoResponse>>> ObterJogosAsync()
         {
-            _uow = uow;
-            _validator = validator;
-            _loggerManager = loggerManager;
-        }
-
-        public Resultado<IEnumerable<JogoResponse>> ObterJogos()
-        {
-            var jogos = _uow.Jogos.GetAll();
+            var jogos = await uow.Jogos.GetAllAsync();
             var jogosResponse = jogos.Select(d => Parse(d)).ToList();
             return new Resultado<IEnumerable<JogoResponse>>(jogosResponse);
         }
 
-        public Resultado<JogoResponse> ObterJogoPorId(long id)
+        public async Task<Resultado<JogoResponse>> ObterJogoPorIdAsync(long id)
         {
-            var jogo = _uow.Jogos.GetById(id);
+            var jogo = await uow.Jogos.GetByIdAsync(id);
             var jogoResponse = Parse(jogo);
             return new Resultado<JogoResponse>(jogoResponse);
         }
 
-        public Resultado<JogoResponse> CriarJogo(JogoRequest request)
+        public async Task<Resultado<JogoResponse>> CriarJogoAsync(JogoRequest request)
         {
-            var resultadoValidacao = _validator.Validate(request);
+            var resultadoValidacao = validator.Validate(request);
             if(resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
 
             var jogo = Parse(request);
             
-            var jogoCriado = _uow.Jogos.Create(jogo);
-            _uow.Complete();
+            var jogoCriado = await uow.Jogos.CreateAsync(jogo);
+            await uow.CompleteAsync();
 
-            _loggerManager.LogInformation($"Jogo {jogoCriado.Titulo} criado com sucesso");
+            loggerManager.LogInformation($"Jogo {jogoCriado.Titulo} criado com sucesso");
             return new Resultado<JogoResponse>(Parse(jogoCriado));
         }
 
-        public Resultado<JogoResponse> AtualizarJogo(long id, JogoRequest request)
+        public async Task<Resultado<JogoResponse>> AtualizarJogoAsync(long id, JogoRequest request)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
 
-            var resultadoValidacao = _validator.Validate(request);
+            var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
 
             var jogo = Parse(request);
             jogo.Id = id;
 
-            _uow.Jogos.Update(jogo);
-            _uow.Complete();
+            await uow.Jogos.UpdateAsync(jogo);
+            uow.Complete();
 
-            _loggerManager.LogInformation($"Jogo com id {jogo.Id} atualizado com sucesso");
+            loggerManager.LogInformation($"Jogo com id {jogo.Id} atualizado com sucesso");
             return new Resultado<JogoResponse>(Parse(jogo));
         }
 
-        public void DeletarJogo(long id)
+        public async Task DeletarJogoAsync(long id)
         {
             if(id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
 
-            if(_uow.Jogos.Exists(id) == false)
+            if(await uow.Jogos.ExistsAsync(id) == false)
                 throw new Domain.Shared.Exceptions.NotFoundException("id", "jogo não encontrado");
 
-            _uow.Jogos.Delete(id);
-            _uow.Complete();
+            await uow.Jogos.DeleteAsync(id);
+            await uow.CompleteAsync();
         }
 
         private static Jogo Parse(JogoRequest request)
