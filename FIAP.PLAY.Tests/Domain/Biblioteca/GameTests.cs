@@ -1,5 +1,5 @@
-﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
-using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
+﻿using FIAP.PLAY.Domain.Library.Entities;
+using FIAP.PLAY.Domain.Library.Enums;
 
 namespace FIAP.PLAY.Tests.Domain.Biblioteca
 {

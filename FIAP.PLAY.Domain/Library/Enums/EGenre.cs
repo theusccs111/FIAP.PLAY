@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Enums
+namespace FIAP.PLAY.Domain.Library.Enums
 {
     public enum EGenre
     {

@@ -5,7 +5,7 @@ using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.Shared.Services;
-using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
+using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 

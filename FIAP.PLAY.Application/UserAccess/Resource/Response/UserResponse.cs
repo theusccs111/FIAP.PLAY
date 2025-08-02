@@ -1,5 +1,5 @@
 ﻿using FIAP.PLAY.Application.Shared.Resource;
-using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
+using FIAP.PLAY.Domain.Library.Enums;
 using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 

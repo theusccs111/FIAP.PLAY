@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
+﻿using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Infrastructure.EntityConfig;
 using Microsoft.EntityFrameworkCore;

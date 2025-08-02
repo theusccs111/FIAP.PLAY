@@ -1,25 +1,13 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
-using FIAP.PLAY.Application.Shared.Interfaces;
+﻿using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
-using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
-using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace FIAP.PLAY.Application.UserAccess.Services
 {

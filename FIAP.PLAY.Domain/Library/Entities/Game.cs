@@ -1,12 +1,12 @@
-﻿using FIAP.PLAY.Domain.Biblioteca.Jogos.Enums;
+﻿using FIAP.PLAY.Domain.Library.Enums;
 using FIAP.PLAY.Domain.Shared.Entities;
 
-namespace FIAP.PLAY.Domain.Biblioteca.Jogos.Entities
+namespace FIAP.PLAY.Domain.Library.Entities
 {
     public class Game : EntityBase
     {     
 
-        #region Propriedades
+        #region Properties
         public string Title { get; set; }
         public decimal Price { get; set; }
         public EGenre Genre { get; set; }

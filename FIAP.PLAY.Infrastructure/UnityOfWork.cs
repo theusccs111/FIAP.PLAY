@@ -1,6 +1,6 @@
 ﻿using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
-using FIAP.PLAY.Domain.Biblioteca.Jogos.Entities;
+using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Infrastructure.Data;
