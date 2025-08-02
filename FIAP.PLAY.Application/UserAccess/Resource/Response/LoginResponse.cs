@@ -1,4 +1,5 @@
-﻿using FIAP.PLAY.Domain.Shared.Extensions;
+﻿using FIAP.PLAY.Application.Shared.Resource;
+using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace FIAP.PLAY.Application.UserAccess.Resource.Response
 {
     public class LoginResponse
     {
-        public LoginResponse()
+        public  LoginResponse()
         {
         }
 

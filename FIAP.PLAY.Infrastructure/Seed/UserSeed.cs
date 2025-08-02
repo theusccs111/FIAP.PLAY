@@ -1,10 +1,11 @@
-﻿using FIAP.PLAY.Domain.UserAccess.Entities;
+﻿using FIAP.PLAY.Domain.Shared.Entities;
+using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace FIAP.PLAY.Infrastructure.Seed
 {
-    public static class UserSeed
+    public static class  UserSeed
     {
         public static void CreateAdminUser(ModelBuilder modelBuilder)
         {
@@ -12,7 +13,7 @@ namespace FIAP.PLAY.Infrastructure.Seed
                 new Usuario
                 {
                     Id = 1,
-                    Senha = "admin",
+                    SenhaHash = "admin",
                     Nome = "admin",
                     Email = "admin@admin.com",
                     Perfil = TipoPerfil.Administrador,
