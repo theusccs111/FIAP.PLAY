@@ -16,22 +16,26 @@ namespace FIAP.PLAY.Domain.Library.Entities
 
         private GameLibrary() { }
 
-        private GameLibrary(long libraryId, long gameId, decimal price, DateTime purchaseDate)
+        private GameLibrary(long libraryId, long gameId, decimal price)
         {
-            if (libraryId <= 0 || gameId <= 0 || price < 0 || purchaseDate > DateTime.Now)
-                throw new ArgumentException("Jogo inválido");
-
             GameId = gameId;
             LibraryId = libraryId;
-            PurchaseDate = purchaseDate;
+            PurchaseDate = DateTime.UtcNow;
             Price = price;
         }
         #endregion
 
         #region Factory
-        public static GameLibrary Create(long libraryId, long gameId, decimal price, DateTime purchaseDate)
+        public static GameLibrary Create(Library lib, Game game)
         {
-            return new GameLibrary(libraryId, gameId, price, purchaseDate);
+            if (lib is null)
+                throw new ArgumentException("A biblioteca não pode ser nula.", nameof(lib));
+
+            if (game is null)
+                throw new ArgumentException("O jogo não pode ser nulo.", nameof(game));
+
+            return new GameLibrary(lib.Id, game.Id, game.Price);
+
         }
         #endregion
 

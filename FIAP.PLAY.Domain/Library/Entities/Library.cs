@@ -44,7 +44,7 @@ namespace FIAP.PLAY.Domain.Library.Entities
             if (_games.Any(x => x.GameId == game.Id))
                 throw new ArgumentException("Este jogo já foi adicionado");
 
-            _games.Add(GameLibrary.Create(this.Id, game.Id, game.Price, DateTime.UtcNow));
+            _games.Add(GameLibrary.Create(this, game));
         }
         #endregion
 
