@@ -4,6 +4,7 @@ using FIAP.PLAY.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.PLAY.Infrastructure.Migrations
 {
     [DbContext(typeof(FiapPlayContext))]
-    partial class FiapPlayContextModelSnapshot : ModelSnapshot
+    [Migration("20250802164704_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game", (string)null);
+                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.UserAccess.Entities.User", b =>
@@ -103,7 +106,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
 
                     b.HasData(
                         new
@@ -114,7 +117,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                             DateUpdated = new DateTime(2025, 7, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@admin.com",
                             Name = "admin",
-                            PasswordHash = "Admin1!a",
+                            PasswordHash = "admin",
                             Role = 0
                         });
                 });

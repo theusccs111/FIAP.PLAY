@@ -7,10 +7,10 @@ namespace FIAP.PLAY.Application.Shared.Interfaces
 {
     public interface IUnityOfWork : IDisposable
     {
-        IRepository<Usuario> Users { get;}
-        IRepository<Jogo> Jogos { get; }
+        IRepository<User> Users { get;}
+        IRepository<Game> Games { get; }
         Task CompleteAsync();
         void Complete();
-        IRepository<T> Repository<T>() where T : EntidadeBase;
+        IRepository<T> Repository<T>() where T : EntityBase;
     }
 }

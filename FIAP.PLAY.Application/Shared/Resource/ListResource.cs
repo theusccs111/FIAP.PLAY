@@ -8,7 +8,7 @@ namespace FIAP.PLAY.Application.Shared.Resource
 {
     public class ListResource<T>
     {
-        public IEnumerable<T> Lista { get; set; }
-        public long TotalRegistros { get; set; }
+        public IEnumerable<T> Items { get; set; }
+        public long TotalRecords { get; set; }
     }
 }

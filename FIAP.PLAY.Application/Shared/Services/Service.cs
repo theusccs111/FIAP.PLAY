@@ -1,21 +1,28 @@
-﻿using FIAP.PLAY.Application.UserAccess.Helpers;
-using FIAP.PLAY.Application.UserAccess.Resource.Response;
+﻿using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace FIAP.PLAY.Application.Shared.Services
 {
     public abstract class Service
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        protected IHttpContextAccessor HttpContextAccessor { get { return _httpContextAccessor; } }
-        private LoginResponse _usuario;
-        protected LoginResponse Usuario { get { return _usuario; } set { _usuario = value; } }
         public Service(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            _usuario = LoginResponseHelper.ObterLoginResponse(_httpContextAccessor);
         }
 
-       
+        public string GetUserId() =>
+        _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        public string GetUserName() =>
+            _httpContextAccessor.HttpContext?.User?.Identity?.Name;
+        public string GetUserEmail() =>
+        _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+
+        public string GetUserRole() =>
+            _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
+
+
     }
 }

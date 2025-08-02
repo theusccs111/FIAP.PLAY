@@ -13,7 +13,7 @@ namespace FIAP.PLAY.Web.Filters.Shared
     {
         public override void OnException(ExceptionContext context)
         {
-            var resultado = new Resultado<object>();
+            var resultado = new Result<object>();
             if (context.Exception is ValidationException)
             {
                 var validationException = (ValidationException)context.Exception;
@@ -22,7 +22,7 @@ namespace FIAP.PLAY.Web.Filters.Shared
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-                resultado = new Resultado<object>
+                resultado = new Result<object>
                 {
                     Success = false,
                     Message = validationException.Message,
@@ -45,7 +45,7 @@ namespace FIAP.PLAY.Web.Filters.Shared
             context.HttpContext.Response.ContentType = "application/json";
             context.HttpContext.Response.StatusCode = (int)code;
 
-            resultado = new Resultado<object>
+            resultado = new Result<object>
             {
                 Success = false,
                 Message = context.Exception.Message,
