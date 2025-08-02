@@ -19,89 +19,78 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         /// Obter todos os dados
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<T> GetAll()
-        {
-            return _context.Set<T>();
-        }
+        public async Task<IEnumerable<T>> GetAllAsync()
+            => await _context.Set<T>()
+                .Where(d => d.DataExclusao.HasValue == false)
+                .ToListAsync();
 
         /// <summary>
         /// Obter dbSet
         /// </summary>
         /// <returns></returns>
-        public DbSet<T> GetDbSet()
-        {
-            return _context.Set<T>();
-        }
+        public DbSet<T> GetDbSet() => _context.Set<T>();
 
         /// <summary>
         /// Obter dados filtrados por expressão lambda
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
-        {
-            return _context.Set<T>().Where(predicate);
-        }
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate)
+            => await _context.Set<T>().Where(predicate).ToListAsync();
 
-        public T Search(params object[] key)
-        {
-            return _context.Set<T>().Find(key);
-        }
+        public async Task<T> SearchAsync(params object[] key)
+            => await _context.Set<T>().FindAsync(key);
 
         /// <summary>
         /// Obter primeiro registro conforme expressão lambda
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public T GetFirst(Expression<Func<T, bool>> predicate)
+        public async Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate)
+            => await _context.Set<T>().FirstOrDefaultAsync(predicate);
+
+        public async Task<T> GetByIdAsync(long id)
+            => await _context.Set<T>().FirstAsync(d => d.Id == id && !d.DataExclusao.HasValue);
+
+        public async Task<T> CreateAsync(T entity)
         {
-            return _context.Set<T>().FirstOrDefault(predicate);
+            var result = await _context.Set<T>().AddAsync(entity);
+            return result.Entity;
         }
 
-        public T GetById(long id)
-        {
-            return _context.Set<T>().First(d => d.Id == id);
-        }
-
-        public T Create(T entity)
-        {
-            return _context.Set<T>().Add(entity).Entity;
-        }
-
-        public void Update(T entity)
+        public Task UpdateAsync(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
+            return Task.CompletedTask;
         }
 
-        public void Delete(Func<T, bool> predicate)
+        public Task DeleteAsync(Func<T, bool> predicate)
         {
-            _context.Set<T>().Where(predicate).ToList().ForEach(del => Delete(del.Id));
+            _context.Set<T>().Where(predicate).ToList().ForEach(async del => await DeleteAsync(del.Id));
+            return Task.CompletedTask;
         }
 
-        public void Delete(long id)
+        public async Task DeleteAsync(long id)
         {
-            var entidade = GetById(id);
+            var entidade = await GetByIdAsync(id);
             entidade.DataExclusao = DateTime.Now;
             _context.Entry(entidade).State = EntityState.Modified;
         }
 
 
-        public bool Exists(long id)
+        public async Task<bool> ExistsAsync(long id)
         {
-            return _context.Set<T>().Any(e => e.Id == id);
+            return await _context.Set<T>().AnyAsync(e => e.Id == id && !e.DataExclusao.HasValue);
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            if (_context != null)
-            {
-                _context.Dispose();
-            }
+            _context?.Dispose();
             GC.SuppressFinalize(this);
         }
     }

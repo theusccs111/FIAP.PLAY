@@ -5,7 +5,7 @@ using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Services;
-using FIAP.PLAY.Domain.UserAccess.Validations;
+using FIAP.PLAY.Application.UserAccess.Validations;
 using FIAP.PLAY.Infrastructure;
 using FIAP.PLAY.Infrastructure.Data;
 using FIAP.PLAY.Infrastructure.Logging;
@@ -65,7 +65,7 @@ namespace FIAP.PLAY.Web
                     options.Filters.Add(new CustomExceptionFilterAttribute());
                     options.EnableEndpointRouting = false;
                 })
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserValidator>())
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>())
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<JogoRequestValidator>());
 
             InjectServices(services);

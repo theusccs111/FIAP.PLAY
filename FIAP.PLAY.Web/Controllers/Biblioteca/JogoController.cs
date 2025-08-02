@@ -10,26 +10,26 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     {
 
         [HttpGet]
-        public IActionResult ObterJogos()
-            => Ok(_jogoService.ObterJogos());
+        public async Task<IActionResult> ObterJogosAsync()
+            => Ok(await _jogoService.ObterJogosAsync());
 
         [HttpGet("{id}")]
-        public IActionResult ObterJogoPorId(int id)
-            => Ok(_jogoService.ObterJogoPorId(id));
+        public async Task<IActionResult> ObterJogoPorIdAsync(int id)
+            => Ok(await _jogoService.ObterJogoPorIdAsync(id));
 
         [HttpPost]
-        public IActionResult CriarJogo([FromBody] JogoRequest request)
-            => Created("api/Jogo", _jogoService.CriarJogo(request));
+        public async Task<IActionResult> CriarJogoAsync([FromBody] JogoRequest request)
+            => Created("api/Jogo", await _jogoService.CriarJogoAsync(request));
 
         [HttpPut("{id}")]
-        public IActionResult AtualizarJogo([FromRoute] long id, [FromBody] JogoRequest request)
-            => Ok(_jogoService.AtualizarJogo(id,request));
+        public async Task<IActionResult> AtualizarJogoAsync([FromRoute] long id, [FromBody] JogoRequest request)
+            => Ok(await _jogoService.AtualizarJogoAsync(id, request));
 
-        //[HttpDelete("{id}")]
-        //public IActionResult RemoverJogo(long id)
-        //{
-        //    _jogoService.Delete(id);
-        //    return NoContent();
-        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoverJogoAsync(long id)
+        {
+            await _jogoService.DeletarJogoAsync(id);
+            return NoContent();
+        }
     }
 }
