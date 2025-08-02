@@ -1,12 +1,15 @@
-﻿using System.ComponentModel;
+﻿using FIAP.PLAY.Domain.Shared.Entities;
+using System.ComponentModel;
 
 namespace FIAP.PLAY.Domain.Library.Entities
 {
-    public class GameLibrary
+    public class GameLibrary : EntityBase
     {
         #region Properties
         public long GameId { get; private set; }
+        public Game Game { get; private set; }
         public long LibraryId { get; private set; }
+        public Library Library { get; private set; }
         public DateTime PurchaseDate { get; private set; }
         public decimal Price { get; private set; }
 
@@ -16,12 +19,14 @@ namespace FIAP.PLAY.Domain.Library.Entities
 
         private GameLibrary() { }
 
-        private GameLibrary(long libraryId, long gameId, decimal price)
+        private GameLibrary(Game game, Library library)
         {
-            GameId = gameId;
-            LibraryId = libraryId;
+            GameId = game.Id;
+            Game = game;
+            LibraryId = library.Id;
+            Library = library;
             PurchaseDate = DateTime.UtcNow;
-            Price = price;
+            Price = game.Price;
         }
         #endregion
 
@@ -34,7 +39,7 @@ namespace FIAP.PLAY.Domain.Library.Entities
             if (game is null)
                 throw new ArgumentException("O jogo não pode ser nulo.", nameof(game));
 
-            return new GameLibrary(lib.Id, game.Id, game.Price);
+            return new GameLibrary(game, lib);
 
         }
         #endregion
