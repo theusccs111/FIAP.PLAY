@@ -9,9 +9,18 @@ namespace FIAP.PLAY.Domain.UserAccess.Validations
     {
         public UserValidator()
         {
-            RuleFor(product => product.Nome)
-                .NotEmpty().WithMessage(Mensagem.FieldRequired.GetDescription(Campo.Name))
-                .Length(1, 100);
+            RuleFor(x => x.Nome)
+           .NotEmpty().WithMessage(" O nome é obrigatório.")
+           .Length(3, 100).WithMessage(" O nome deve ter entre 3 e 100 caracteres.");
+
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage(" O e-mail é obrigatório.")
+                .EmailAddress().WithMessage("Informe um e-mail válido.");
+
+            RuleFor(x => x.SenhaHash)
+                .NotEmpty().WithMessage(" A senha é obrigatória.")
+                .Matches(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*(),.?"":{}|<>]).{8,}$")
+                .WithMessage(" A senha deve ter no mínimo 8 caracteres e conter letras, números e caracteres especiais.");
         }
     }
 }

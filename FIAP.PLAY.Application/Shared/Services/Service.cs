@@ -1,13 +1,6 @@
-﻿using AutoMapper;
-using FIAP.PLAY.Application.Shared.Interfaces;
-using FIAP.PLAY.Application.Shared.Resource;
-using FIAP.PLAY.Application.UserAccess.Helpers;
+﻿using FIAP.PLAY.Application.UserAccess.Helpers;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
-using FIAP.PLAY.Domain.Shared.Entities;
-using FIAP.PLAY.Domain.Shared.Exceptions;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace FIAP.PLAY.Application.Shared.Services
 {

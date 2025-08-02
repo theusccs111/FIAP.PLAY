@@ -3,7 +3,7 @@ using FIAP.PLAY.Application.Biblioteca.Services;
 using FIAP.PLAY.Application.Biblioteca.Validations;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
-using FIAP.PLAY.Application.UserAccess.Interfaces.Services;
+using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Services;
 using FIAP.PLAY.Domain.UserAccess.Validations;
 using FIAP.PLAY.Infrastructure;

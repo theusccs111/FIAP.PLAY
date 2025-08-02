@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Shared\Interfaces\Services\" />
+    <Folder Include="UserAccess\Interfaces\Services\" />
   </ItemGroup>
 
 </Project>
