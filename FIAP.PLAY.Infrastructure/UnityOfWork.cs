@@ -15,6 +15,9 @@ namespace FIAP.PLAY.Infrastructure
 
         public IRepository<User> Users { get { return new Repository<User>(_context); } }
         public IRepository<Game> Games { get { return new Repository<Game>(_context); } }
+        public IRepository<Library> Libraries { get { return new Repository<Library>(_context); } }
+        public IRepository<GameLibrary> GameLibraries { get { return new Repository<GameLibrary>(_context); } }
+
 
         public UnityOfWork(FiapPlayContext context)
         {

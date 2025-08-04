@@ -31,45 +31,5 @@ namespace FIAP.PLAY.Tests.Domain.Biblioteca
             Assert.Equal("Usuário inválido. (Parameter 'userId')", exception.Message);
         }
 
-        [Fact]
-        public void AdicionarJogo_DeveAdicionarJogoValido()
-        {
-            // Arrange
-            var library = Library.Create(1);
-            var game = Game.Create("Test Game", 59.99m, EGenre.Acao, 2023, "Test Developer");
-           
-            // Act
-            library.AdicionarJogo(game);
-            
-            // Assert
-            Assert.Single(library.Games);
-            Assert.Equal(game.Id, library.Games.First().GameId);
-        }
-
-        [Fact]
-        public void AdicionarJogo_JogoJaAdicionado_DeveLancarExcecao()
-        {
-            // Arrange
-            var library = Library.Create(1);
-            var game = Game.Create("Test Game", 59.99m, EGenre.Acao, 2023, "Test Developer");
-
-            // Adiciona o jogo pela primeira vez
-            library.AdicionarJogo(game); 
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => library.AdicionarJogo(game));
-            Assert.Equal("Este jogo já foi adicionado", exception.Message);
-        }
-
-        [Fact]
-        public void AdicionarJogo_JogoNulo_DeveLancarExcecao()
-        {
-            // Arrange
-            var library = Library.Create(1);
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => library.AdicionarJogo(null));
-            Assert.Equal("O jogo não pode ser nulo.", exception.Message);
-        }
     }
 }

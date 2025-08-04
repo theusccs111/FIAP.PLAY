@@ -2,11 +2,6 @@
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FIAP.PLAY.Infrastructure.Data
 {
