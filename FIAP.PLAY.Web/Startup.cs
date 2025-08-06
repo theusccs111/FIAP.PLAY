@@ -68,7 +68,8 @@ namespace FIAP.PLAY.Web
                     options.EnableEndpointRouting = false;
                 })
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>())
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<GameRequestValidator>());
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<GameRequestValidator>())
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<LibraryRequestValidator>());
 
             InjectServices(services);
             InjectRepositories(services);
@@ -130,6 +131,7 @@ namespace FIAP.PLAY.Web
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IGameService, GameService>();
+            services.AddScoped<ILibraryService, LibraryService>();
         }
 
         private static void InjectRepositories(IServiceCollection services)

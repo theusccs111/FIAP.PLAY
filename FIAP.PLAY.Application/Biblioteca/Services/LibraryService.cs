@@ -114,6 +114,13 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
            => Library.Create(request.UserId);
 
         private static LibraryResponse Parse(Library entidade)
-            => new(entidade.Id, entidade.UserId);
+            => new LibraryResponse( entidade.Id, 
+                                    entidade.UserId, 
+                                    entidade.Games.Select(g => new GameLibraryResponse(
+                                        g.Id, 
+                                        entidade.Id, 
+                                        new GameResponse(g.Game.Id, g.Game.Title,g.Game.Price, g.Game.Genre, g.Game.YearLaunch, g.Game.Developer), 
+                                        g.PurchaseDate, 
+                                        g.Price)).ToList());
     }
 }
