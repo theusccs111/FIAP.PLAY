@@ -13,6 +13,11 @@ namespace FIAP.PLAY.Infrastructure.Data
         public DbSet<Game> Game { get; set; }
         public DbSet<GameLibrary> GameLibrary { get; set; }
         public DbSet<Library> Library { get; set; }
+        public DbSet<Promotion> Promotion { get; set; }
+      
+        public DbSet<Campaign> Campaign { get; set; }   
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +31,8 @@ namespace FIAP.PLAY.Infrastructure.Data
         private static void ApplyConfiguratons(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new PromotionConfig());
+            modelBuilder.ApplyConfiguration(new CampaignConfig());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

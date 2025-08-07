@@ -36,21 +36,21 @@ namespace FIAP.PLAY.Infrastructure.EntityConfig
                 .IsRequired()
                 .HasDefaultValue(false);
 
-            builder.Property(p => p.Id)
+            builder.Property(p => p.CampaignId)
                 .IsRequired();
 
             builder.HasOne<Campaign>()
                 .WithMany()
-                .HasForeignKey(p => p.Id)
+                .HasForeignKey(p => p.CampaignId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(p => p.ApplicableGames)
             .WithMany() 
             .UsingEntity<Dictionary<string, object>>(
                 "PromotionGames",
-                j => j.HasOne<Game>().WithMany().HasForeignKey("Id"),
-                j => j.HasOne<Promotion>().WithMany().HasForeignKey("Id"),
-                j => j.HasKey("Id", "Id"));
+                j => j.HasOne<Game>().WithMany().HasForeignKey("GameId"),
+                j => j.HasOne<Promotion>().WithMany().HasForeignKey("PromotionId"),
+                j => j.HasKey("GameId", "PromotionId"));
 
             builder.HasQueryFilter(p => !p.DateDeleted.HasValue);         
        }

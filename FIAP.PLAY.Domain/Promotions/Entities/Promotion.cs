@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Domain.Library.Entities
             var today = DateTime.Today;
             return isActive && today >= startDate && today <= endDate;
         }
-
+        #endregion
 
         #region Public Methods
         public void AddGame(Game game)
