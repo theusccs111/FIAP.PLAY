@@ -79,7 +79,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
         }
 
         private static User Parse(UserRequest request)
-            => Domain.UserAccess.Entities.User.Criar(request.Name, request.PasswordHash, request.Email, request.Role, request.Active);
+            => User.Criar(request.Name, request.PasswordHash, request.Email, request.Role, request.Active);
 
         private static UserResponse Parse(User entidade)
             => new(entidade.Id, entidade.Name, entidade.Email, entidade.Role);
