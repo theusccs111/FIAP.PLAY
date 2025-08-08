@@ -27,7 +27,7 @@ Atualmente, a aplicação permite:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/FIAP.PLAY.git
+git clone https://github.com/theusccs111/FIAP.PLAY.git
 cd FIAP.PLAY
 ```
 
