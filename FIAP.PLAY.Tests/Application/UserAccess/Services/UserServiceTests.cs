@@ -58,7 +58,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         public async Task CreateUserAsync_ShouldThrow_WhenValidationFails()
         {
             // Arrange
-            var request = new UserRequest(); // inválido
+            var request = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
             var validationFailures = new List<FluentValidation.Results.ValidationFailure>
             {
                 new("Email", "Email é obrigatório")
@@ -75,14 +75,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         public async Task CreateUserAsync_ShouldReturnCreatedUser_WhenValid()
         {
             // Arrange
-            var request = new UserRequest
-            {
-                Name = "Test",
-                Email = "test@email.com",
-                PasswordHash = "abc123",
-                Role = ERole.Common,
-                Active = true
-            };
+            var request = new UserRequest("Test","test@email.com","abc123",ERole.Common, true);
 
             var createdUser = User.Criar(request.Name, request.PasswordHash, request.Email, request.Role, request.Active);
             typeof(User).GetProperty("Id")!.SetValue(createdUser, 1L); // set ID manually if needed
@@ -122,7 +115,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         public async Task UpdateUserAsync_ShouldThrow_WhenIdIsZero()
         {
             // Arrange
-            var request = new UserRequest();
+            var request = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
 
             // Act & Assert
             var ex = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(
