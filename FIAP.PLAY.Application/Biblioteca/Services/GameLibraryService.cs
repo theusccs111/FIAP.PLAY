@@ -12,7 +12,6 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 {
     public class GameLibraryService(
         IUnityOfWork uow,
-        IValidator<GameLibraryRequest> validator,
         ILoggerManager<GameLibraryRequest> loggerManager) : IGameLibraryService
     {
         public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId)
