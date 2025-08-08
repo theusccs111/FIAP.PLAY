@@ -4,6 +4,7 @@ using FIAP.PLAY.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.PLAY.Infrastructure.Migrations
 {
     [DbContext(typeof(FiapPlayContext))]
-    partial class FiapPlayContextModelSnapshot : ModelSnapshot
+    [Migration("20250807003810_CreatePromotionAndRelations")]
+    partial class CreatePromotionAndRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,18 +44,23 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Campaign");
+                    b.ToTable("Campaign", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Game", b =>
@@ -83,9 +91,6 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("PromotionId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -95,8 +100,6 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PromotionId");
 
                     b.ToTable("Game");
                 });
@@ -125,7 +128,6 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PurchaseDate")
@@ -185,11 +187,26 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<decimal>("DiscountPercentage")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -198,39 +215,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasIndex("CampaignId");
 
-                    b.ToTable("Promotion");
-                });
-
-            modelBuilder.Entity("FIAP.PLAY.Domain.Promotions.Entities.PromotionGame", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateDeleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("GameId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PromotionId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PromotionId");
-
-                    b.ToTable("PromotionGame");
+                    b.ToTable("Promotions", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.UserAccess.Entities.User", b =>
@@ -276,11 +261,19 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Game", b =>
+            modelBuilder.Entity("PromotionGames", b =>
                 {
-                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Promotion", null)
-                        .WithMany("ApplicableGames")
-                        .HasForeignKey("PromotionId");
+                    b.Property<long>("GameId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PromotionId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("GameId", "PromotionId");
+
+                    b.HasIndex("PromotionId");
+
+                    b.ToTable("PromotionGames");
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.GameLibrary", b =>
@@ -288,7 +281,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                     b.HasOne("FIAP.PLAY.Domain.Library.Entities.Game", "Game")
                         .WithMany()
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FIAP.PLAY.Domain.Library.Entities.Library", "Library")
@@ -304,42 +297,31 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Promotion", b =>
                 {
-                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Campaign", "Campaign")
+                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Campaign", null)
                         .WithMany()
                         .HasForeignKey("CampaignId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Campaign");
                 });
 
-            modelBuilder.Entity("FIAP.PLAY.Domain.Promotions.Entities.PromotionGame", b =>
+            modelBuilder.Entity("PromotionGames", b =>
                 {
-                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Game", "Game")
+                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Game", null)
                         .WithMany()
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Promotion", "Promotion")
+                    b.HasOne("FIAP.PLAY.Domain.Library.Entities.Promotion", null)
                         .WithMany()
                         .HasForeignKey("PromotionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("Promotion");
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Library", b =>
                 {
                     b.Navigation("Games");
-                });
-
-            modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Promotion", b =>
-                {
-                    b.Navigation("ApplicableGames");
                 });
 #pragma warning restore 612, 618
         }

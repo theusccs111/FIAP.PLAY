@@ -1,4 +1,5 @@
 ﻿using FIAP.PLAY.Domain.Library.Entities;
+using FIAP.PLAY.Domain.Promotions.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Infrastructure.EntityConfig;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,9 @@ namespace FIAP.PLAY.Infrastructure.Data
         public DbSet<Game> Game { get; set; }
         public DbSet<GameLibrary> GameLibrary { get; set; }
         public DbSet<Library> Library { get; set; }
+        public DbSet<Promotion> Promotion { get; set; }
+        public DbSet<Campaign> Campaign { get; set; }   
+        public DbSet<PromotionGame> PromotionGame { get; set; }   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +30,12 @@ namespace FIAP.PLAY.Infrastructure.Data
         private static void ApplyConfiguratons(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new GameConfig());
+            modelBuilder.ApplyConfiguration(new GameLibraryConfig());
+            modelBuilder.ApplyConfiguration(new LibraryConfig());
+            modelBuilder.ApplyConfiguration(new PromotionConfig());
+            modelBuilder.ApplyConfiguration(new CampaignConfig());
+            modelBuilder.ApplyConfiguration(new PromotionGameConfig());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

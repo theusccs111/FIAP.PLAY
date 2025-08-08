@@ -10,23 +10,20 @@ namespace FIAP.PLAY.Domain.Library.Entities
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public bool IsActive { get; set; }
-
         #endregion
 
         #region Construtor
 
         private Campaign() { }
 
-        private Campaign(string description, DateTime startDate, DateTime endDate, bool isActive)
+        private Campaign(string description, DateTime startDate, DateTime endDate)
         {
-          
             Description = description;
             StartDate = startDate;
             EndDate = endDate;
         }
 
-        public static Campaign Create(long campaignId, string description, DateTime startDate, DateTime endDate, bool isActive)
+        public static Campaign Create(string description, DateTime startDate, DateTime endDate)
         {
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException("Descrição não pode ser vazio.", nameof(description));
@@ -37,7 +34,7 @@ namespace FIAP.PLAY.Domain.Library.Entities
             if (endDate < startDate)
                 throw new ArgumentException("Data final não pode ser menor que data inicial.", nameof(endDate));
 
-            return new Campaign(description, startDate, endDate, isActive);
+            return new Campaign(description, startDate, endDate);
         }
         #endregion
 

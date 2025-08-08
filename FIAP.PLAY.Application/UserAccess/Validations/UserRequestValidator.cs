@@ -14,7 +14,7 @@ namespace FIAP.PLAY.Application.UserAccess.Validations
                 .Length(3, 100).WithMessage("Nome deve ter entre 3 e 100 caracteres.");
 
             RuleFor(user => user.Email)
-                .NotEmpty().WithMessage(Message.FieldRequired.GetDescription(Field.Name))
+                .NotEmpty().WithMessage(Message.FieldRequired.GetDescription(Field.Email))
                 .EmailAddress().WithMessage("Email informado deve ser válido");
 
             RuleFor(user => user.PasswordHash)

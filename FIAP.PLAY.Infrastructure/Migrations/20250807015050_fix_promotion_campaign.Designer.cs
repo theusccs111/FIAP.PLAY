@@ -4,6 +4,7 @@ using FIAP.PLAY.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FIAP.PLAY.Infrastructure.Migrations
 {
     [DbContext(typeof(FiapPlayContext))]
-    partial class FiapPlayContextModelSnapshot : ModelSnapshot
+    [Migration("20250807015050_fix_promotion_campaign")]
+    partial class fix_promotion_campaign
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,7 +128,6 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PurchaseDate")
@@ -288,7 +290,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
                     b.HasOne("FIAP.PLAY.Domain.Library.Entities.Game", "Game")
                         .WithMany()
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FIAP.PLAY.Domain.Library.Entities.Library", "Library")
