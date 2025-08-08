@@ -1,6 +1,6 @@
 # FIAP.PLAY
 
-FIAP.PLAY é uma aplicação desenvolvida com .NET Core com o objetivo de gerenciar **usuários** e **jogos**. O projeto está em fase inicial e visa evoluir para uma plataforma mais completa de gerenciamento e consulta de conteúdo interativo.
+FIAP.PLAY é uma aplicação desenvolvida com .NET Core com o objetivo de gerenciar **usuários**, **jogos**, **campanhas**, **promoções** e **Bibliotecas de jogos** . O projeto está em fase inicial e visa evoluir para uma plataforma mais completa de gerenciamento e consulta de conteúdo interativo.
 
 ---
 
@@ -10,6 +10,9 @@ Atualmente, a aplicação permite:
 
 - Cadastro e gerenciamento de **usuários**  
 - Cadastro e gerenciamento de **jogos**
+- Cadastro e gerenciamento de **campanhas**
+- Cadastro e gerenciamento de **promoções**
+- Cadastro e gerenciamento de **Bibliotecas de jogos**
 
 ---
 
