@@ -1,21 +1,17 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Services;
-using FIAP.PLAY.Application.Promotions.Interfaces;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
 using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Library.Entities;
-using FIAP.PLAY.Domain.Library.Enums;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Security.Claims;
 
-namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
+namespace FIAP.PLAY.Tests.Application.Promotions.Services
 {
     public class CampaignServiceTests
     {
@@ -134,7 +130,7 @@ namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.CreateCampaignAsync(campaignRequest));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.CreateCampaignAsync(campaignRequest));
 
             // Assert
             Assert.NotNull(resultado);
@@ -148,7 +144,7 @@ namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
             var campaignRequest = new CampaignRequest("Campanha de natal", new DateTime(2025, 12, 20), new DateTime(2025, 12, 26));
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
 
             // Assert
             Assert.NotNull(resultado);
@@ -167,7 +163,7 @@ namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
 
             // Assert
             Assert.NotNull(resultado);
@@ -214,7 +210,7 @@ namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
         [Fact]
         public void DeletarCampanhaAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.DeleteCampaignAsync(0));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.DeleteCampaignAsync(0));
             Assert.NotNull(resultado);
         }
 
@@ -222,7 +218,7 @@ namespace FIAP.PLAY.Tests.Application.CampaignAccess.Services
         public void DeletarCampanhaAsync_Invalido_CampanhaDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _campaignService.DeleteCampaignAsync(id));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _campaignService.DeleteCampaignAsync(id));
 
             Assert.NotNull(resultado);
         }

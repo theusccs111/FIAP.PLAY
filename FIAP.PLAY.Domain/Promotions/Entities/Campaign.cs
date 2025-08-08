@@ -18,7 +18,6 @@ namespace FIAP.PLAY.Domain.Library.Entities
 
         private Campaign(string description, DateTime startDate, DateTime endDate)
         {
-          
             Description = description;
             StartDate = startDate;
             EndDate = endDate;
