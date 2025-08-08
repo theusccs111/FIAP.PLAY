@@ -61,6 +61,8 @@ namespace FIAP.PLAY.Domain.Library.Entities
             return new Promotion(name, description,discountPercentage, startDate,  endDate, isActive: ShouldActivatePromotion(isActive, startDate, endDate),  campaignId,  applicableGames);
         }
 
+        #endregion
+
         private static bool ShouldActivatePromotion(bool isActive, DateTime startDate, DateTime endDate)
         {
             var today = DateTime.Today;
