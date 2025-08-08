@@ -17,7 +17,6 @@ namespace FIAP.PLAY.Domain.Library.Entities
         #endregion
 
         #region Constructor
-        // Construtor privado para EF Core ou serialização
         private Promotion() { }
 
         private Promotion(decimal discountPercentage,
@@ -44,12 +43,6 @@ namespace FIAP.PLAY.Domain.Library.Entities
                 throw new ArgumentException("ID da campanha deve ser maior que zero.", nameof(campaignId));
 
             return new Promotion(discountPercentage, startDate,  endDate,  campaignId);
-        }
-
-        private static bool ShouldActivatePromotion(bool isActive, DateTime startDate, DateTime endDate)
-        {
-            var today = DateTime.Today;
-            return isActive && today >= startDate && today <= endDate;
         }
         #endregion
     }
