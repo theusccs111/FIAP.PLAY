@@ -54,8 +54,13 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
         }
 
         public async Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync()
-        {
-            var libraries = await uow.Libraries.GetDbSet().Include(l => l.Games).ToListAsync();           
+        {            
+            var libraries = await uow.Libraries.GetDbSet()
+                .Include(l => l.Games).ThenInclude(gl => gl.Game)
+                .ToListAsync();                 
+
+            if (libraries is null || !libraries.Any())
+                return new Result<IEnumerable<LibraryResponse>>(new List<LibraryResponse>());
 
             var librariesResponse = libraries.Select(l => Parse(l)).ToList();
 
@@ -67,7 +72,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             if (libraryId <= 0)
                 throw new Domain.Shared.Exceptions.ValidationException("libraryId", "O ID da biblioteca não pode ser nulo ou negativo.");
             
-            var library = await uow.Libraries.GetDbSet().Include( l => l.Games)
+            var library = await uow.Libraries.GetDbSet().Include( l => l.Games).ThenInclude(gl => gl.Game)
                 .FirstOrDefaultAsync(l => l.Id == libraryId);
 
             if (library is null)
@@ -114,7 +119,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
            => Library.Create(request.UserId);
 
         private static LibraryResponse Parse(Library entidade)
-            => new LibraryResponse( entidade.Id, 
+            =>  new LibraryResponse(entidade.Id, 
                                     entidade.UserId, 
                                     entidade.Games.Select(g => new GameLibraryResponse(
                                         g.Id, 

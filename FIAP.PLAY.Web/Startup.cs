@@ -69,7 +69,8 @@ namespace FIAP.PLAY.Web
                 })
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<UserRequestValidator>())
                 .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<GameRequestValidator>())
-                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<LibraryRequestValidator>());
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<LibraryRequestValidator>())
+                .AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<GameLibraryRequestValidator>());
 
             InjectServices(services);
             InjectRepositories(services);
@@ -132,7 +133,9 @@ namespace FIAP.PLAY.Web
             services.AddScoped<IAuthenticateService, AuthenticateService>();
             services.AddScoped<IGameService, GameService>();
             services.AddScoped<ILibraryService, LibraryService>();
+            services.AddScoped<IGameLibraryService, GameLibraryService>();
         }
+
 
         private static void InjectRepositories(IServiceCollection services)
         {

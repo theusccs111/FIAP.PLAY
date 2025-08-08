@@ -21,6 +21,7 @@ namespace FIAP.PLAY.Infrastructure.EntityConfig
 
             builder.Property(b => b.Price)
                 .IsRequired()
+                .HasColumnType("decimal")
                 .HasPrecision(18, 2);
 
             builder.HasOne(gl => gl.Game)
@@ -32,6 +33,8 @@ namespace FIAP.PLAY.Infrastructure.EntityConfig
                 .WithMany(lib => lib.Games)
                 .HasForeignKey(gl => gl.LibraryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasQueryFilter(c => !c.DateDeleted.HasValue);
         }
     }
 }
