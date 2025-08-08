@@ -1,6 +1,7 @@
 ﻿using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Library.Entities;
+using FIAP.PLAY.Domain.Promotions.Entities;
 using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Infrastructure.Data;
@@ -17,6 +18,9 @@ namespace FIAP.PLAY.Infrastructure
         public IRepository<Game> Games { get { return new Repository<Game>(_context); } }
         public IRepository<Library> Libraries { get { return new Repository<Library>(_context); } }
         public IRepository<GameLibrary> GameLibraries { get { return new Repository<GameLibrary>(_context); } }
+        public IRepository<Campaign> Campaigns { get { return new Repository<Campaign>(_context); } }
+        public IRepository<Promotion> Promotions { get { return new Repository<Promotion>(_context); } }
+        public IRepository<PromotionGame> PromotionGames { get { return new Repository<PromotionGame>(_context); } }
 
 
         public UnityOfWork(FiapPlayContext context)

@@ -34,14 +34,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
         public async Task CreateUserAsync_ShouldReturnUserResponse_WhenRequestIsValid()
         {
             // Arrange
-            var request = new UserRequest
-            {
-                Name = "Jacqueline",
-                Email = "jaque@email.com",
-                PasswordHash = "has@12356",
-                Role = ERole.Admin,
-                Active = true
-            };
+            var request = new UserRequest("Jacqueline", "Has@!12356", "jaque@email.com", ERole.Admin, true);
 
             _validatorMock.Setup(v => v.Validate(request)).Returns(new ValidationResult());
 
