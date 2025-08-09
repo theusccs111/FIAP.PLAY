@@ -1,7 +1,6 @@
 ﻿using FIAP.PLAY.Domain.Shared.Entities;
 using FIAP.PLAY.Domain.Shared.Extensions;
 using FIAP.PLAY.Domain.UserAccess.Enums;
-using System.Runtime.CompilerServices;
 
 namespace FIAP.PLAY.Domain.UserAccess.Entities
 {

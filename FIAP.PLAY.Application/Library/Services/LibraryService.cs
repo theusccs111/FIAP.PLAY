@@ -16,7 +16,7 @@ namespace FIAP.PLAY.Application.Library.Services
         IUserService userService,
         ILoggerManager<LibraryRequest> loggerManager) : ILibraryService
     {
-        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request, CancellationToken cancellationToken)
+        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request, CancellationToken cancellationToken = default)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -102,7 +102,7 @@ namespace FIAP.PLAY.Application.Library.Services
        
         public async Task<bool> IsLibraryExistsAsync(long userId)
         {
-            var user = await userService.GetUserByIdAsync(userId);
+            var user = await userService.GetUserByIdAsync(userId, CancellationToken.None);
 
             if (user is null)
                 throw new Domain.Shared.Exceptions.NotFoundException("Usuário inválido");

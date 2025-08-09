@@ -162,7 +162,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest, CancellationToken.None));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);

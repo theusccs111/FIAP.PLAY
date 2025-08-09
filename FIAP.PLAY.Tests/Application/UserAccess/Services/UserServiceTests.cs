@@ -45,7 +45,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
             _uowMock.Setup(u => u.Users.GetAllAsync()).ReturnsAsync(users);
 
             // Act
-            var result = await _service.GetUsersAsync();
+            var result = await _service.GetUsersAsync(CancellationToken.None);
 
             // Assert
             Assert.NotNull(result);
@@ -68,7 +68,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
 
             // Act & Assert
             await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() =>
-                _service.CreateUserAsync(request));
+                _service.CreateUserAsync(request, CancellationToken.None));
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
             _uowMock.Setup(u => u.CompleteAsync()).Returns(Task.CompletedTask);
 
             // Act
-            var result = await _service.CreateUserAsync(request);
+            var result = await _service.CreateUserAsync(request, CancellationToken.None);
 
             // Assert
             Assert.NotNull(result);
@@ -106,7 +106,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
 
             // Act & Assert
             var ex = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(
-                () => _service.DeleteUserAsync(99));
+                () => _service.DeleteUserAsync(99, CancellationToken.None));
 
             Assert.Contains("Usuário não encontrado", ex.Message);
         }
@@ -119,7 +119,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
 
             // Act & Assert
             var ex = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(
-                () => _service.UpdateUserAsync(0, request));
+                () => _service.UpdateUserAsync(0, request, CancellationToken.None));
 
             Assert.Contains("id do usuário não pode ser nulo", ex.Message);
         }
