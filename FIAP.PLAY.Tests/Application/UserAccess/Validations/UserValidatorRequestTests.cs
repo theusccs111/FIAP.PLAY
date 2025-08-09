@@ -17,7 +17,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Have_Error_When_Nome_Is_Empty()
         {
-            var model = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
+            var model = new UserRequest(string.Empty, "Admin1!a", "test@email.com",  ERole.Common, true);
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.Name);
         }
@@ -27,7 +27,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [InlineData("A")]
         public void Should_Have_Error_When_Nome_Is_Too_Short(string nome)
         {
-            var model = new UserRequest(nome, "test@email.com", "abc123", ERole.Common, true);
+            var model = new UserRequest(nome, "Admin1!a", "test@email.com", ERole.Common, true);
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.Name);
         }
@@ -35,7 +35,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Have_Error_When_Email_Is_Invalid()
         {
-            var model = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
+            var model = new UserRequest("Test", "Admin1!a", "email-invalid",  ERole.Common, true);
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.Email);
         }
@@ -43,7 +43,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Have_Error_When_Senha_Is_Empty()
         {
-            var model = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
+            var model = new UserRequest("Test", string.Empty, "test@email.com",  ERole.Common, true);
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.PasswordHash);
         }
@@ -58,7 +58,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [InlineData("ABCdefgh1")] // sem especial
         public void Should_Have_Error_When_Senha_Invalid(string senha)
         {
-            var model = new UserRequest("Test", "test@email.com", senha, ERole.Common, true);
+            var model = new UserRequest("Test", senha, "test@email.com",  ERole.Common, true);
             var result = _validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(user => user.PasswordHash);
         }
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Validations
         [Fact]
         public void Should_Not_Have_Error_When_All_Fields_Are_Valid()
         {
-            var model = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);        
+            var model = new UserRequest("Test", "Admin1!a", "test@email.com",  ERole.Common, true);        
 
             var result = _validator.TestValidate(model);
             result.ShouldNotHaveAnyValidationErrors();

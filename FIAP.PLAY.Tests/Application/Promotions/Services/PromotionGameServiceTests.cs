@@ -4,6 +4,7 @@ using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
+using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Domain.Promotions.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -16,11 +17,12 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
     public class PromotionGameServiceTests
     {
         private readonly IPromotionGameService _promotionGameService;
-        private readonly Mock<IUnityOfWork> _mockForUOF = new(CancellationToken.None);
-        private readonly Mock<IRepository<PromotionGame>> _mockForRepository = new(CancellationToken.None);
-        private readonly Mock<IValidator<PromotionGameRequest>> _mockForValidator = new(CancellationToken.None);
-        private readonly Mock<ILoggerManager<PromotionGameService>> _mockLogger = new(CancellationToken.None);
-        private readonly Mock<IHttpContextAccessor> _mockHttpContext = new(CancellationToken.None);
+        private readonly Mock<IUnityOfWork> _mockForUOF = new();
+        private readonly Mock<IRepository<PromotionGame>> _mockForRepository = new();
+        private readonly Mock<IValidator<PromotionGameRequest>> _mockForValidator = new();
+        private readonly Mock<ILoggerManager<PromotionGameService>> _mockLogger = new();
+        private readonly Mock<IHttpContextAccessor> _mockHttpContext = new();
+
 
         public PromotionGameServiceTests()
         {
@@ -62,7 +64,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             // Assert
             Assert.NotNull(resultado);
             Assert.True(resultado.Success);
-            Assert.Single(resultado.Data!, CancellationToken.None);
+            Assert.Single(resultado.Data!);
         }
 
         [Fact]
