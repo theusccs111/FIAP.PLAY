@@ -13,7 +13,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CriarBibliotecaAsync([FromBody] LibraryRequest request)
+        public async Task<IActionResult> CreateLibraryAsync([FromBody] LibraryRequest request)
         {
             var result = await service.CreateLibraryAsync(request);
             return Created("api/Library", result);
@@ -21,7 +21,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> ObterBibliotecasAsync()
+        public async Task<IActionResult> GetLibrariesAsync()
         {
             var result = await service.GetLibrariesAsync();
             return Ok(result);
@@ -29,7 +29,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")] 
-        public async Task<IActionResult> ObterBibliotecaPorIdAsync(long id)
+        public async Task<IActionResult> GetLibraryByIdAsync(long id)
         {
             var result = await service.GetLibraryByIdAsync(id);
             return Ok(result);
@@ -37,7 +37,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize]
         [HttpGet("/getUser")]
-        public async Task<IActionResult> ObterBibliotecaPorUsuarioAsync()
+        public async Task<IActionResult> GetLibraryByUserIdAsync()
         {           
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -52,7 +52,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoverBibliotecaAsync(long id)
+        public async Task<IActionResult> RemoveLibraryAsync(long id)
         {
             await service.DeleteLibraryAsync(id);
             return NoContent();
