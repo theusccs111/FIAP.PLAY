@@ -10,48 +10,48 @@ namespace FIAP.PLAY.Web.Controllers.Promotions
     public class PromotionController : ControllerBase
     {
         private readonly IPromotionService _promotionService;
-        public PromotionController(IPromotionService promotionService)
+        public PromotionController(IPromotionService promotionService, CancellationToken cancellationToken)
         {
             _promotionService = promotionService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPromotionsAsync()
+        public async Task<IActionResult> GetPromotionsAsync(CancellationToken cancellationToken)
         {
-            var resultado = await _promotionService.GetPromotionsAsync();
+            var resultado = await _promotionService.GetPromotionsAsync(cancellationToken);
             return Ok(resultado);
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetPromotionByIdAsync(int Id)
+        public async Task<IActionResult> GetPromotionByIdAsync(int Id, CancellationToken cancellationToken)
         {
-            var resultado = await _promotionService.GetPromotionByIdAsync(Id);
+            var resultado = await _promotionService.GetPromotionByIdAsync(Id, cancellationToken);
             return Ok(resultado);
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Authorize]
-        public async Task<IActionResult> CreatePromotionAsync([FromBody] PromotionRequest request)
+        public async Task<IActionResult> CreatePromotionAsync([FromBody] PromotionRequest request, CancellationToken cancellationToken)
         {
-            var dados = await _promotionService.CreatePromotionAsync(request);
+            var dados = await _promotionService.CreatePromotionAsync(request, cancellationToken);
             return Created("api/Promotion", dados);
         }
 
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdatePromotionAsync([FromRoute] long id, [FromBody] PromotionRequest request)
+        public async Task<IActionResult> UpdatePromotionAsync([FromRoute] long id, [FromBody] PromotionRequest request, CancellationToken cancellationToken)
         {
-            var dados = await _promotionService.UpdatePromotionAsync(id, request);
+            var dados = await _promotionService.UpdatePromotionAsync(id, request, cancellationToken);
             return Ok(dados);
         }
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         [Authorize]
-        public async Task<IActionResult> DeletePromotionAsync(long id)
+        public async Task<IActionResult> DeletePromotionAsync(long id, CancellationToken cancellationToken)
         {
-            await _promotionService.DeletePromotionAsync(id);
+            await _promotionService.DeletePromotionAsync(id, cancellationToken);
             return NoContent();
         }
     }

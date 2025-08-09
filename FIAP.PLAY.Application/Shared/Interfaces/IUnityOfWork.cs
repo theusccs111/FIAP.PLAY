@@ -10,7 +10,7 @@ namespace FIAP.PLAY.Application.Shared.Interfaces
     {
         IRepository<User> Users { get;}
         IRepository<Game> Games { get; }
-        IRepository<Library> Libraries { get; }
+        IRepository<Domain.Library.Entities.Library> Libraries { get; }
         IRepository<GameLibrary> GameLibraries { get; }
         IRepository<Campaign> Campaigns { get; }
         IRepository<Promotion> Promotions { get; }

@@ -1,6 +1,6 @@
-using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Services;
-using FIAP.PLAY.Application.Biblioteca.Validations;
+using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Services;
+using FIAP.PLAY.Application.Library.Validations;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Services;

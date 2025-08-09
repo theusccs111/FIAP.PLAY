@@ -1,14 +1,10 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Services;
-using FIAP.PLAY.Application.Promotions.Interfaces;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
 using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Library.Entities;
-using FIAP.PLAY.Domain.Library.Enums;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +17,6 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
     public class PromotionServiceTests
     {
         private readonly IPromotionService _promotionService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<Promotion>> _mockForRepository = new();
         private readonly Mock<IRepository<Campaign>> _mockForCampaignRepository = new();
@@ -66,7 +61,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(promotions);
 
             // Act
-            var resultado = await _promotionService.GetPromotionsAsync();
+            var resultado = await _promotionService.GetPromotionsAsync(CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -85,7 +80,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(promotion);
 
             // Act
-            var resultado = await _promotionService.GetPromotionByIdAsync(id);
+            var resultado = await _promotionService.GetPromotionByIdAsync(id, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -126,7 +121,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .ReturnsAsync(promotionEntidade);
 
             // Act
-            var resultado = await _promotionService.CreatePromotionAsync(promotionRequest);
+            var resultado = await _promotionService.CreatePromotionAsync(promotionRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -156,7 +151,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.CreatePromotionAsync(promotionRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.CreatePromotionAsync(promotionRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -170,7 +165,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             var promotionRequest = new PromotionRequest(0.3m, new DateTime(2025, 12, 1), new DateTime(2025, 12, 1), 1);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.UpdatePromotionAsync(id, promotionRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.UpdatePromotionAsync(id, promotionRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -196,7 +191,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.UpdatePromotionAsync(id, promotionRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.UpdatePromotionAsync(id, promotionRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -237,7 +232,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Verifiable();
 
             // Act
-            var resultado = await _promotionService.UpdatePromotionAsync(id, promotionRequest);
+            var resultado = await _promotionService.UpdatePromotionAsync(id, promotionRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -253,7 +248,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         [Fact]
         public void DeletarPromocaoAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.DeletePromotionAsync(0));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionService.DeletePromotionAsync(0,CancellationToken.None));
             Assert.NotNull(resultado);
         }
 
@@ -261,7 +256,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         public void DeletarPromocaoAsync_Invalido_PromocaoDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _promotionService.DeletePromotionAsync(id));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _promotionService.DeletePromotionAsync(id, CancellationToken.None));
 
             Assert.NotNull(resultado);
         }
@@ -281,7 +276,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Setup(d => d.CompleteAsync())
                 .Verifiable();
 
-            await _promotionService.DeletePromotionAsync(id);
+            await _promotionService.DeletePromotionAsync(id, CancellationToken.None);
 
             _mockForRepository.VerifyAll();
         }

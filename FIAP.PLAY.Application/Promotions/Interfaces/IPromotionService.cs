@@ -11,10 +11,10 @@ namespace FIAP.PLAY.Application.Promotions.Interfaces
 {
     public interface IPromotionService
     {
-        Task<Result<IEnumerable<PromotionResponse>>> GetPromotionsAsync();
-        Task<Result<PromotionResponse>> GetPromotionByIdAsync(long id);
-        Task<Result<PromotionResponse>> CreatePromotionAsync(PromotionRequest request);
-        Task<Result<PromotionResponse>> UpdatePromotionAsync(long id, PromotionRequest request);
-        Task DeletePromotionAsync(long id);
+        Task<Result<IEnumerable<PromotionResponse>>> GetPromotionsAsync(CancellationToken cancellationToken);
+        Task<Result<PromotionResponse>> GetPromotionByIdAsync(long id, CancellationToken cancellationToken);
+        Task<Result<PromotionResponse>> CreatePromotionAsync(PromotionRequest request, CancellationToken cancellationToken);
+        Task<Result<PromotionResponse>> UpdatePromotionAsync(long id, PromotionRequest request, CancellationToken cancellationToken);
+        Task DeletePromotionAsync(long id, CancellationToken cancellationToken);
     }
 }

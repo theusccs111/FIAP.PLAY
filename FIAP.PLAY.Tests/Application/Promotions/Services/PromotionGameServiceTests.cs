@@ -1,9 +1,10 @@
-﻿using FIAP.PLAY.Application.PromotionGames.Interfaces;
-using FIAP.PLAY.Application.PromotionGames.Services;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
+using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
+using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Domain.Promotions.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -16,12 +17,12 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
     public class PromotionGameServiceTests
     {
         private readonly IPromotionGameService _promotionGameService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<PromotionGame>> _mockForRepository = new();
         private readonly Mock<IValidator<PromotionGameRequest>> _mockForValidator = new();
         private readonly Mock<ILoggerManager<PromotionGameService>> _mockLogger = new();
         private readonly Mock<IHttpContextAccessor> _mockHttpContext = new();
+
 
         public PromotionGameServiceTests()
         {
@@ -58,7 +59,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(promotionGames);
 
             // Act
-            var resultado = await _promotionGameService.GetPromotionGamesAsync();
+            var resultado = await _promotionGameService.GetPromotionGamesAsync(CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -77,7 +78,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(promotionGame);
 
             // Act
-            var resultado = await _promotionGameService.GetPromotionGameByIdAsync(id);
+            var resultado = await _promotionGameService.GetPromotionGameByIdAsync(id, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -107,7 +108,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .ReturnsAsync(promotionGameEntidade);
 
             // Act
-            var resultado = await _promotionGameService.CreatePromotionGameAsync(promotionGameRequest);
+            var resultado = await _promotionGameService.CreatePromotionGameAsync(promotionGameRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -122,13 +123,13 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             // Prepare
             var promotionGameRequest = new PromotionGameRequest(0,1);
 
-            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("PromotionId", "O Id da promoção deve ser informado.")]);
+            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("PromotionId", "O Id da promoção deve ser informado.", CancellationToken.None)]);
             _mockForValidator
                 .Setup(d => d.Validate(It.IsAny<PromotionGameRequest>()))
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.CreatePromotionGameAsync(promotionGameRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.CreatePromotionGameAsync(promotionGameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -142,7 +143,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             var promotionGameRequest = new PromotionGameRequest(1,1);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -155,13 +156,13 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             var id = 1L;
             var promotionGameRequest = new PromotionGameRequest(0,1);
 
-            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("PromotionId", "O Id da promoção deve ser informado.")]);
+            var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("PromotionId", "O Id da promoção deve ser informado.", CancellationToken.None)]);
             _mockForValidator
                 .Setup(d => d.Validate(It.IsAny<PromotionGameRequest>()))
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -193,7 +194,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Verifiable();
 
             // Act
-            var resultado = await _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest);
+            var resultado = await _promotionGameService.UpdatePromotionGameAsync(id, promotionGameRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -207,7 +208,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         [Fact]
         public void DeletarPromocaoJogoAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.DeletePromotionGameAsync(0));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _promotionGameService.DeletePromotionGameAsync(0, CancellationToken.None));
             Assert.NotNull(resultado);
         }
 
@@ -215,7 +216,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         public void DeletarPromocaoJogoAsync_Invalido_PromocaoJogoDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _promotionGameService.DeletePromotionGameAsync(id));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _promotionGameService.DeletePromotionGameAsync(id, CancellationToken.None));
 
             Assert.NotNull(resultado);
         }
@@ -235,7 +236,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Setup(d => d.CompleteAsync())
                 .Verifiable();
 
-            await _promotionGameService.DeletePromotionGameAsync(id);
+            await _promotionGameService.DeletePromotionGameAsync(id, CancellationToken.None);
 
             _mockForRepository.VerifyAll();
         }

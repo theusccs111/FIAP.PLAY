@@ -1,7 +1,7 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+﻿using FIAP.PLAY.Application.Library.Resource.Request;
 using FluentValidation;
 
-namespace FIAP.PLAY.Application.Biblioteca.Validations
+namespace FIAP.PLAY.Application.Library.Validations
 {
     public class GameRequestValidator : AbstractValidator<GameRequest>
     {

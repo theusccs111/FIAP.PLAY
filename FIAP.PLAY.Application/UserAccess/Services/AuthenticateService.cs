@@ -21,7 +21,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
         IJWTService jwtService) : Service(httpContextAccessor), IAuthenticateService
     {
 
-        public async Task<Result<LoginResponse>> LoginAsync(AuthenticateRequest request)
+        public async Task<Result<LoginResponse>> LoginAsync(AuthenticateRequest request, CancellationToken cancellationToken = default)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)

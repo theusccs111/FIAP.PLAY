@@ -17,21 +17,21 @@ namespace FIAP.PLAY.Application.Promotions.Services
         IValidator<CampaignRequest> validator,
         ILoggerManager<CampaignService> loggerManager) : Service(httpContextAccessor), ICampaignService
     {
-        public async Task<Result<IEnumerable<CampaignResponse>>> GetCampaignsAsync()
+        public async Task<Result<IEnumerable<CampaignResponse>>> GetCampaignsAsync(CancellationToken cancellationToken)
         {
             var campaigns = await uow.Campaigns.GetAllAsync();
             var campaignsResponse = campaigns.Select(d => Parse(d)).ToList();
             return new Result<IEnumerable<CampaignResponse>>(campaignsResponse);
         }
 
-        public async Task<Result<CampaignResponse>> GetCampaignByIdAsync(long id)
+        public async Task<Result<CampaignResponse>> GetCampaignByIdAsync(long id, CancellationToken cancellationToken)
         {
             var campaign = await uow.Campaigns.GetByIdAsync(id);
             var campaignResponse = Parse(campaign);
             return new Result<CampaignResponse>(campaignResponse);
         }
 
-        public async Task<Result<CampaignResponse>> CreateCampaignAsync(CampaignRequest request)
+        public async Task<Result<CampaignResponse>> CreateCampaignAsync(CampaignRequest request, CancellationToken cancellationToken)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -46,7 +46,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
             return new Result<CampaignResponse>(Parse(campaignCreated));
         }
 
-        public async Task<Result<CampaignResponse>> UpdateCampaignAsync(long id, CampaignRequest request)
+        public async Task<Result<CampaignResponse>> UpdateCampaignAsync(long id, CampaignRequest request, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
 
         }
 
-        public async Task DeleteCampaignAsync(long id)
+        public async Task DeleteCampaignAsync(long id, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");

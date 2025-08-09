@@ -2,14 +2,14 @@
 using FIAP.PLAY.Application.Promotions.Resources.Response;
 using FIAP.PLAY.Application.Shared.Resource;
 
-namespace FIAP.PLAY.Application.PromotionGames.Interfaces
+namespace FIAP.PLAY.Application.Promotions.Interfaces
 {
     public interface IPromotionGameService
     {
-        Task<Result<IEnumerable<PromotionGameResponse>>> GetPromotionGamesAsync();
-        Task<Result<PromotionGameResponse>> GetPromotionGameByIdAsync(long id);
-        Task<Result<PromotionGameResponse>> CreatePromotionGameAsync(PromotionGameRequest request);
-        Task<Result<PromotionGameResponse>> UpdatePromotionGameAsync(long id, PromotionGameRequest request);
-        Task DeletePromotionGameAsync(long id);
+        Task<Result<IEnumerable<PromotionGameResponse>>> GetPromotionGamesAsync(CancellationToken cancellationToken);
+        Task<Result<PromotionGameResponse>> GetPromotionGameByIdAsync(long id, CancellationToken cancellationToken);
+        Task<Result<PromotionGameResponse>> CreatePromotionGameAsync(PromotionGameRequest request, CancellationToken cancellationToken);
+        Task<Result<PromotionGameResponse>> UpdatePromotionGameAsync(long id, PromotionGameRequest request, CancellationToken cancellationToken);
+        Task DeletePromotionGameAsync(long id, CancellationToken cancellationToken);
     }
 }

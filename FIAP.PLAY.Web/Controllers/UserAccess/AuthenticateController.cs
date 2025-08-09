@@ -18,9 +18,9 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> LoginAsync(AuthenticateRequest autenticarRequest)
+        public async Task<IActionResult> LoginAsync(AuthenticateRequest autenticarRequest, CancellationToken cancellationToken)
         {
-            var response = await _authenticateService.LoginAsync(autenticarRequest);
+            var response = await _authenticateService.LoginAsync(autenticarRequest, cancellationToken);
             return Ok(response);
         }
 

@@ -17,21 +17,21 @@ namespace FIAP.PLAY.Application.Promotions.Services
         IValidator<PromotionRequest> validator,
         ILoggerManager<PromotionService> loggerManager) : Service(httpContextAccessor), IPromotionService
     {
-        public async Task<Result<IEnumerable<PromotionResponse>>> GetPromotionsAsync()
+        public async Task<Result<IEnumerable<PromotionResponse>>> GetPromotionsAsync(CancellationToken cancellationToken)
         {
             var promotions = await uow.Promotions.GetAllAsync();
             var promotionsResponse = promotions.Select(d => Parse(d)).ToList();
             return new Result<IEnumerable<PromotionResponse>>(promotionsResponse);
         }
 
-        public async Task<Result<PromotionResponse>> GetPromotionByIdAsync(long id)
+        public async Task<Result<PromotionResponse>> GetPromotionByIdAsync(long id, CancellationToken cancellationToken)
         {
             var promotion = await uow.Promotions.GetByIdAsync(id);
             var promotionResponse = Parse(promotion);
             return new Result<PromotionResponse>(promotionResponse);
         }
 
-        public async Task<Result<PromotionResponse>> CreatePromotionAsync(PromotionRequest request)
+        public async Task<Result<PromotionResponse>> CreatePromotionAsync(PromotionRequest request, CancellationToken cancellationToken)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -58,7 +58,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
             return new Result<PromotionResponse>(Parse(promotionCreated));
         }
 
-        public async Task<Result<PromotionResponse>> UpdatePromotionAsync(long id, PromotionRequest request)
+        public async Task<Result<PromotionResponse>> UpdatePromotionAsync(long id, PromotionRequest request, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
@@ -90,7 +90,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
 
         }
 
-        public async Task DeletePromotionAsync(long id)
+        public async Task DeletePromotionAsync(long id, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");

@@ -1,15 +1,14 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
-using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.PLAY.Application.Biblioteca.Services
+namespace FIAP.PLAY.Application.Library.Services
 {
     public class LibraryService(       
         IUnityOfWork uow,
@@ -17,7 +16,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
         IUserService userService,
         ILoggerManager<LibraryRequest> loggerManager) : ILibraryService
     {
-        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request)
+        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request, CancellationToken cancellationToken = default)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -39,7 +38,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 
         }
 
-        public async Task DeleteLibraryAsync(long libraryId)
+        public async Task DeleteLibraryAsync(long libraryId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
 
@@ -53,7 +52,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 
         }
 
-        public async Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync()
+        public async Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync(CancellationToken cancellationToken)
         {            
             var libraries = await uow.Libraries.GetDbSet()
                 .Include(l => l.Games).ThenInclude(gl => gl.Game)
@@ -67,7 +66,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return new Result<IEnumerable<LibraryResponse>>(librariesResponse);
         }
 
-        public async Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId)
+        public async Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId, CancellationToken cancellationToken)
         {
             if (libraryId <= 0)
                 throw new Domain.Shared.Exceptions.ValidationException("libraryId", "O ID da biblioteca não pode ser nulo ou negativo.");
@@ -81,7 +80,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return new Result<LibraryResponse>(Parse(library));
         }
 
-        public async Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId)
+        public async Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId, CancellationToken cancellationToken)
         {
             var userHasLib = await IsLibraryExistsAsync(userId);
 
@@ -93,7 +92,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
                 return new Result<LibraryResponse>(Parse(library!));
             }
 
-            var result = await CreateLibraryAsync(new LibraryRequest(userId));
+            var result = await CreateLibraryAsync(new LibraryRequest(userId),cancellationToken);
 
             if (!result.Success)
                 throw new Domain.Shared.Exceptions.ValidationException("userId", "Não foi possível criar a biblioteca para o usuário.");
@@ -103,7 +102,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
        
         public async Task<bool> IsLibraryExistsAsync(long userId)
         {
-            var user = await userService.GetUserByIdAsync(userId);
+            var user = await userService.GetUserByIdAsync(userId, CancellationToken.None);
 
             if (user is null)
                 throw new Domain.Shared.Exceptions.NotFoundException("Usuário inválido");
@@ -115,17 +114,17 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return true;
         }
 
-        private static Library Parse(LibraryRequest request)
-           => Library.Create(request.UserId);
+        private static Domain.Library.Entities.Library Parse(LibraryRequest request)
+           => Domain.Library.Entities.Library.Create(request.UserId);
 
-        private static LibraryResponse Parse(Library entidade)
-            =>  new LibraryResponse(entidade.Id, 
-                                    entidade.UserId, 
-                                    entidade.Games.Select(g => new GameLibraryResponse(
-                                        g.Id, 
-                                        entidade.Id, 
-                                        new GameResponse(g.Game.Id, g.Game.Title,g.Game.Price, g.Game.Genre, g.Game.YearLaunch, g.Game.Developer), 
-                                        g.PurchaseDate, 
-                                        g.Price)).ToList());
+        private static LibraryResponse Parse(Domain.Library.Entities.Library entidade)
+            =>  new(entidade.Id, 
+                    entidade.UserId, 
+                    entidade.Games.Select(g => new GameLibraryResponse(
+                        g.Id, 
+                        entidade.Id, 
+                        new GameResponse(g.Game.Id, g.Game.Title,g.Game.Price, g.Game.Genre, g.Game.YearLaunch, g.Game.Developer), 
+                        g.PurchaseDate, 
+                        g.Price)).ToList());
     }
 }

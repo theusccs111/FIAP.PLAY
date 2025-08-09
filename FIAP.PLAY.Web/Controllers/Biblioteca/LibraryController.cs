@@ -1,7 +1,8 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FIAP.PLAY.Web.Controllers.Biblioteca
 {
@@ -9,36 +10,51 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     [Route("api/[controller]")]
     public class LibraryController(ILibraryService service) : ControllerBase
     {
-        [HttpPost]
+
         [Authorize]
-        public async Task<IActionResult> CriarBibliotecaAsync([FromBody] LibraryRequest request)
+        [HttpPost]
+        public async Task<IActionResult> CreateLibraryAsync([FromBody] LibraryRequest request, CancellationToken cancellationToken)
         {
-            var result = await service.CreateLibraryAsync(request);
+            var result = await service.CreateLibraryAsync(request, cancellationToken);
             return Created("api/Library", result);
         }
 
-        [HttpGet]
-        [Authorize]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ObterBibliotecasAsync()
+        [HttpGet]
+        public async Task<IActionResult> GetLibrariesAsync(CancellationToken cancellationToken)
         {
-            var result = await service.GetLibrariesAsync();
+            var result = await service.GetLibrariesAsync(cancellationToken);
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")] 
+        public async Task<IActionResult> GetLibraryByIdAsync(long id, CancellationToken cancellationToken)
+        {
+            var result = await service.GetLibraryByIdAsync(id, cancellationToken);
+            return Ok(result);
+        }
+
         [Authorize]
-        public async Task<IActionResult> ObterBibliotecaPorIdAsync(long id)
-        {
-            var result = await service.GetLibraryByIdAsync(id);
+        [HttpGet("/getUser")]
+        public async Task<IActionResult> GetLibraryByUserIdAsync(CancellationToken cancellationToken)
+        {           
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!long.TryParse(userId, out long id))
+            {
+                return BadRequest("Id de usuário inválido.");
+            }
+
+            var result = await service.GetLibraryByUserIdAsync(id, cancellationToken);
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> RemoverBibliotecaAsync(long id)
+        public async Task<IActionResult> RemoveLibraryAsync(long id, CancellationToken cancellationToken)
         {
-            await service.DeleteLibraryAsync(id);
+            await service.DeleteLibraryAsync(id, cancellationToken);
             return NoContent();
 
         }

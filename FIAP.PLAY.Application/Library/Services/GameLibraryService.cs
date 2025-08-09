@@ -1,20 +1,20 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
+using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
-using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.PLAY.Application.Biblioteca.Services
+namespace FIAP.PLAY.Application.Library.Services
 {
     public class GameLibraryService(
         IUnityOfWork uow,
         ILoggerManager<GameLibraryRequest> loggerManager) : IGameLibraryService
     {
-        public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId)
+        public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
             if (library is null)
@@ -33,7 +33,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return new Result<GameLibraryResponse>(Parse(gameLibrary));
         }
 
-        public async Task RemoveGameFromLibraryAsync(long libraryId, long gameId)
+        public async Task RemoveGameFromLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var gameLibrary = await uow.GameLibraries.GetDbSet()
                 .FirstOrDefaultAsync(gl => gl.LibraryId == libraryId && gl.GameId == gameId);
@@ -47,7 +47,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             loggerManager.LogInformation($"Jogo com ID {gameId} removido da biblioteca {libraryId} com sucesso.");           
         }
 
-        public async Task<Result<IEnumerable<GameLibraryResponse>>> GetGamesByLibraryIdAsync(long libraryId)
+        public async Task<Result<IEnumerable<GameLibraryResponse>>> GetGamesByLibraryIdAsync(long libraryId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
             if (library is null)
@@ -62,7 +62,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return new Result<IEnumerable<GameLibraryResponse>>(response);
         }
 
-        public async Task<Result<GameLibraryResponse>> GetGameInLibraryAsync(long libraryId, long gameId)
+        public async Task<Result<GameLibraryResponse>> GetGameInLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var gameLibrary = await uow.GameLibraries.GetDbSet()
                 .Include(gl => gl.Game)
@@ -91,7 +91,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 
         public static GameLibrary Parse(GameLibraryRequest request)
         => GameLibrary.Create(
-            Library.Create(request.Library.UserId),
+            Domain.Library.Entities.Library.Create(request.Library.UserId),
             Game.Create(request.Game.Title, request.Game.Price, request.Game.Genre, request.Game.YearLaunch, request.Game.Developer)
         );
     }

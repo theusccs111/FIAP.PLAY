@@ -1,6 +1,6 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Services;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
@@ -17,7 +17,6 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
     public class GameServiceTests
     {
         private readonly IGameService _gameService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<Game>> _mockForRepository = new();
         private readonly Mock<IValidator<GameRequest>> _mockForValidator = new();
@@ -59,7 +58,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(games);
 
             // Act
-            var resultado = await _gameService.GetGamesAsync();
+            var resultado = await _gameService.GetGamesAsync(CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -78,7 +77,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(game);
 
             // Act
-            var resultado = await _gameService.GetGameByIdAsync(id);
+            var resultado = await _gameService.GetGameByIdAsync(id, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -113,7 +112,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .ReturnsAsync(gameEntidade);
 
             // Act
-            var resultado = await _gameService.CreateGameAsync(gameRequest);
+            var resultado = await _gameService.CreateGameAsync(gameRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -137,7 +136,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.CreateGameAsync(gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.CreateGameAsync(gameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -151,7 +150,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             var gameRequest = new GameRequest("Super mario world", 100, EGenre.Aventura, 1993, "Nintendo");
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -170,7 +169,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -204,7 +203,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Verifiable();
 
             // Act
-            var resultado = await _gameService.UpdateGameAsync(id, gameRequest);
+            var resultado = await _gameService.UpdateGameAsync(id, gameRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -221,7 +220,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         [Fact]
         public void DeletarJogoAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.DeleteGameAsync(0));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.DeleteGameAsync(0, CancellationToken.None));
             Assert.NotNull(resultado);
         }
 
@@ -229,7 +228,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
         public void DeletarJogoAsync_Invalido_JogoDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _gameService.DeleteGameAsync(id));
+            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _gameService.DeleteGameAsync(id, CancellationToken.None));
 
             Assert.NotNull(resultado);
         }
@@ -249,7 +248,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Setup(d => d.CompleteAsync())
                 .Verifiable();
 
-            await _gameService.DeleteGameAsync(id);
+            await _gameService.DeleteGameAsync(id, CancellationToken.None);
 
             _mockForRepository.VerifyAll();
         }
