@@ -1,5 +1,6 @@
 ﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
 using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP.PLAY.Web.Controllers.Biblioteca
@@ -9,6 +10,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     public class LibraryController(ILibraryService service) : ControllerBase
     {
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CriarBibliotecaAsync([FromBody] LibraryRequest request)
         {
             var result = await service.CreateLibraryAsync(request);
@@ -16,6 +18,8 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpGet]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ObterBibliotecasAsync()
         {
             var result = await service.GetLibrariesAsync();
@@ -23,6 +27,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> ObterBibliotecaPorIdAsync(long id)
         {
             var result = await service.GetLibraryByIdAsync(id);
@@ -30,6 +35,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> RemoverBibliotecaAsync(long id)
         {
             await service.DeleteLibraryAsync(id);

@@ -1,5 +1,6 @@
 ﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
 using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     public class GameLibraryController(IGameLibraryService service) : ControllerBase
     {
         [HttpPost("{libraryId}/games/{gameId}")]
+        [Authorize]
         public async Task<IActionResult> AddGameToLibraryAsync(long libraryId, long gameId)
         {
             var result = await service.AddGameToLibraryAsync(libraryId, gameId);
@@ -16,6 +18,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpDelete("{libraryId}/games/{gameId}")]
+        [Authorize]
         public async Task<IActionResult> RemoveGameFromLibraryAsync(long libraryId, long gameId)
         {
             await service.RemoveGameFromLibraryAsync(libraryId, gameId);
@@ -23,6 +26,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpGet("{libraryId}/games")]
+        [Authorize]
         public async Task<IActionResult> GetGamesByLibraryIdAsync(long libraryId)
         {
             var result = await service.GetGamesByLibraryIdAsync(libraryId);
@@ -30,16 +34,10 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         }
 
         [HttpGet("{libraryId}/games/{gameId}")]
+        [Authorize]
         public async Task<IActionResult> GetGameInLibraryAsync(long libraryId, long gameId)
         {
             var result = await service.GetGameInLibraryAsync(libraryId, gameId);
-            return Ok(result);
-        }
-
-        [HttpPut("{libraryId}/games/{gameId}")]
-        public async Task<IActionResult> UpdateGameInLibraryAsync(long libraryId, long gameId, [FromBody] GameLibraryRequest request)
-        {
-            var result = await service.UpdateGameAsync(libraryId, gameId, request);
             return Ok(result);
         }
 
