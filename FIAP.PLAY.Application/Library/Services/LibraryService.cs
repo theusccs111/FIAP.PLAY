@@ -16,7 +16,7 @@ namespace FIAP.PLAY.Application.Library.Services
         IUserService userService,
         ILoggerManager<LibraryRequest> loggerManager) : ILibraryService
     {
-        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request)
+        public async Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request, CancellationToken cancellationToken)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Application.Library.Services
 
         }
 
-        public async Task DeleteLibraryAsync(long libraryId)
+        public async Task DeleteLibraryAsync(long libraryId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
 
@@ -52,7 +52,7 @@ namespace FIAP.PLAY.Application.Library.Services
 
         }
 
-        public async Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync()
+        public async Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync(CancellationToken cancellationToken)
         {            
             var libraries = await uow.Libraries.GetDbSet()
                 .Include(l => l.Games).ThenInclude(gl => gl.Game)
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<IEnumerable<LibraryResponse>>(librariesResponse);
         }
 
-        public async Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId)
+        public async Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId, CancellationToken cancellationToken)
         {
             if (libraryId <= 0)
                 throw new Domain.Shared.Exceptions.ValidationException("libraryId", "O ID da biblioteca não pode ser nulo ou negativo.");
@@ -80,7 +80,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<LibraryResponse>(Parse(library));
         }
 
-        public async Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId)
+        public async Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId, CancellationToken cancellationToken)
         {
             var userHasLib = await IsLibraryExistsAsync(userId);
 
@@ -92,7 +92,7 @@ namespace FIAP.PLAY.Application.Library.Services
                 return new Result<LibraryResponse>(Parse(library!));
             }
 
-            var result = await CreateLibraryAsync(new LibraryRequest(userId));
+            var result = await CreateLibraryAsync(new LibraryRequest(userId),cancellationToken);
 
             if (!result.Success)
                 throw new Domain.Shared.Exceptions.ValidationException("userId", "Não foi possível criar a biblioteca para o usuário.");

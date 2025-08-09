@@ -13,31 +13,31 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateLibraryAsync([FromBody] LibraryRequest request)
+        public async Task<IActionResult> CreateLibraryAsync([FromBody] LibraryRequest request, CancellationToken cancellationToken)
         {
-            var result = await service.CreateLibraryAsync(request);
+            var result = await service.CreateLibraryAsync(request, cancellationToken);
             return Created("api/Library", result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetLibrariesAsync()
+        public async Task<IActionResult> GetLibrariesAsync(CancellationToken cancellationToken)
         {
-            var result = await service.GetLibrariesAsync();
+            var result = await service.GetLibrariesAsync(cancellationToken);
             return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")] 
-        public async Task<IActionResult> GetLibraryByIdAsync(long id)
+        public async Task<IActionResult> GetLibraryByIdAsync(long id, CancellationToken cancellationToken)
         {
-            var result = await service.GetLibraryByIdAsync(id);
+            var result = await service.GetLibraryByIdAsync(id, cancellationToken);
             return Ok(result);
         }
 
         [Authorize]
         [HttpGet("/getUser")]
-        public async Task<IActionResult> GetLibraryByUserIdAsync()
+        public async Task<IActionResult> GetLibraryByUserIdAsync(CancellationToken cancellationToken)
         {           
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -46,15 +46,15 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
                 return BadRequest("Id de usuário inválido.");
             }
 
-            var result = await service.GetLibraryByUserIdAsync(id);
+            var result = await service.GetLibraryByUserIdAsync(id, cancellationToken);
             return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveLibraryAsync(long id)
+        public async Task<IActionResult> RemoveLibraryAsync(long id, CancellationToken cancellationToken)
         {
-            await service.DeleteLibraryAsync(id);
+            await service.DeleteLibraryAsync(id, cancellationToken);
             return NoContent();
 
         }

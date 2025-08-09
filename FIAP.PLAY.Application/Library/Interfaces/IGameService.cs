@@ -6,10 +6,10 @@ namespace FIAP.PLAY.Application.Library.Interfaces
 {
     public interface IGameService 
     {
-        Task<Result<IEnumerable<GameResponse>>> GetGamesAsync();
-        Task<Result<GameResponse>> GetGameByIdAsync(long id);
-        Task<Result<GameResponse>> CreateGameAsync(GameRequest request);
-        Task<Result<GameResponse>> UpdateGameAsync(long id, GameRequest request);
-        Task DeleteGameAsync(long id);
+        Task<Result<IEnumerable<GameResponse>>> GetGamesAsync(CancellationToken cancellationToken);
+        Task<Result<GameResponse>> GetGameByIdAsync(long id, CancellationToken cancellationToken);
+        Task<Result<GameResponse>> CreateGameAsync(GameRequest request, CancellationToken cancellationToken);
+        Task<Result<GameResponse>> UpdateGameAsync(long id, GameRequest request, CancellationToken cancellationToken);
+        Task DeleteGameAsync(long id, CancellationToken cancellationToken);
     }
 }

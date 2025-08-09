@@ -14,7 +14,7 @@ namespace FIAP.PLAY.Application.Library.Services
         IUnityOfWork uow,
         ILoggerManager<GameLibraryRequest> loggerManager) : IGameLibraryService
     {
-        public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId)
+        public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
             if (library is null)
@@ -33,7 +33,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<GameLibraryResponse>(Parse(gameLibrary));
         }
 
-        public async Task RemoveGameFromLibraryAsync(long libraryId, long gameId)
+        public async Task RemoveGameFromLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var gameLibrary = await uow.GameLibraries.GetDbSet()
                 .FirstOrDefaultAsync(gl => gl.LibraryId == libraryId && gl.GameId == gameId);
@@ -47,7 +47,7 @@ namespace FIAP.PLAY.Application.Library.Services
             loggerManager.LogInformation($"Jogo com ID {gameId} removido da biblioteca {libraryId} com sucesso.");           
         }
 
-        public async Task<Result<IEnumerable<GameLibraryResponse>>> GetGamesByLibraryIdAsync(long libraryId)
+        public async Task<Result<IEnumerable<GameLibraryResponse>>> GetGamesByLibraryIdAsync(long libraryId, CancellationToken cancellationToken)
         {
             var library = await uow.Libraries.GetByIdAsync(libraryId);
             if (library is null)
@@ -62,7 +62,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<IEnumerable<GameLibraryResponse>>(response);
         }
 
-        public async Task<Result<GameLibraryResponse>> GetGameInLibraryAsync(long libraryId, long gameId)
+        public async Task<Result<GameLibraryResponse>> GetGameInLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
             var gameLibrary = await uow.GameLibraries.GetDbSet()
                 .Include(gl => gl.Game)

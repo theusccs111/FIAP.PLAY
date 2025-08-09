@@ -17,21 +17,21 @@ namespace FIAP.PLAY.Application.Library.Services
         IValidator<GameRequest> validator,
         ILoggerManager<GameService> loggerManager) : Service(httpContextAccessor), IGameService
     {
-        public async Task<Result<IEnumerable<GameResponse>>> GetGamesAsync()
+        public async Task<Result<IEnumerable<GameResponse>>> GetGamesAsync(CancellationToken cancellationToken)
         {
             var jogos = await uow.Games.GetAllAsync();
             var jogosResponse = jogos.Select(d => Parse(d)).ToList();
             return new Result<IEnumerable<GameResponse>>(jogosResponse);
         }
 
-        public async Task<Result<GameResponse>> GetGameByIdAsync(long id)
+        public async Task<Result<GameResponse>> GetGameByIdAsync(long id, CancellationToken cancellationToken)
         {
             var jogo = await uow.Games.GetByIdAsync(id);
             var jogoResponse = Parse(jogo);
             return new Result<GameResponse>(jogoResponse);
         }
 
-        public async Task<Result<GameResponse>> CreateGameAsync(GameRequest request)
+        public async Task<Result<GameResponse>> CreateGameAsync(GameRequest request, CancellationToken cancellationToken)
         {
             var resultadoValidacao = validator.Validate(request);
             if(resultadoValidacao.IsValid == false)
@@ -46,7 +46,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<GameResponse>(Parse(jogoCriado));
         }
 
-        public async Task<Result<GameResponse>> UpdateGameAsync(long id, GameRequest request)
+        public async Task<Result<GameResponse>> UpdateGameAsync(long id, GameRequest request, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
@@ -65,7 +65,7 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<GameResponse>(Parse(jogo));
         }
 
-        public async Task DeleteGameAsync(long id)
+        public async Task DeleteGameAsync(long id, CancellationToken cancellationToken)
         {
             if(id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");

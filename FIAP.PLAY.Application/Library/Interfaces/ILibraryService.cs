@@ -6,11 +6,11 @@ namespace FIAP.PLAY.Application.Library.Interfaces
 {
     public interface ILibraryService
     {
-        public Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request);
-        public Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId);
-        public Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId);
-        public Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync();
-        public Task DeleteLibraryAsync(long libraryId);     
+        public Task<Result<LibraryResponse>> CreateLibraryAsync(LibraryRequest request, CancellationToken cancellationToken);
+        public Task<Result<LibraryResponse>> GetLibraryByIdAsync(long libraryId, CancellationToken cancellationToken);
+        public Task<Result<LibraryResponse>> GetLibraryByUserIdAsync(long userId, CancellationToken cancellationToken);
+        public Task<Result<IEnumerable<LibraryResponse>>> GetLibrariesAsync(CancellationToken cancellationToken);
+        public Task DeleteLibraryAsync(long libraryId, CancellationToken cancellationToken);     
         public Task <bool> IsLibraryExistsAsync(long userId);
     }
 }
