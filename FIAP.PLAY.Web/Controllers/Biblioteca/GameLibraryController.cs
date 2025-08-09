@@ -1,5 +1,6 @@
-﻿using FIAP.PLAY.Application.Library.Resource.Request;
-using FIAP.PLAY.Application.Library.Interfaces;
+﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
+using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,32 +10,36 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     public class GameLibraryController(IGameLibraryService service) : ControllerBase
     {
         [HttpPost("{libraryId}/games/{gameId}")]
-        public async Task<IActionResult> AddGameToLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
+        [Authorize]
+        public async Task<IActionResult> AddGameToLibraryAsync(long libraryId, long gameId)
         {
             var result = await service.AddGameToLibraryAsync(libraryId, gameId, cancellationToken);
             return Created($"api/GameLibrary/{libraryId}/games/{gameId}", result);
         }
 
         [HttpDelete("{libraryId}/games/{gameId}")]
-        public async Task<IActionResult> RemoveGameFromLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
+        [Authorize]
+        public async Task<IActionResult> RemoveGameFromLibraryAsync(long libraryId, long gameId)
         {
             await service.RemoveGameFromLibraryAsync(libraryId, gameId, cancellationToken);
             return NoContent();
         }
 
         [HttpGet("{libraryId}/games")]
-        public async Task<IActionResult> GetGamesByLibraryIdAsync(long libraryId, CancellationToken cancellationToken)
+        [Authorize]
+        public async Task<IActionResult> GetGamesByLibraryIdAsync(long libraryId)
         {
             var result = await service.GetGamesByLibraryIdAsync(libraryId, cancellationToken);
             return Ok(result);
         }
 
         [HttpGet("{libraryId}/games/{gameId}")]
-        public async Task<IActionResult> GetGameInLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
+        [Authorize]
+        public async Task<IActionResult> GetGameInLibraryAsync(long libraryId, long gameId)
         {
-            var result = await service.GetGameInLibraryAsync(libraryId, gameId, cancellationToken);
+            var result = await service.GetGameInLibraryAsync(libraryId, gameId);
             return Ok(result);
-        }        
+        }
 
     }
 }
