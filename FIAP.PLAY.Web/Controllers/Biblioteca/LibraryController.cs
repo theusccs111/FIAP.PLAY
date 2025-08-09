@@ -1,6 +1,8 @@
 ﻿using FIAP.PLAY.Application.Library.Interfaces;
 using FIAP.PLAY.Application.Library.Resource.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FIAP.PLAY.Web.Controllers.Biblioteca
 {
@@ -8,6 +10,8 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
     [Route("api/[controller]")]
     public class LibraryController(ILibraryService service) : ControllerBase
     {
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CriarBibliotecaAsync([FromBody] LibraryRequest request)
         {
@@ -15,6 +19,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
             return Created("api/Library", result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> ObterBibliotecasAsync()
         {
@@ -22,13 +27,30 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("{id}")] 
         public async Task<IActionResult> ObterBibliotecaPorIdAsync(long id)
         {
             var result = await service.GetLibraryByIdAsync(id);
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpGet("/getUser")]
+        public async Task<IActionResult> ObterBibliotecaPorUsuarioAsync()
+        {           
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!long.TryParse(userId, out long id))
+            {
+                return BadRequest("Id de usuário inválido.");
+            }
+
+            var result = await service.GetLibraryByUserIdAsync(id);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoverBibliotecaAsync(long id)
         {
