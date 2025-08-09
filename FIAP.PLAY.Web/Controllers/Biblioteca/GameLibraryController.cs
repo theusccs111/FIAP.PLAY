@@ -1,5 +1,5 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+﻿using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,14 +34,7 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
         {
             var result = await service.GetGameInLibraryAsync(libraryId, gameId);
             return Ok(result);
-        }
-
-        [HttpPut("{libraryId}/games/{gameId}")]
-        public async Task<IActionResult> UpdateGameInLibraryAsync(long libraryId, long gameId, [FromBody] GameLibraryRequest request)
-        {
-            var result = await service.UpdateGameAsync(libraryId, gameId, request);
-            return Ok(result);
-        }
+        }        
 
     }
 }

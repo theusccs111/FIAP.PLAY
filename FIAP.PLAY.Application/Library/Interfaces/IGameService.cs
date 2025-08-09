@@ -1,8 +1,8 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Resource;
 
-namespace FIAP.PLAY.Application.Biblioteca.Interfaces
+namespace FIAP.PLAY.Application.Library.Interfaces
 {
     public interface IGameService 
     {

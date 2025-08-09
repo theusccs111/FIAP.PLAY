@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Application.PromotionGames.Interfaces;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

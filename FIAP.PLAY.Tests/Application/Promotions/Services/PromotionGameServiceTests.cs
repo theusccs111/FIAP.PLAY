@@ -1,6 +1,6 @@
-﻿using FIAP.PLAY.Application.PromotionGames.Interfaces;
-using FIAP.PLAY.Application.PromotionGames.Services;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
+using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;

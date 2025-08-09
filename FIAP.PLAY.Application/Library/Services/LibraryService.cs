@@ -1,15 +1,14 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
-using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.PLAY.Application.Biblioteca.Services
+namespace FIAP.PLAY.Application.Library.Services
 {
     public class LibraryService(       
         IUnityOfWork uow,
@@ -115,17 +114,17 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
             return true;
         }
 
-        private static Library Parse(LibraryRequest request)
-           => Library.Create(request.UserId);
+        private static Domain.Library.Entities.Library Parse(LibraryRequest request)
+           => Domain.Library.Entities.Library.Create(request.UserId);
 
-        private static LibraryResponse Parse(Library entidade)
-            =>  new LibraryResponse(entidade.Id, 
-                                    entidade.UserId, 
-                                    entidade.Games.Select(g => new GameLibraryResponse(
-                                        g.Id, 
-                                        entidade.Id, 
-                                        new GameResponse(g.Game.Id, g.Game.Title,g.Game.Price, g.Game.Genre, g.Game.YearLaunch, g.Game.Developer), 
-                                        g.PurchaseDate, 
-                                        g.Price)).ToList());
+        private static LibraryResponse Parse(Domain.Library.Entities.Library entidade)
+            =>  new(entidade.Id, 
+                    entidade.UserId, 
+                    entidade.Games.Select(g => new GameLibraryResponse(
+                        g.Id, 
+                        entidade.Id, 
+                        new GameResponse(g.Game.Id, g.Game.Title,g.Game.Price, g.Game.Genre, g.Game.YearLaunch, g.Game.Developer), 
+                        g.PurchaseDate, 
+                        g.Price)).ToList());
     }
 }

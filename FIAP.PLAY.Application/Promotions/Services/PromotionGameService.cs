@@ -1,4 +1,4 @@
-﻿using FIAP.PLAY.Application.PromotionGames.Interfaces;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
 using FIAP.PLAY.Application.Promotions.Resources.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
@@ -9,7 +9,7 @@ using FIAP.PLAY.Domain.Promotions.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
-namespace FIAP.PLAY.Application.PromotionGames.Services
+namespace FIAP.PLAY.Application.Promotions.Services
 {
     public class PromotionGameService(
         IHttpContextAccessor httpContextAccessor,

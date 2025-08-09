@@ -1,5 +1,5 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,14 +1,14 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
+using FIAP.PLAY.Domain.Library.Entities;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
-using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace FIAP.PLAY.Application.Biblioteca.Services
+namespace FIAP.PLAY.Application.Library.Services
 {
     public class GameLibraryService(
         IUnityOfWork uow,
@@ -91,7 +91,7 @@ namespace FIAP.PLAY.Application.Biblioteca.Services
 
         public static GameLibrary Parse(GameLibraryRequest request)
         => GameLibrary.Create(
-            Library.Create(request.Library.UserId),
+            Domain.Library.Entities.Library.Create(request.Library.UserId),
             Game.Create(request.Game.Title, request.Game.Price, request.Game.Genre, request.Game.YearLaunch, request.Game.Developer)
         );
     }

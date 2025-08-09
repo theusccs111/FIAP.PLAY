@@ -1,6 +1,4 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
-using FIAP.PLAY.Application.Shared.Resource;
+﻿using FIAP.PLAY.Application.Shared.Resource;
 using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
 

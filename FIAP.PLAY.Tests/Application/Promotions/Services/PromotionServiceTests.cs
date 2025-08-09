@@ -1,14 +1,10 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Services;
-using FIAP.PLAY.Application.Promotions.Interfaces;
+﻿using FIAP.PLAY.Application.Promotions.Interfaces;
 using FIAP.PLAY.Application.Promotions.Resources.Request;
 using FIAP.PLAY.Application.Promotions.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Domain.Library.Entities;
-using FIAP.PLAY.Domain.Library.Enums;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;

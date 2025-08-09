@@ -1,6 +1,6 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Resource.Response;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Resource.Response;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Resource;
@@ -9,7 +9,7 @@ using FIAP.PLAY.Domain.Library.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
-namespace FIAP.PLAY.Application.Biblioteca.Services
+namespace FIAP.PLAY.Application.Library.Services
 {
     public class GameService(
         IHttpContextAccessor httpContextAccessor,

@@ -1,5 +1,4 @@
 ﻿using FIAP.PLAY.Domain.Shared.Entities;
-using System.ComponentModel;
 
 namespace FIAP.PLAY.Domain.Library.Entities
 {

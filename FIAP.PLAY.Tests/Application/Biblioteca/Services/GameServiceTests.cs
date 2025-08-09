@@ -1,6 +1,6 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
-using FIAP.PLAY.Application.Biblioteca.Services;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
+using FIAP.PLAY.Application.Library.Services;
 using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
@@ -137,7 +137,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.CreateGameAsync(gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.CreateGameAsync(gameRequest));
 
             // Assert
             Assert.NotNull(resultado);
@@ -151,7 +151,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             var gameRequest = new GameRequest("Super mario world", 100, EGenre.Aventura, 1993, "Nintendo");
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
 
             // Assert
             Assert.NotNull(resultado);
@@ -170,7 +170,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _gameService.UpdateGameAsync(id, gameRequest));
 
             // Assert
             Assert.NotNull(resultado);

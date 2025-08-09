@@ -1,5 +1,5 @@
-﻿using FIAP.PLAY.Application.Biblioteca.Interfaces;
-using FIAP.PLAY.Application.Biblioteca.Resource.Request;
+﻿using FIAP.PLAY.Application.Library.Interfaces;
+using FIAP.PLAY.Application.Library.Resource.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP.PLAY.Web.Controllers.Biblioteca

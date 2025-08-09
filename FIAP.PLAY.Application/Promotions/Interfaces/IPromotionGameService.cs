@@ -2,7 +2,7 @@
 using FIAP.PLAY.Application.Promotions.Resources.Response;
 using FIAP.PLAY.Application.Shared.Resource;
 
-namespace FIAP.PLAY.Application.PromotionGames.Interfaces
+namespace FIAP.PLAY.Application.Promotions.Interfaces
 {
     public interface IPromotionGameService
     {
