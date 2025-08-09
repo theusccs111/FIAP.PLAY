@@ -6,10 +6,10 @@ namespace FIAP.PLAY.Application.Promotions.Interfaces
 {
     public interface ICampaignService
     {
-        Task<Result<IEnumerable<CampaignResponse>>> GetCampaignsAsync();
-        Task<Result<CampaignResponse>> GetCampaignByIdAsync(long id);
-        Task<Result<CampaignResponse>> CreateCampaignAsync(CampaignRequest request);
-        Task<Result<CampaignResponse>> UpdateCampaignAsync(long id, CampaignRequest request);
-        Task DeleteCampaignAsync(long id);
+        Task<Result<IEnumerable<CampaignResponse>>> GetCampaignsAsync(CancellationToken cancellationToken);
+        Task<Result<CampaignResponse>> GetCampaignByIdAsync(long id, CancellationToken cancellationToken);
+        Task<Result<CampaignResponse>> CreateCampaignAsync(CampaignRequest request, CancellationToken cancellationToken);
+        Task<Result<CampaignResponse>> UpdateCampaignAsync(long id, CampaignRequest request, CancellationToken cancellationToken);
+        Task DeleteCampaignAsync(long id, CancellationToken cancellationToken);
     }
 }

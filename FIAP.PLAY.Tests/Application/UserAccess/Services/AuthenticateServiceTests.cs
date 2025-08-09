@@ -107,7 +107,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
         public async Task LoginAsync_UsuarioNaoEncontrado_DeveRetornarErro()
         {
             var request = new AuthenticateRequest { Email = "naoexiste@gmail.com", Password = "123456!1a" };
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _authenticateService.LoginAsync(request));
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _authenticateService.LoginAsync(request));
 
             Assert.NotNull(resultado);
         }

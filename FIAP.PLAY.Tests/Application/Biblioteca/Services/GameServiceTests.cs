@@ -17,7 +17,6 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
     public class GameServiceTests
     {
         private readonly IGameService _gameService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<Game>> _mockForRepository = new();
         private readonly Mock<IValidator<GameRequest>> _mockForValidator = new();

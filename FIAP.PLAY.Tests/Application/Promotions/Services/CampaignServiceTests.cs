@@ -16,7 +16,6 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
     public class CampaignServiceTests
     {
         private readonly ICampaignService _campaignService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Mock<IUnityOfWork> _mockForUOF = new();
         private readonly Mock<IRepository<Campaign>> _mockForRepository = new();
         private readonly Mock<IValidator<CampaignRequest>> _mockForValidator = new();
@@ -58,7 +57,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetAllAsync()).ReturnsAsync(campaigns);
 
             // Act
-            var resultado = await _campaignService.GetCampaignsAsync();
+            var resultado = await _campaignService.GetCampaignsAsync(CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -77,7 +76,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             _mockForRepository.Setup(d => d.GetByIdAsync(It.IsAny<long>())).ReturnsAsync(campaign);
 
             // Act
-            var resultado = await _campaignService.GetCampaignByIdAsync(id);
+            var resultado = await _campaignService.GetCampaignByIdAsync(id, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -108,7 +107,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .ReturnsAsync(campaignEntidade);
 
             // Act
-            var resultado = await _campaignService.CreateCampaignAsync(campaignRequest);
+            var resultado = await _campaignService.CreateCampaignAsync(campaignRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -130,7 +129,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.CreateCampaignAsync(campaignRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.CreateCampaignAsync(campaignRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -144,7 +143,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
             var campaignRequest = new CampaignRequest("Campanha de natal", new DateTime(2025, 12, 20), new DateTime(2025, 12, 26));
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
+            var resultado = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -163,7 +162,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Returns(resultadoValidacaoInvalido);
 
             // Act
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.UpdateCampaignAsync(id, campaignRequest, CancellationToken.None));
 
             // Assert
             Assert.NotNull(resultado);
@@ -195,7 +194,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Verifiable();
 
             // Act
-            var resultado = await _campaignService.UpdateCampaignAsync(id, campaignRequest);
+            var resultado = await _campaignService.UpdateCampaignAsync(id, campaignRequest, CancellationToken.None);
 
             // Assert
             Assert.NotNull(resultado);
@@ -210,7 +209,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         [Fact]
         public void DeletarCampanhaAsync_Invalido_IdDeveSerInformado()
         {
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.DeleteCampaignAsync(0));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() => _campaignService.DeleteCampaignAsync(0, CancellationToken.None));
             Assert.NotNull(resultado);
         }
 
@@ -218,7 +217,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
         public void DeletarCampanhaAsync_Invalido_CampanhaDeveExistir()
         {
             var id = 1L;
-            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _campaignService.DeleteCampaignAsync(id));
+            var resultado = Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _campaignService.DeleteCampaignAsync(id, CancellationToken.None));
 
             Assert.NotNull(resultado);
         }
@@ -238,7 +237,7 @@ namespace FIAP.PLAY.Tests.Application.Promotions.Services
                 .Setup(d => d.CompleteAsync())
                 .Verifiable();
 
-            await _campaignService.DeleteCampaignAsync(id);
+            await _campaignService.DeleteCampaignAsync(id, CancellationToken.None);
 
             _mockForRepository.VerifyAll();
         }

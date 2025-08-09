@@ -17,21 +17,21 @@ namespace FIAP.PLAY.Application.Promotions.Services
         IValidator<PromotionGameRequest> validator,
         ILoggerManager<PromotionGameService> loggerManager) : Service(httpContextAccessor), IPromotionGameService
     {
-        public async Task<Result<IEnumerable<PromotionGameResponse>>> GetPromotionGamesAsync()
+        public async Task<Result<IEnumerable<PromotionGameResponse>>> GetPromotionGamesAsync(CancellationToken cancellationToken)
         {
             var promotionGames = await uow.PromotionGames.GetAllAsync();
             var promotionGamesResponse = promotionGames.Select(d => Parse(d)).ToList();
             return new Result<IEnumerable<PromotionGameResponse>>(promotionGamesResponse);
         }
 
-        public async Task<Result<PromotionGameResponse>> GetPromotionGameByIdAsync(long id)
+        public async Task<Result<PromotionGameResponse>> GetPromotionGameByIdAsync(long id, CancellationToken cancellationToken)
         {
             var promotionGame = await uow.PromotionGames.GetByIdAsync(id);
             var promotionGameResponse = Parse(promotionGame);
             return new Result<PromotionGameResponse>(promotionGameResponse);
         }
 
-        public async Task<Result<PromotionGameResponse>> CreatePromotionGameAsync(PromotionGameRequest request)
+        public async Task<Result<PromotionGameResponse>> CreatePromotionGameAsync(PromotionGameRequest request, CancellationToken cancellationToken)
         {
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
@@ -46,7 +46,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
             return new Result<PromotionGameResponse>(Parse(promotionGameCreated));
         }
 
-        public async Task<Result<PromotionGameResponse>> UpdatePromotionGameAsync(long id, PromotionGameRequest request)
+        public async Task<Result<PromotionGameResponse>> UpdatePromotionGameAsync(long id, PromotionGameRequest request, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
@@ -66,7 +66,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
 
         }
 
-        public async Task DeletePromotionGameAsync(long id)
+        public async Task DeletePromotionGameAsync(long id, CancellationToken cancellationToken)
         {
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
