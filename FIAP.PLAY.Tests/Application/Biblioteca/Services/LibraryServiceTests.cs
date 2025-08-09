@@ -5,7 +5,6 @@ using FIAP.PLAY.Application.Shared.Interfaces;
 using FIAP.PLAY.Application.Shared.Interfaces.Infrastructure;
 using FIAP.PLAY.Application.Shared.Interfaces.Repository;
 using FIAP.PLAY.Application.Shared.Resource;
-using FIAP.PLAY.Application.Shared.Services;
 using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Resource.Response;
 using FIAP.PLAY.Domain.Library.Entities;
@@ -20,7 +19,7 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
 {
     public class LibraryServiceTests
     {
-        private readonly LibraryService _service;
+        private readonly ILibraryService _service;
         private readonly Mock<IUnityOfWork> _uowMock = new();
         private readonly Mock<IRepository<Library>> _repoMock = new();
         private readonly Mock<IValidator<LibraryRequest>> _validatorMock = new();
