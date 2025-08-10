@@ -17,9 +17,9 @@ namespace FIAP.PLAY.Web.Controllers.Biblioteca
 
         [HttpDelete("{libraryId}/games/{gameId}")]
         [Authorize]
-        public async Task<IActionResult> RemoveGameFromLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
+        public async Task<IActionResult> RemoveGameLibraryAsync(long gameLibraryId, CancellationToken cancellationToken)
         {
-            await service.RemoveGameFromLibraryAsync(libraryId, gameId, cancellationToken);
+            await service.RemoveGameLibraryAsync(gameLibraryId, cancellationToken);
             return NoContent();
         }
 
