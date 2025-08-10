@@ -11,7 +11,7 @@ namespace FIAP.PLAY.Web.Controllers.Promotions
     public class CampaignController : ControllerBase
     {
         private readonly ICampaignService _campaignService;
-        public CampaignController(ICampaignService campaignService, CancellationToken cancellationToken)
+        public CampaignController(ICampaignService campaignService)
         {
             _campaignService = campaignService;
         }
