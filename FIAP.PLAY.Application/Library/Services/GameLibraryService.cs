@@ -12,10 +12,12 @@ namespace FIAP.PLAY.Application.Library.Services
 {
     public class GameLibraryService(
         IUnityOfWork uow,
+        IValidator<GameLibraryRequest> validator,
         ILoggerManager<GameLibraryRequest> loggerManager) : IGameLibraryService
     {
         public async Task<Result<GameLibraryResponse>> AddGameToLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
         {
+
             var library = await uow.Libraries.GetByIdAsync(libraryId);
             if (library is null)
                 throw new Domain.Shared.Exceptions.NotFoundException("Biblioteca não encontrada.");
@@ -23,6 +25,15 @@ namespace FIAP.PLAY.Application.Library.Services
             var game = await uow.Games.GetByIdAsync(gameId);
             if (game is null)
                 throw new Domain.Shared.Exceptions.NotFoundException("Jogo não encontrado.");
+
+            var gameRequest = new GameRequest(game.Title, game.Price, game.Genre, game.YearLaunch, game.Developer);
+            var libraryRequest = new LibraryRequest(library.UserId);
+
+            var request = new GameLibraryRequest(libraryRequest, gameRequest);
+
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new Domain.Shared.Exceptions.ValidationException([.. validationResult.Errors]);
 
             var gameLibrary = GameLibrary.Create(library, game);
 
@@ -33,18 +44,15 @@ namespace FIAP.PLAY.Application.Library.Services
             return new Result<GameLibraryResponse>(Parse(gameLibrary));
         }
 
-        public async Task RemoveGameFromLibraryAsync(long libraryId, long gameId, CancellationToken cancellationToken)
+        public async Task RemoveGameLibraryAsync(long gameLibraryId, CancellationToken cancellationToken)
         {
-            var gameLibrary = await uow.GameLibraries.GetDbSet()
-                .FirstOrDefaultAsync(gl => gl.LibraryId == libraryId && gl.GameId == gameId);
-
+            var gameLibrary = await uow.GameLibraries.GetByIdAsync(gameLibraryId);
             if (gameLibrary is null)
-                throw new Domain.Shared.Exceptions.NotFoundException("O jogo não foi encontrado na biblioteca.");
-
+                throw new Domain.Shared.Exceptions.NotFoundException("Registro de jogo na biblioteca não encontrado.");
+            
             await uow.GameLibraries.DeleteAsync(gameLibrary.Id);
             await uow.CompleteAsync();
-
-            loggerManager.LogInformation($"Jogo com ID {gameId} removido da biblioteca {libraryId} com sucesso.");           
+            loggerManager.LogInformation($"Registro de jogo com ID {gameLibraryId} removido com sucesso.");
         }
 
         public async Task<Result<IEnumerable<GameLibraryResponse>>> GetGamesByLibraryIdAsync(long libraryId, CancellationToken cancellationToken)

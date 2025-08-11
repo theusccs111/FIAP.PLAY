@@ -8,7 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace FIAP.PLAY.Tests.Application.UserAccess.Services
+namespace FIAP.PLAY.Tests.Application.UserAccess
 {
     public class UserServiceTests
     {
@@ -119,7 +119,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
             var request = new UserRequest("Test", "Abc!123", "test@email.com", ERole.Common, true);
 
             // Act & Assert
-            await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() =>
+            await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() =>
             _service.UpdateUserAsync(id, request, CancellationToken.None));
 
         }

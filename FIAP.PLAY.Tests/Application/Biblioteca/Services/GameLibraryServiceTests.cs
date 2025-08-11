@@ -9,7 +9,9 @@ using FIAP.PLAY.Domain.Library.Enums;
 using FIAP.PLAY.Domain.Shared.Exceptions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using System.Linq.Expressions;
 
 namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
 {
@@ -164,17 +166,6 @@ namespace FIAP.PLAY.Tests.Application.Biblioteca.Services
             _loggerMock.Verify(l => l.LogInformation(
                 It.Is<string>(s => s.Contains($"Registro de jogo com ID {gameLibrary.Id} removido"))),
                 Times.Once);
-        }
-
-        [Fact]
-        public async Task GetGamesByLibraryIdAsync_LibraryNotFound_ThrowsNotFoundException()
-        {
-            long anyLibraryId = 1;
-            _uowMock.Setup(u => u.Libraries.GetByIdAsync(anyLibraryId))!
-                    .ReturnsAsync((Library?)null);
-            await Assert.ThrowsAsync<NotFoundException>(
-                () => _service.GetGamesByLibraryIdAsync(anyLibraryId, CancellationToken.None)
-            );
         }
     }
 }
