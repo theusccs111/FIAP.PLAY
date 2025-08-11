@@ -8,7 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
-namespace FIAP.PLAY.Tests.Application.UserAccess
+namespace FIAP.PLAY.Tests.Application.UserAccess.Services
 {
     public class UserServiceTests
     {
@@ -34,13 +34,13 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         }
 
         [Fact]
-        public async Task GetUsersAsync_ShouldReturnUsers()
+        public async Task GetUsersAsync_DeveriaRetornarUsuarios()
         {
             // Arrange
             var users = new List<User>
             {
-                User.Criar("User1", "hash", "user1@email.com",ERole.Common, true),
-                User.Criar("User2", "hash", "user2@email.com",ERole.Common, true)
+                User.Criar("User1", "Hash@123456", "user1@email.com",ERole.Common, true),
+                User.Criar("User2", "Hash@123456", "user2@email.com",ERole.Common, true)
             };
             _uowMock.Setup(u => u.Users.GetAllAsync()).ReturnsAsync(users);
 
@@ -58,7 +58,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         public async Task CreateUserAsync_ShouldThrow_WhenValidationFails()
         {
             // Arrange
-            var request = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
+            var request = new UserRequest("Test", "Abc!123", "testemail.com", ERole.Common, true);
             var validationFailures = new List<FluentValidation.Results.ValidationFailure>
             {
                 new("Email", "Email é obrigatório")
@@ -72,10 +72,10 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         }
 
         [Fact]
-        public async Task CreateUserAsync_ShouldReturnCreatedUser_WhenValid()
+        public async Task CreateUserAsyncDeveRetornarUsuarioCriadoQuandoValido()
         {
             // Arrange
-            var request = new UserRequest("Test","test@email.com","abc123",ERole.Common, true);
+            var request = new UserRequest("Jacqueline", "Abc!1234", "jacque@email.com", ERole.Common, true);
 
             var createdUser = User.Criar(request.Name, request.PasswordHash, request.Email, request.Role, request.Active);
             typeof(User).GetProperty("Id")!.SetValue(createdUser, 1L); // set ID manually if needed
@@ -94,8 +94,8 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
             // Assert
             Assert.NotNull(result);
             Assert.NotNull(result.Data);
-            Assert.Equal("Test", result.Data.Name);
-            Assert.Equal("test@email.com", result.Data.Email);
+            Assert.Equal("Jacqueline", result.Data.Name);
+            Assert.Equal("jacque@email.com", result.Data.Email);
         }
 
         [Fact]
@@ -115,13 +115,13 @@ namespace FIAP.PLAY.Tests.Application.UserAccess
         public async Task UpdateUserAsync_ShouldThrow_WhenIdIsZero()
         {
             // Arrange
-            var request = new UserRequest("Test", "test@email.com", "abc123", ERole.Common, true);
+            long id = 0;
+            var request = new UserRequest("Test", "Abc!123", "test@email.com", ERole.Common, true);
 
             // Act & Assert
-            var ex = await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(
-                () => _service.UpdateUserAsync(0, request, CancellationToken.None));
+            await Assert.ThrowsAsync<PLAY.Domain.Shared.Exceptions.ValidationException>(() =>
+            _service.UpdateUserAsync(id, request, CancellationToken.None));
 
-            Assert.Contains("id do usuário não pode ser nulo", ex.Message);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FIAP.PLAY.Domain.Shared.Extensions;
+using FIAP.PLAY.Domain.Shared.ValueObject;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,7 @@ namespace FIAP.PLAY.Infrastructure.Data
             {
                 PasswordHash = "Admin1!a".Encrypt(),
                 Name = "admin",
-                Email = "admin@admin.com",
+                Email = Email.Criar("admin@admin.com"),
                 Role = ERole.Admin,
                 Active = true,
             };

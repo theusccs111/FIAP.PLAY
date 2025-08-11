@@ -3,6 +3,7 @@ using FIAP.PLAY.Domain.UserAccess.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace FIAP.PLAY.Tests.Domain.UserAccess
         public void CriarUsuario_EmailVazio_DeveLancarExcecao()
         {
             var exception = Assert.Throws<ArgumentException>(() => User.Criar("Matheus", "Senha@123", "", ERole.Admin, true));
-            Assert.Equal("Email não pode ser vazio. (Parameter 'email')", exception.Message);
+            Assert.Equal("O email não pode ser nulo. (Parameter 'address')", exception.Message);
         }
 
         [Theory]
@@ -77,7 +78,7 @@ namespace FIAP.PLAY.Tests.Domain.UserAccess
         public void CriarUsuario_EmailInvalido_DeveLancarExcecao(string email)
         {
             var exception = Assert.Throws<ArgumentException>(() => User.Criar("Matheus", "Senha@123", email, ERole.Admin, true));
-            Assert.Equal("Informe um e-mail válido. (Parameter 'email')", exception.Message);
+            Assert.Equal("Email inválido. (Parameter 'address')", exception.Message);
         }
 
         [Fact]

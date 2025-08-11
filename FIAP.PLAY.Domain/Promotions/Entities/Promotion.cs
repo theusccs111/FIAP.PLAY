@@ -1,9 +1,10 @@
-﻿using FIAP.PLAY.Domain.Shared.Entities;
+﻿using FIAP.PLAY.Domain.Library.Entities;
+using FIAP.PLAY.Domain.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FIAP.PLAY.Domain.Library.Entities
+namespace FIAP.PLAY.Domain.Promotions.Entities
 {
     public class Promotion : EntityBase
     {

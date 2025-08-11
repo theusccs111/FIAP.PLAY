@@ -3,7 +3,7 @@ using FIAP.PLAY.Application.Promotions.Resources.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FIAP.PLAY.Web.Controllers.PromotionGames
+namespace FIAP.PLAY.Web.Controllers.Promotions
 {
     [Route("api/[controller]")]
     [ApiController]

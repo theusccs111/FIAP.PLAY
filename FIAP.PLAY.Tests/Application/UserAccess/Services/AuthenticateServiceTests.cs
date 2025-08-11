@@ -6,6 +6,7 @@ using FIAP.PLAY.Application.UserAccess.Interfaces;
 using FIAP.PLAY.Application.UserAccess.Resource.Request;
 using FIAP.PLAY.Application.UserAccess.Services;
 using FIAP.PLAY.Domain.Shared.Extensions;
+using FIAP.PLAY.Domain.Shared.ValueObject;
 using FIAP.PLAY.Domain.UserAccess.Entities;
 using FIAP.PLAY.Domain.UserAccess.Enums;
 using FluentValidation;
@@ -61,7 +62,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
         {
             var request = new AuthenticateRequest
             {
-                Email = "teste@fiap.com.br",
+                Email = Email.Criar("teste@fiap.com.br"),
                 Password = "123456!Aa"
             };
 
@@ -69,8 +70,8 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
             {
                 Id = 1,
                 Name = "Usuario Teste",
-                Email = request.Email,
-                Role = FIAP.PLAY.Domain.UserAccess.Enums.ERole.Admin,
+                Email = Email.Criar(request.Email),
+                Role = ERole.Admin,
                 PasswordHash = request.Password.Encrypt()
             };
 
@@ -97,17 +98,22 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
             var request = new AuthenticateRequest { Email = "naoexiste", Password = "123456" };
 
             var resultadoValidacaoInvalido = new ValidationResult([new ValidationFailure("Email", "Email informado deve ser válido")]);
-            _mockValidator.Setup(v => v.Validate(It.IsAny<AuthenticateRequest>()))
-                .Returns(resultadoValidacaoInvalido);
 
-            await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _authenticateService.LoginAsync(request));
+            _mockValidator.Setup(v => v.Validate(It.IsAny<AuthenticateRequest>()))
+                .Returns(resultadoValidacaoInvalido);      
+            
+           await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.ValidationException>(() => _authenticateService.LoginAsync(request));
         }
 
         [Fact]
         public async Task LoginAsync_UsuarioNaoEncontrado_DeveRetornarErro()
         {
-            var request = new AuthenticateRequest { Email = "naoexiste@gmail.com", Password = "123456!1a" };
-            var resultado = Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _authenticateService.LoginAsync(request));
+            var request = new AuthenticateRequest { Email = Email.Criar("naoexiste@gmail.com"), Password = "123456!1a" };
+            
+            _mockValidator.Setup(v => v.Validate(It.IsAny<AuthenticateRequest>()))
+                .Returns(new ValidationResult());
+
+            var resultado = await Assert.ThrowsAsync<FIAP.PLAY.Domain.Shared.Exceptions.NotFoundException>(() => _authenticateService.LoginAsync(request));
 
             Assert.NotNull(resultado);
         }
@@ -117,7 +123,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
         {
             var request = new AuthenticateRequest
             {
-                Email = "teste@fiap.com.br",
+                Email = Email.Criar("teste@fiap.com.br"),
                 Password = "invalida"
             };
 
@@ -125,7 +131,7 @@ namespace FIAP.PLAY.Tests.Application.UserAccess.Services
             {
                 Id = 1,
                 Name = "Usuario Teste",
-                Email = request.Email,
+                Email = Email.Criar(request.Email),
                 Role = ERole.Admin,
                 PasswordHash = "Correta123!".Encrypt()
             };

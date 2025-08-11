@@ -30,7 +30,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             string hash = request.Password.Encrypt();
 
             var user = await uow.Users.GetFirstAsync(u =>
-                u.Email.Trim().ToLower() == request.Email.Trim().ToLower());
+                u.Email.ToString().Trim().ToLower() == request.Email.ToString().Trim().ToLower());
 
             if (user == null)
                 throw new Domain.Shared.Exceptions.NotFoundException("Erro ao autenticar", "Usuário não encontrado");

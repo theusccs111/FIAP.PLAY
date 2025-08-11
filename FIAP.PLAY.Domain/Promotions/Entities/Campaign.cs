@@ -1,7 +1,7 @@
 ﻿using FIAP.PLAY.Domain.Library.Enums;
 using FIAP.PLAY.Domain.Shared.Entities;
 
-namespace FIAP.PLAY.Domain.Library.Entities
+namespace FIAP.PLAY.Domain.Promotions.Entities
 {
     public class Campaign : EntityBase
     {

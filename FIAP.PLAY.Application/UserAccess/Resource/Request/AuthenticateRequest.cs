@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FIAP.PLAY.Domain.Shared.ValueObject;
 
 namespace FIAP.PLAY.Application.UserAccess.Resource.Request
 {

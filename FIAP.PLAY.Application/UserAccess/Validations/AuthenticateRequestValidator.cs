@@ -2,11 +2,6 @@
 using FIAP.PLAY.Domain.Shared.Enums;
 using FIAP.PLAY.Domain.Shared.Extensions;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FIAP.PLAY.Application.UserAccess.Validations
 {
@@ -15,8 +10,9 @@ namespace FIAP.PLAY.Application.UserAccess.Validations
         public AuthenticateRequestValidator()
         {
             RuleFor(user => user.Email)
-                .NotEmpty().WithMessage(Message.FieldRequired.GetDescription(Field.Name))
-                .EmailAddress().WithMessage("Email informado deve ser válido");
+                .NotEmpty().WithMessage(Message.FieldRequired.GetDescription(Field.Email))         
+                .EmailAddress().WithMessage("Email informado deve ser válido"); 
+                
 
             RuleFor(user => user.Password)
                 .NotEmpty().WithMessage("Senha não pode ser vazia")

@@ -92,7 +92,6 @@ namespace FIAP.PLAY.Web
             }
 
             app.UseStaticFiles();
-            //app.UseSpaStaticFiles();
             app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
             app.UseMiddleware<CorrelationMiddleware>();
 
