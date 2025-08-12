@@ -26,6 +26,9 @@ namespace FIAP.PLAY.Application.Promotions.Services
 
         public async Task<Result<PromotionGameResponse>> GetPromotionGameByIdAsync(long id, CancellationToken cancellationToken)
         {
+            if (await uow.PromotionGames.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Promoção Jogo", id.ToString());
+
             var promotionGame = await uow.PromotionGames.GetByIdAsync(id);
             var promotionGameResponse = Parse(promotionGame);
             return new Result<PromotionGameResponse>(promotionGameResponse);
@@ -51,6 +54,9 @@ namespace FIAP.PLAY.Application.Promotions.Services
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
+            if (await uow.PromotionGames.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Promoção Jogo", id.ToString());
+
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
@@ -72,7 +78,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
             if (await uow.PromotionGames.ExistsAsync(id) == false)
-                throw new Domain.Shared.Exceptions.NotFoundException("id", "Promoção não encontrado");
+                throw new Domain.Shared.Exceptions.NotFoundException("Promoção Jogo", id.ToString());
 
             await uow.PromotionGames.DeleteAsync(id);
             await uow.CompleteAsync();

@@ -117,9 +117,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "EspecificacaoAnalise",
+        Title = "FIAP.Play",
         Version = "v1",
-        Description = "Management System"
+        Description = "Biblioteca de jogos"
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {

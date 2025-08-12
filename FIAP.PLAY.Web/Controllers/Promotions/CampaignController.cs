@@ -39,7 +39,7 @@ namespace FIAP.PLAY.Web.Controllers.Promotions
             return Created("api/Campaign", dados);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateCampaignAsync([FromRoute] long id, [FromBody] CampaignRequest request, CancellationToken cancellationToken)
         {

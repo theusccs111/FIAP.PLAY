@@ -26,6 +26,9 @@ namespace FIAP.PLAY.Application.Promotions.Services
 
         public async Task<Result<CampaignResponse>> GetCampaignByIdAsync(long id, CancellationToken cancellationToken)
         {
+            if (await uow.Campaigns.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Campanha", id.ToString());
+
             var campaign = await uow.Campaigns.GetByIdAsync(id);
             var campaignResponse = Parse(campaign);
             return new Result<CampaignResponse>(campaignResponse);
@@ -51,6 +54,9 @@ namespace FIAP.PLAY.Application.Promotions.Services
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
+            if (await uow.Campaigns.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Campanha", id.ToString());
+
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
@@ -72,7 +78,7 @@ namespace FIAP.PLAY.Application.Promotions.Services
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
             if (await uow.Campaigns.ExistsAsync(id) == false)
-                throw new Domain.Shared.Exceptions.NotFoundException("id", "Campanha não encontrado");
+                throw new Domain.Shared.Exceptions.NotFoundException("Campanha", id.ToString());
 
             await uow.Campaigns.DeleteAsync(id);
             await uow.CompleteAsync();

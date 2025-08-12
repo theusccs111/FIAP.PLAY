@@ -52,7 +52,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Campaign");
+                    b.ToTable("Campaign", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Game", b =>
@@ -98,7 +98,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasIndex("PromotionId");
 
-                    b.ToTable("Game");
+                    b.ToTable("Game", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.GameLibrary", b =>
@@ -137,7 +137,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasIndex("LibraryId");
 
-                    b.ToTable("GameLibrary");
+                    b.ToTable("GameLibrary", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Library", b =>
@@ -162,7 +162,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Library");
+                    b.ToTable("Library", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Promotion", b =>
@@ -198,7 +198,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasIndex("CampaignId");
 
-                    b.ToTable("Promotion");
+                    b.ToTable("Promotion", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Promotions.Entities.PromotionGame", b =>
@@ -230,7 +230,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasIndex("PromotionId");
 
-                    b.ToTable("PromotionGame");
+                    b.ToTable("PromotionGame", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.UserAccess.Entities.User", b =>
@@ -273,7 +273,7 @@ namespace FIAP.PLAY.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("FIAP.PLAY.Domain.Library.Entities.Game", b =>

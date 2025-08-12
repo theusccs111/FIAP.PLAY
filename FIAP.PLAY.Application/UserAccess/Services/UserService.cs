@@ -26,6 +26,9 @@ namespace FIAP.PLAY.Application.UserAccess.Services
 
         public async Task<Result<UserResponse>> GetUserByIdAsync(long id, CancellationToken cancellationToken)
         {
+            if (await uow.Users.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Usuário", id.ToString());
+
             var user = await uow.Users.GetByIdAsync(id);
             var userResponse = Parse(user);
             return new Result<UserResponse>(userResponse);
@@ -51,6 +54,9 @@ namespace FIAP.PLAY.Application.UserAccess.Services
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
+            if (await uow.Users.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Usuário", id.ToString());
+
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
@@ -72,7 +78,7 @@ namespace FIAP.PLAY.Application.UserAccess.Services
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do usuário não pode ser nulo");
 
             if (await uow.Users.ExistsAsync(id) == false)
-                throw new Domain.Shared.Exceptions.NotFoundException("id", "Usuário não encontrado");
+                throw new Domain.Shared.Exceptions.NotFoundException("Usuário", id.ToString());
 
             await uow.Users.DeleteAsync(id);
             await uow.CompleteAsync();

@@ -48,7 +48,7 @@ namespace FIAP.PLAY.Infrastructure.Repositories
         public async Task<T> GetFirstAsync(Expression<Func<T, bool>> predicate)
             => await _context.Set<T>().FirstOrDefaultAsync(predicate);
 
-        public async Task<T> GetByIdAsync(long id)
+        public async Task<T?> GetByIdAsync(long id)
             => await _context.Set<T>().FirstAsync(d => d.Id == id);
 
         public async Task<T> CreateAsync(T entity)

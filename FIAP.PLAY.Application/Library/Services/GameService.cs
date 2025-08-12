@@ -26,6 +26,9 @@ namespace FIAP.PLAY.Application.Library.Services
 
         public async Task<Result<GameResponse>> GetGameByIdAsync(long id, CancellationToken cancellationToken)
         {
+            if (await uow.Games.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Jogo", id.ToString());
+
             var jogo = await uow.Games.GetByIdAsync(id);
             var jogoResponse = Parse(jogo);
             return new Result<GameResponse>(jogoResponse);
@@ -51,6 +54,9 @@ namespace FIAP.PLAY.Application.Library.Services
             if (id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
 
+            if (await uow.Games.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Jogo", id.ToString());
+
             var resultadoValidacao = validator.Validate(request);
             if (resultadoValidacao.IsValid == false)
                 throw new Domain.Shared.Exceptions.ValidationException([.. resultadoValidacao.Errors]);
@@ -70,8 +76,8 @@ namespace FIAP.PLAY.Application.Library.Services
             if(id == 0)
                 throw new Domain.Shared.Exceptions.ValidationException("id", "id do jogo não pode ser nulo");
 
-            if(await uow.Games.ExistsAsync(id) == false)
-                throw new Domain.Shared.Exceptions.NotFoundException("id", "jogo não encontrado");
+            if (await uow.Games.ExistsAsync(id) == false)
+                throw new Domain.Shared.Exceptions.NotFoundException("Jogo", id.ToString());
 
             await uow.Games.DeleteAsync(id);
             await uow.CompleteAsync();

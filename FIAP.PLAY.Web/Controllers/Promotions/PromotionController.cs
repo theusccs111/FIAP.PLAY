@@ -10,7 +10,7 @@ namespace FIAP.PLAY.Web.Controllers.Promotions
     public class PromotionController : ControllerBase
     {
         private readonly IPromotionService _promotionService;
-        public PromotionController(IPromotionService promotionService, CancellationToken cancellationToken)
+        public PromotionController(IPromotionService promotionService)
         {
             _promotionService = promotionService;
         }
@@ -38,7 +38,7 @@ namespace FIAP.PLAY.Web.Controllers.Promotions
             return Created("api/Promotion", dados);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdatePromotionAsync([FromRoute] long id, [FromBody] PromotionRequest request, CancellationToken cancellationToken)
         {

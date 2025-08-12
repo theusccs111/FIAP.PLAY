@@ -42,7 +42,7 @@ namespace FIAP.PLAY.Web.Controllers.UserAccess
             return Created("api/User", dados);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> UpdateUserAsync([FromRoute] long id, [FromBody] UserRequest request, CancellationToken cancellationToken)
         {
